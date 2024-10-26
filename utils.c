@@ -9,13 +9,19 @@ void validarCadena(char* cadena)
 	bool valido = true;
 	int i;
 	
+	int c;
+    while ((c = getchar()) != '\n' && c != EOF); 
+
 	//Tener en cuenta que la ultima letra no tiene /n al utilizar gets
 	do
 	{	
 		//Leer cadena
 		printf("Descripcion:\n");
 		fflush(stdin);
+
 		fgets(cadena,200,stdin);
+		cadena[strlen(cadena)-1] = '\0';
+
 		i = 0;
 		valido = true;
 
@@ -28,7 +34,14 @@ void validarCadena(char* cadena)
 			i++;
 		};
 
-	}while(!valido && strlen(cadena) > 9);
+		//printf("%d %ld\n",valido,strlen(cadena));
+
+	}while(!valido || strlen(cadena) < 9);
+
+	//printf("fin\n");
 	
-}
+};
+
+
+
 

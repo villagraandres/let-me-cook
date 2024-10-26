@@ -3,10 +3,9 @@
 
 int existeArchivo(FILE* fptr,char* fArchivo){
 
-	fptr = fopen(fArchivo,"r");
+	fptr = fopen(fArchivo,"rb");
 
 	if (fptr == NULL){
-		fclose(fptr);
 		return 1;
 
 	}else{

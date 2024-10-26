@@ -3,13 +3,16 @@ struct Articulo
 {
     int claveArticulo;
     char descripcion[200];
-    char temporadaSiembra;
-    char temporadaCosecha;
-    int claveMercados;
-    int insumosRequeridos;  
+    
+    char temporadaSiembra[20];
+    char temporadaCosecha[20];
+    
+    int claveMercados[10];
+    int insumosRequeridos[10];  
+    
     int costo;
-    int precios;
-    int invenrario;
+    int precio;
+    int inventario;
 
 };
 
@@ -21,3 +24,5 @@ void lecturaArticulo();
 
 
 void inicializarRegistros();
+
+int claveExiste(int clave, FILE* fptr,char* fArchivo);

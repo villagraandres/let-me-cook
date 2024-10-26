@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include "articulos.h"
 #include "manejoArchivos.h"
+#include "utils.h"
 
 int main()
 {
