@@ -11,7 +11,7 @@ void menuArticulos(){
 	//Comprobar que los archivos correspondientes existan
 
 	struct Articulo articulo = {};
-	inicializarRegistros(&articulo);
+	inicializarRegistros();
 
 	do{
 		printf("Desea agregar un articulo S/N)");
@@ -28,6 +28,7 @@ void menuArticulos(){
 
 	while(continuar){
 
+		lecturaArticulo(&articulo);
 
 		do{
 			printf("Desea agregar un articulo S/N)");
@@ -63,12 +64,12 @@ void lecturaArticulo(struct Articulo* fArticulo){
 	//Al utilizar gets no recibe salto de linea la cadena
 	validarCadena(fArticulo->descripcion);
 
+	printf("%s",fArticulo->descripcion);
+
 	//Temporada de siembra
 
-	//P - Primavera
-	// V - Verano
-	// O - Otono
-	// I - Invierno 
+	
+	
 
 }
 

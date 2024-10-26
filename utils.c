@@ -28,7 +28,7 @@ void validarCadena(char* cadena)
 			i++;
 		};
 
-	}while(!valido && strlen(cadena > 9));
+	}while(!valido && strlen(cadena) > 9);
 	
 }
 
