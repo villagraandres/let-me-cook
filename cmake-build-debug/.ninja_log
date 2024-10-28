@@ -1,0 +1,7 @@
+# ninja log v6
+18	140	7517793695759590	CMakeFiles/let_me_cook.dir/ventas.c.obj	acd90d3fdaf6177d
+4	144	7517793695620936	CMakeFiles/let_me_cook.dir/main.c.obj	a8cb37a33d6f002f
+26	156	7517793695841891	CMakeFiles/let_me_cook.dir/manejoArchivos.c.obj	3c4ee3e883b76e89
+12	170	7517793695702303	CMakeFiles/let_me_cook.dir/articulos.c.obj	c5cb8b64496b875
+32	172	7517793695894995	CMakeFiles/let_me_cook.dir/utils.c.obj	5eaa5a55c8c9c5b9
+172	377	7517793697291558	let_me_cook.exe	8aeafc59dda94c63
