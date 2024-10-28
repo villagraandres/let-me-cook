@@ -51,6 +51,7 @@ int main()
                 break;
 
             case 6:
+                menuVenta()
                 break;
 
             case 7:
