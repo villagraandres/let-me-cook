@@ -13,6 +13,7 @@ void menuArticulos(){
 	struct Articulo articulo = {};
 	inicializarRegistros();
 
+
 	do{
 		printf("Desea agregar un articulo S/N)");
 		scanf(" %c",&c);

@@ -3,7 +3,7 @@
 #include "articulos.h"
 #include "manejoArchivos.h"
 #include "utils.h"
-
+#include "ventas.h"
 int main()
 {
 
@@ -13,6 +13,7 @@ int main()
     printf("#### Bienvenido al sistema más moderno del mundo mundial ####\n");
     do
     {
+
         do
         {
             printf("Ingresa una de las siguientes opciones\n");
@@ -51,7 +52,7 @@ int main()
                 break;
 
             case 6:
-                menuVenta()
+                menuVenta();
                 break;
 
             case 7:
