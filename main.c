@@ -3,6 +3,7 @@
 #include "articulos.h"
 #include "manejoArchivos.h"
 #include "utils.h"
+#include "insumos.h"
 
 int main()
 {
@@ -36,9 +37,11 @@ int main()
             {
             case 1:
             	menuArticulos();
+                //viewElements();
                 break;
 
             case 2:
+                menuInsumos();
                 break;
 
             case 3:

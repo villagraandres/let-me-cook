@@ -23,6 +23,11 @@ void menuArticulos();
 void lecturaArticulo();
 
 
-void inicializarRegistros();
+void inicializarRegistrosArticulos();
 
-int claveExiste(int clave, FILE* fptr,char* fArchivo);
+int claveExiste(int , FILE* ,char* );
+
+// Función generica para visualizar los elementos de un archivo secuencial
+
+void viewElements();
+

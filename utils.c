@@ -43,5 +43,3 @@ void validarCadena(char* cadena)
 };
 
 
-
-

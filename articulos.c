@@ -8,10 +8,10 @@ void menuArticulos(){
 
 	bool continuar;
 	char c;
-	//Comprobar que los archivos correspondientes existan
-
 	struct Articulo articulo = {};
-	inicializarRegistros();
+
+	//Comprobar que los archivos correspondientes existan
+	inicializarRegistrosArticulos();
 
 	do{
 		printf("Desea agregar un articulo S/N)");
@@ -149,11 +149,11 @@ void lecturaArticulo(struct Articulo* fArticulo){
 
 }
 
-void inicializarRegistros(){
+void inicializarRegistrosArticulos(){
 
 	// Comprobar si el registro corespondiente exista sino crearlo
 
-	char nombreArchivo[] = "articulos.dat";
+	char nombreArchivo[] = "Registros/articulos.dat";
 	FILE* cfptr;
 	struct Articulo articulo = {};	
 
@@ -168,7 +168,7 @@ int claveExiste(int clave, FILE* fptr,char* fArchivo)
 	fptr = fopen(fArchivo,"rb");
 	bool sobreescrbir;
 	char c;
-	struct Articulo articulo;
+	struct Articulo articulo = {};
 	
 
 	if (fptr == NULL)
@@ -211,4 +211,24 @@ int claveExiste(int clave, FILE* fptr,char* fArchivo)
 
 	}
 
+};
+
+
+// Función generica para visualizar los elementos de un archivo secuencial
+
+void viewElements()
+{
+
+	FILE* fptr = {};
+	fptr = fopen("articulos.dat","rb");
+	struct Articulo articulo = {};
+
+	for(int i = 0;i<1000;i++){
+		fread(&articulo,sizeof(struct Articulo),1,fptr);
+		printf("%d\n",articulo.claveArticulo);
+
+	}
+
+	
 }
+

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+
 //esto si quieren lo ponen en una funcion, yo lo hare asi por comodidad mia
 struct mercado{
 	int clave;
@@ -21,7 +22,7 @@ struct mercado{
 main ()
 {
 	//si quieren que le cambie el nombre a la variable estructura avisenme
-	struct mercado datos = {0, "", "", "", 0, 0, 0, 0, "", "", "", "", ""};
+	struct mercado datos = {};
 	FILE *archivo;
 	bool registros = true;
 	int i, cont1, cont2, cont3;
