@@ -1,23 +1,8 @@
-//literalmente solo modifique un poco lo de mercados porque es practicamente igual, pero se supone que esta bien
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include "empleados.h"
 
-struct empleado{
-	int numero_empleado;
-	char nombre[200];
-	char RFC[13];
-	char correo_electronico[200];
-	float comision;
-	int year;
-	int mes;
-	int dia;
-	char calle[150];
-	char numero [10];
-	char colonia[100];
-	char municipio[100];
-	char estado[100];
-};
 main ()
 {
 	struct empleado datos = {0, "", "", "", 0, 0, 0, 0, "", "", "", "", ""};
@@ -95,7 +80,7 @@ main ()
 			
 			do
 			{
-				printf("año de nacimiento: ");
+				printf("aÃ±o de nacimiento: ");
 				scanf("%d", &datos.year);
 				if (datos.year < 1990 || datos.year > 2024)
 					printf("dato invalido\n");
