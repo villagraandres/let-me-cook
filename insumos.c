@@ -16,7 +16,7 @@ void menuInsumos()
 	inicializarRegistrosInsumos();
 
 	do{
-		printf("Desea agregar un articulo S/N)");
+		printf("Desea agregar un insumo S/N)");
 		scanf(" %c",&c);
 
 		if (c=='S' || c=='s')
@@ -31,10 +31,10 @@ void menuInsumos()
 	while(continuar)
 	{
 
-		//lecturaInsumo(&insumo);
+		lecturaInsumo(&insumo);
 
 		do{
-			printf("Desea agregar un articulo S/N)");
+			printf("Desea agregar un insumo S/N)");
 			scanf(" %c",&c);
 
 			if (c=='S' || c=='s')
@@ -57,8 +57,8 @@ void inicializarRegistrosInsumos()
 
 	// Comprobar si el registro corespondiente exista sino crearlo
 
-	char nombreArchivo[] = "Registros/insumos.dat";
-	FILE* cfptr = {};
+	char nombreArchivo[] = "insumos.dat";
+	FILE* cfptr;
 	struct Insumo insumo = {};	
 
 	if (existeArchivo(cfptr,nombreArchivo))
@@ -80,26 +80,25 @@ void lecturaInsumo(struct Insumo* fInsumo){
 	do
 	{
 		printf("Clave del insumo:\n");
-		scanf("%d",&fInsumo->lecturaInsumo);
+		scanf("%d",&fInsumo->claveInsumo);
 
-		if (fInsumo->lecturaInsumo < 0 || fInsumo->lecturaInsumo > 100)
+		if (fInsumo->claveInsumo < 0 || fInsumo->claveInsumo > 100)
 			printf("Ingresa un número entre 1 y 100\n");
-	}while(fInsumo->lecturaInsumo < 0 || fInsumo->lecturaInsumo > 100);
+	}while(fInsumo->claveInsumo < 0 || fInsumo->claveInsumo > 100);
 
-	if (claveExiste(fArticulo->claveArticulo,cfptr,"articulos.dat"))
+	if (claveInsumoExiste(fInsumo->claveInsumo,cfptr,"insumos.dat"))
 		actualizarDatos = false;
 	else
 		actualizarDatos = true;
 	
 
-
-	if(actualizarDatos == false)
+	if(actualizarDatos == true)
 	{
 
 		//Descripcion
 		//Al utilizar gets no recibe salto de linea la cadena
 		validarCadena(fInsumo->descripcion);
-		printf("[DEBUG MESSAJE Descripcion value] : %s\n",fArticulo->descripcion);
+		printf("[DEBUG MESSAJE Descripcion value] : %s\n",fInsumo->descripcion);
 
 
 		// Punto de reorden
@@ -129,6 +128,22 @@ void lecturaInsumo(struct Insumo* fInsumo){
 
 		// Preguntar 10 veces para los provedores y sus respectivos precios
 
+
+		// Escribir estructura en el archivo	
+		cfptr = fopen("insumos.dat","r+b");
+		if (cfptr == NULL)
+			{
+				printf("[ERROR] - No se pudo escribir en el archivo insumos.dat\n");
+				return;
+			}
+		
+		else
+			{
+				fseek(cfptr,sizeof(struct Insumo) * fInsumo->claveInsumo ,SEEK_SET);		
+				fwrite(fInsumo,sizeof(struct Insumo),1,cfptr);
+		};
+
+		fclose(cfptr);
 
 	}
 

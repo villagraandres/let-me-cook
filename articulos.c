@@ -3,6 +3,8 @@
 #include "manejoArchivos.h"
 #include "articulos.h"
 #include "utils.h"
+#include "mercados.h"
+#include "insumos.h"
 
 void menuArticulos(){
 
@@ -52,9 +54,15 @@ void lecturaArticulo(struct Articulo* fArticulo){
 
 	FILE* cfptr;
 	bool actualizarDatos;
+	bool continuar;
+	int i = 0;
+	int clave;
+	char c;
 
 	// Funciona solo para pasarlo a claveExiste y guardar la info en el
-	struct Articulo articulo;
+	struct Articulo articulo = {};
+	struct Mercado mercado = {};
+	struct Insumo insumo = {};
 	
 
 	// Clave del articulo
@@ -82,7 +90,7 @@ void lecturaArticulo(struct Articulo* fArticulo){
 		printf("[DEBUG MESSAJE Descripcion value] : %s\n",fArticulo->descripcion);
 
 		//Temporada de siembra
-		int c;
+		char c;
 		while ((c = getchar()) != '\n' && c != EOF); 
 		fflush(stdin);
 		printf("\n3) Temporada de siembra: ");
@@ -95,10 +103,110 @@ void lecturaArticulo(struct Articulo* fArticulo){
 		fgets(fArticulo->temporadaCosecha,20,stdin);
 		
 		// Clave de los mercados
-
 		/* Leer a lo más 10 claves y checar si existen en el archivo de claves de mercado*/
+		i = 0;
+		do
+		{	
+			do
+			{
+				printf("Ingresa la clave del mercado %d\n> ",i+1);
+				scanf("%d",&clave);
 
+				if (clave <= 0)
+					printf("Ingresa una clave mayor que 0\n");
+				else
+				{
+					// Validar que existan
+					cfptr = fopen("mercados.dat","rb");
+					if (cfptr == NULL)
+						printf("Error al abrir archivo mercados.dat\n");
+					else
+					{
+						fseek(cfptr,sizeof(struct Mercado) * (clave - 1) ,SEEK_SET);		
+						fread(&mercado,sizeof(struct Mercado),1,cfptr);
+
+						// Si está vacio no hay nada que actuaizar
+						if (mercado.clave == 0)
+							printf("Ingresa una clave registrada\n");
+						else{
+							i++;
+							printf("Clave %d registrada con éxito\n",mercado.clave);
+						}
+					}
+				}
+			} while (clave <= 0);
+
+			do
+			{
+				printf("Desea agregar otro mercado S/N)\n");
+				scanf(" %c",&c);
+
+				if (c=='S' || c=='s')
+						continuar = true;
+				else if(c=='N' || c == 'n')
+						continuar = false;
+				else
+					printf("Ingrese una opción válida");
+
+			}while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
+			
+
+		} while (i<10 && continuar);
+		
+		
 		// Clave de los insumos
+		i = 0;
+		do
+		{	
+			do
+			{
+				printf("Ingresa la clave del insumo %d\n> ",i+1);
+				scanf("%d",&clave);
+
+				if (clave < 1 || clave > 100)
+					printf("Ingresa una clave mayor entre 1 y 100\n");
+				else
+				{
+					// Validar que existan
+					cfptr = fopen("insumos.dat","rb");
+					if (cfptr == NULL)
+						printf("Error al abrir archivo insumos.dat\n");
+					else
+					{
+						fseek(cfptr,sizeof(struct Insumo) * (clave - 1) ,SEEK_SET);		
+						fread(&insumo,sizeof(struct Insumo),1,cfptr);
+
+						// Si está vacio no hay nada que actuaizar
+						if (insumo.claveInsumo == 0)
+							printf("Ingresa una clave registrada\n");
+						else{
+							i++;
+							printf("Clave %d registrada con éxito\n",insumo.claveInsumo);
+						}
+					}
+				}
+			} while (clave <= 0);
+
+
+
+			do
+			{
+				printf("Desea agregar un insumo S/N)");
+				scanf(" %c",&c);
+
+				if (c=='S' || c=='s')
+						continuar = true;
+				else if(c=='N' || c == 'n')
+						continuar = false;
+				else
+					printf("Ingrese una opción válida");
+
+			}while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
+			
+
+		} while (i<10 && continuar);
+
+
 
 		/* Leer a lo más 10 claves y checar si existen en el archivo de claves de insumos
 			Y calcular el costo de producción a partir de ellos
@@ -219,7 +327,7 @@ int claveExiste(int clave, FILE* fptr,char* fArchivo)
 void viewElements()
 {
 
-	FILE* fptr = {};
+	FILE* fptr;
 	fptr = fopen("articulos.dat","rb");
 	struct Articulo articulo = {};
 

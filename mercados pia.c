@@ -2,27 +2,15 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include "mercados.h"
 
 //esto si quieren lo ponen en una funcion, yo lo hare asi por comodidad mia
-struct mercado{
-	int clave;
-	char nombre[200];
-	char RFC[13];
-	char correo_electronico[200];
-	float descuento;
-	int year;
-	int mes;
-	int dia;
-	char calle[150];
-	char numero [10];
-	char colonia[100];
-	char municipio[100];
-	char estado[100];
-};
+
+
 main ()
 {
 	//si quieren que le cambie el nombre a la variable estructura avisenme
-	struct mercado datos = {};
+	struct Mercado datos = {};
 	FILE *archivo;
 	bool registros = true;
 	int i, cont1, cont2, cont3;
@@ -97,7 +85,7 @@ main ()
 			
 			do
 			{
-				printf("año de nacimiento: ");
+				printf("aï¿½o de nacimiento: ");
 				scanf("%d", &datos.year);
 				if (datos.year < 1950 || datos.year > 2006)
 					printf("dato invalida\n");
@@ -228,8 +216,8 @@ main ()
 			}
 			while (cont1 == 1);
 			
-			fseek(archivo, (datos.clave - 1) * sizeof(struct mercado), SEEK_SET);
-			fwrite(&datos, sizeof(struct mercado), 1, archivo);
+			fseek(archivo, (datos.clave - 1) * sizeof(struct Mercado), SEEK_SET);
+			fwrite(&datos, sizeof(struct Mercado), 1, archivo);
 			
 			do
 			{
