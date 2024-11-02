@@ -4,3 +4,6 @@ void validarCadena(char*);
 
 // Checa si la clave x existe en el registro
 
+void validarNombre(char*);
+
+

@@ -129,6 +129,7 @@ void lecturaInsumo(struct Insumo* fInsumo){
 		// Preguntar 10 veces para los provedores y sus respectivos precios
 
 
+
 		// Escribir estructura en el archivo	
 		cfptr = fopen("insumos.dat","r+b");
 		if (cfptr == NULL)
@@ -152,7 +153,8 @@ void lecturaInsumo(struct Insumo* fInsumo){
 };
 
 
-int claveInsumoExiste(int clave, FILE* fptr,char* fArchivo){
+int claveInsumoExiste(int clave, FILE* fptr,char* fArchivo)
+{
 
 	fptr = fopen(fArchivo,"rb");
 	bool sobreescrbir;
@@ -200,4 +202,4 @@ int claveInsumoExiste(int clave, FILE* fptr,char* fArchivo){
 	
 	}
 
-}
+};

@@ -4,6 +4,7 @@
 #include "manejoArchivos.h"
 #include "utils.h"
 #include "insumos.h"
+#include "provedor.h"
 
 int main()
 {
@@ -51,6 +52,7 @@ int main()
                 break;
 
             case 5:
+                menuProvedor();
                 break;
 
             case 6:
