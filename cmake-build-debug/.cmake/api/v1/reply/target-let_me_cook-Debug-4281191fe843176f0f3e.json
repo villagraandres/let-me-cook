@@ -2,10 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "let_me_cook.exe"
-		},
-		{
-			"path" : "let_me_cook.pdb"
+			"path" : "let_me_cook"
 		}
 	],
 	"backtrace" : 1,
@@ -72,16 +69,12 @@
 			{
 				"fragment" : "",
 				"role" : "flags"
-			},
-			{
-				"fragment" : "-lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32",
-				"role" : "libraries"
 			}
 		],
 		"language" : "C"
 	},
 	"name" : "let_me_cook",
-	"nameOnDisk" : "let_me_cook.exe",
+	"nameOnDisk" : "let_me_cook",
 	"paths" : 
 	{
 		"build" : ".",
