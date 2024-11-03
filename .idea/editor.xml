@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BackendCodeEditorSettings">
+    <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
     <option name="/Default/CodeStyle/CodeFormatting/CppClangFormat/EnableClangFormatSupport/@EntryValue" value="false" type="bool" />
     <option name="/Default/CodeStyle/EditorConfig/EnableClangFormatSupport/@EntryValue" value="false" type="bool" />
     <option name="/Default/CodeStyle/CodeFormatting/CppFormatting/ALIGN_MULTILINE_BINARY_EXPRESSIONS_CHAIN/@EntryValue" value="true" type="bool" />
@@ -21,7 +22,7 @@
     <option name="/Default/CodeStyle/CodeFormatting/CppFormatting/SPACE_AFTER_COMMA_IN_TEMPLATE_PARAMS/@EntryValue" value="true" type="bool" />
     <option name="/Default/CodeStyle/CodeFormatting/CppFormatting/SPACE_AFTER_FOR_SEMICOLON/@EntryValue" value="true" type="bool" />
     <option name="/Default/CodeStyle/CodeFormatting/CppFormatting/SPACE_BEFORE_FOR_SEMICOLON/@EntryValue" value="false" type="bool" />
-    <option name="/Default/CodeStyle/CodeFormatting/CppFormatting/SPACE_AFTER_UNARY_OPERATOR/@EntryValue" value="true" type="bool" />
+    <option name="/Default/CodeStyle/CodeFormatting/CppFormatting/SPACE_AFTER_UNARY_OPERATOR/@EntryValue" value="false" type="bool" />
     <option name="/Default/CodeStyle/CodeFormatting/CppFormatting/SPACE_WITHIN_ARRAY_ACCESS_BRACKETS/@EntryValue" value="false" type="bool" />
     <option name="/Default/CodeStyle/CodeFormatting/CppFormatting/SPACE_WITHIN_CAST_EXPRESSION_PARENTHESES/@EntryValue" value="false" type="bool" />
     <option name="/Default/CodeStyle/CodeFormatting/CppFormatting/SPACE_WITHIN_EMPTY_INITIALIZER_BRACES/@EntryValue" value="false" type="bool" />
