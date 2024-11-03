@@ -3,37 +3,47 @@
 #include "ventas.h"
 #include "articulos.h"
 #include "mercados.h"
+#include "manejoArchivos.h"
 
-bool validarExistencia(int clave, int modo, FILE *archivo);
+bool validarExistencia(int clave, int modo, FILE *archivoMercados, FILE *archivoArticulos);
 bool validarCantidad(int numeroArticulo, int cantidad, FILE *archivo);
 
 void menuVenta() {
-    FILE *archivoPtr;
+    FILE *archivoMercados, *archivoArticulos;
     struct Venta venta;
 
-    archivoPtr = fopen("mercados.dat", "rb+");
-    if (archivoPtr == NULL) {
+    archivoMercados = fopen("mercados.dat", "rb+");
+    if (archivoMercados == NULL) {
         printf("No existe ningún mercado registrado\n");
     } else {
-        printf("\nControl de Ventas\n");
+        archivoArticulos = fopen("articulos.dat", "rb+");
+        if (archivoArticulos == NULL) {
+            printf("No existe ningún artículo registrado\n");
+        } else {
+            printf("\nControl de Ventas\n");
 
-        printf("Número de Mercado: ");
-        do {
-            scanf("%d", &venta.numeroMercado);
-        } while (!validarExistencia(venta.numeroMercado, 1, archivoPtr));
-
-        printf("\nNúmero de Artículo: ");
-        do {
+            printf("Número de Mercado: ");
             do {
-                scanf("%d", &venta.numeroArticulo);
-            } while (!validarExistencia(venta.numeroArticulo, 2, archivoPtr));
+                scanf("%d", &venta.numeroMercado);
+            } while (!validarExistencia(venta.numeroMercado, 1, archivoMercados, archivoArticulos));
 
-            printf("\nIngrese la cantidad del Artículo: ");
-            scanf("%d", &venta.cantidad);
-        } while (!validarCantidad(venta.numeroArticulo, venta.cantidad, archivoPtr));
+            printf("\nNúmero de Artículo: ");
+            do {
+                do {
+                    scanf("%d", &venta.numeroArticulo);
+                } while (!validarExistencia(venta.numeroArticulo, 2, archivoMercados, archivoArticulos));
+
+                printf("\nIngrese la cantidad del Artículo: ");
+                scanf("%d", &venta.cantidad);
+            } while (!validarCantidad(venta.numeroArticulo, venta.cantidad, archivoArticulos));
+
+            printf("")
+        }
+
+        fclose(archivoArticulos);
     }
 
-    fclose(archivoPtr);
+    fclose(archivoMercados);
 }
 
 bool validarCantidad(int claveArticulo, int cantidad, FILE *archivo) {
@@ -71,15 +81,15 @@ bool validarCantidad(int claveArticulo, int cantidad, FILE *archivo) {
     return true;
 }
 
-bool validarExistencia(int clave, int modo, FILE *archivo) {
+bool validarExistencia(int clave, int modo, FILE *archivoMercados, FILE *archivoArticulos) {
     if (clave < 0) {
         return false;
     }
 
     if (modo == 1) {
         struct mercado mercado;
-        fseek(archivo, sizeof(struct mercado) * (clave - 1), SEEK_SET);
-        fread(&mercado, sizeof(struct mercado), 1, archivo);
+        fseek(archivoMercados, sizeof(struct mercado) * (clave - 1), SEEK_SET);
+        fread(&mercado, sizeof(struct mercado), 1, archivoMercados);
 
         if (mercado.clave == 0) {
             printf("El mercado no existe\n");
@@ -88,8 +98,8 @@ bool validarExistencia(int clave, int modo, FILE *archivo) {
         return true;
     } else {
         struct Articulo articulo;
-        fseek(archivo, sizeof(struct Articulo) * (clave - 1), SEEK_SET);
-        fread(&articulo, sizeof(struct Articulo), 1, archivo);
+        fseek(archivoArticulos, sizeof(struct Articulo) * (clave - 1), SEEK_SET);
+        fread(&articulo, sizeof(struct Articulo), 1, archivoArticulos);
 
         if (articulo.claveArticulo == 0) {
             printf("La clave del producto no existe\n");
