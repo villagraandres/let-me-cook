@@ -3,6 +3,7 @@
 #include "insumos.h"
 #include "manejoArchivos.h"
 #include "utils.h"
+#include "provedor.h"
 
 void menuInsumos()
 {
@@ -72,9 +73,14 @@ void lecturaInsumo(struct Insumo* fInsumo){
 
 	FILE* cfptr;
 	bool actualizarDatos;
+	bool continuar;
+	int i,clave;
+	float precio;
+	char c;
 
 	// Funciona solo para pasarlo a claveExiste y guardar la info en el
 	struct Insumo insumo;
+	struct Provedor provedor = {};
 
 	// Clave del insumo
 	do
@@ -127,8 +133,78 @@ void lecturaInsumo(struct Insumo* fInsumo){
 
 
 		// Preguntar 10 veces para los provedores y sus respectivos precios
+		i = 0;
+
+		// Comprobar que se pueda abrir archivo para leer
+		cfptr = fopen("provedor.dat","rb");
+		if (cfptr == NULL)
+		{
+			printf("[ERROR] - No se pudo leer el archivo provedor.dat\n");
+		}
+		
+		else
+		{
+			printf("[DEBUG MESSAGE ]- File provedor.dat open from insumos.c\n");
+			do
+			{	
+				// Checar que exista la clave
+				do
+				{
+					printf("Ingresa la clave del provedor\n >");
+					scanf("%d",&clave);
+
+					if(clave < 1 || clave > 10)
+						printf("Ingresa una clave entre 1 y 100\n");
+					
+					fseek(cfptr,(clave - 1) * sizeof(struct Provedor),SEEK_SET);
+					fread(&provedor,sizeof(struct Provedor),1,cfptr);
+
+					// Comprobar que no esté vacío
+					if(provedor.claveProvedor == 0)
+						printf("[ERROR MESSAGE] - Clave %d no registrada\n ",clave);
+					else
+					{
+						printf("CLAVE REGISTRADA");
+						fInsumo->provedores[i] = provedor.claveProvedor;
+
+						// Preguntar precio
+						do
+						{
+							printf("Ingresa el precio del provedor\n");
+							scanf("%f",&precio);
+
+							if (precio<=0)
+								printf("Ingresa un valor mayor que 0\n");
+
+						} while (precio <= 0);
+
+						*(fInsumo->precios+i) = precio;
+						i++;
+
+					}
+						
+					// Preguntar si desean continuar
+					do{
+						printf("Desea agregar un insumo S/N)");
+						scanf(" %c",&c);
+
+						if (c=='S' || c=='s')
+								continuar = true;
+						else if(c=='N' || c == 'n')
+								continuar = false;
+						else
+							printf("Ingrese una opción válida");
+
+					}while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
+
+				} while (clave < 1 || clave > 10);
+			
+
+			} while (i<10 && continuar);
 
 
+			fclose(cfptr);
+		}
 
 		// Escribir estructura en el archivo	
 		cfptr = fopen("insumos.dat","r+b");
