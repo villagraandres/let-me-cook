@@ -129,7 +129,7 @@ void lecturaArticulo(struct Articulo* fArticulo){
 						if (mercado.clave == 0)
 							printf("Ingresa una clave registrada\n");
 						else{
-							fArticulo.claveMercados[i] = clave;
+							fArticulo->claveMercados[i] = clave;
 							i++;
 							printf("Clave %d registrada con éxito\n",mercado.clave);
 						}
@@ -183,7 +183,7 @@ void lecturaArticulo(struct Articulo* fArticulo){
 							printf("Ingresa una clave registrada\n");
 						else{
 
-							fArticulo.insumosRequeridos[i] = clave;
+							fArticulo->insumosRequeridos[i] = clave;
 
 							//Preguntarle a que provedor desea comprarle
 

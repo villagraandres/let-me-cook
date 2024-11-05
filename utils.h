@@ -6,4 +6,4 @@ void validarCadena(char*);
 
 void validarNombre(char*);
 
-
+void clear_input_buffer();

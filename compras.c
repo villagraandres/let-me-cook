@@ -57,7 +57,7 @@ float obtenerPrecio(int id, FILE *insumoArch) {
     struct Insumo insumoInfo;
     fseek(insumoArch,sizeof(struct Insumo)*(id-1),SEEK_SET);
     fread(&insumoInfo,sizeof(struct Insumo),1,insumoArch);
-    return insumoInfo.precios;
+    return ;
 }
 bool validarExistenciaPI(FILE *archivoPtr,int modo,int id) {
     if(modo==1) {

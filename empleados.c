@@ -3,19 +3,34 @@
 #include <string.h>
 #include <ctype.h>
 #include "empleados.h"
+#include "utils.h"
+#include "manejoArchivos.h"
+
+void inicializar_registrosEmpleado();
+
+bool validarCorreo(const char* correo) {
+    const char* at = strchr(correo, '@');
+    if (at == NULL) return false;
+    const char* dot = strrchr(at, '.');
+    if (dot == NULL) return false;
+    return dot > at; // Ensure '.' comes after '@'
+}
 
 void empleadoMenu() {
-    struct empleado datos = {0, "", "", "", 0, 0, 0, 0, "", 0, "", "", ""};
+    inicializar_registrosEmpleado();
+    struct Empleado datos = {0, "", "", "", 0, 0, 0, 0, "", 0, "", "", ""};
     FILE *archivo;
     bool registros = true;
     int i, cont1, cont3;
     char opcion;
 
-    archivo = fopen("empleados.dat", "a");
+    archivo = fopen("empleados.dat", "rb+");
     if (archivo == NULL) {
         printf("Error al abrir el archivo\n");
         return;
     }
+
+    setbuf(stdout, NULL); // Disable buffering for stdout
 
     while (registros) {
         do {
@@ -27,50 +42,40 @@ void empleadoMenu() {
 
         do {
             printf("Nombre: ");
-            fflush(stdin);
+            clear_input_buffer(); // Limpiar el buffer de entrada
             fgets(datos.nombre, sizeof(datos.nombre), stdin);
-            datos.nombre[strcspn(datos.nombre, "\n")] = 0; 
-            cont1 = 0;
+            datos.nombre[strcspn(datos.nombre, "\n")] = 0; // Remover el salto de línea
+            cont1 = 0; // Reiniciar el contador de errores
+
+            // Verificar longitud
             if (strlen(datos.nombre) < 10) {
                 printf("Longitud inválida, asegúrese de que sean más de 10 caracteres\n");
+                cont1 = 1; // Marcar como inválido
             } else {
+                // Verificar que solo contenga letras y espacios
                 for (i = 0; i < strlen(datos.nombre); i++) {
                     if (!isalpha(datos.nombre[i]) && datos.nombre[i] != ' ') {
                         printf("Hay datos inválidos\n");
-                        cont1 = 1;
-                        break;
+                        cont1 = 1; // Marcar como inválido
+                        break; // Salir del ciclo si hay un carácter inválido
                     }
                 }
             }
-        } while (strlen(datos.nombre) < 10 || cont1 == 1);
+        } while (cont1 == 1);
 
-        do {
-            printf("RFC: ");
-            fflush(stdin);
-            fgets(datos.rfc, sizeof(datos.rfc), stdin);
-            datos.rfc[strcspn(datos.rfc, "\n")] = 0;
-            cont3 = 0;
-            if (strlen(datos.rfc) != 13) {
-                printf("Longitud inválida, asegúrese de que sean 13 caracteres\n");
-                cont3 = 1;
-            }
-            for (i = 0; i < 13; i++) {
-                if (!isalnum(datos.rfc[i])) {
-                    printf("RFC inválido, asegúrese de que solo contenga caracteres alfanuméricos\n");
-                    cont3 = 1;
-                    break;
-                }
-            }
-        } while (cont3);
+        printf("RFC: ");
+        while (getchar() != '\n');
+        fgets(datos.rfc, sizeof(datos.rfc), stdin);
+        datos.rfc[strcspn(datos.rfc, "\n")] = 0;
 
-        do {
-            printf("Correo electrónico: ");
-            fflush(stdin);
-            fgets(datos.correo_electronico, sizeof(datos.correo_electronico), stdin);
-            datos.correo_electronico[strcspn(datos.correo_electronico, "\n")] = 0; 
-            if (strchr(datos.correo_electronico, '@') == NULL || strchr(datos.correo_electronico, '.') == NULL)
-                printf("Correo inválido\n");
-        } while (strchr(datos.correo_electronico, '@') == NULL || strchr(datos.correo_electronico, '.') == NULL);
+
+        printf("Correo electrónico: ");
+        clear_input_buffer();
+        fgets(datos.correo_electronico, sizeof(datos.correo_electronico), stdin);
+        datos.correo_electronico[strcspn(datos.correo_electronico, "\n")] = 0;
+
+
+
 
         do {
             printf("Comisión: ");
@@ -117,7 +122,7 @@ void empleadoMenu() {
 
         do {
             printf("Calle: ");
-            fflush(stdin);
+            clear_input_buffer();
             fgets(datos.calle, sizeof(datos.calle), stdin);
             datos.calle[strcspn(datos.calle, "\n")] = 0; 
             cont1 = 0;
@@ -139,7 +144,7 @@ void empleadoMenu() {
 
         do {
             printf("Colonia: ");
-            fflush(stdin);
+            clear_input_buffer();
             fgets(datos.colonia, sizeof(datos.colonia), stdin);
             datos.colonia[strcspn(datos.colonia, "\n")] = 0; 
             cont1 = 0;
@@ -154,7 +159,7 @@ void empleadoMenu() {
 
         do {
             printf("Municipio: ");
-            fflush(stdin);
+            clear_input_buffer();
             fgets(datos.municipio, sizeof(datos.municipio), stdin);
             datos.municipio[strcspn(datos.municipio, "\n")] = 0; 
             cont1 = 0;
@@ -169,7 +174,7 @@ void empleadoMenu() {
 
         do {
             printf("Estado: ");
-            fflush(stdin);
+            clear_input_buffer();
             fgets(datos.estado, sizeof(datos.estado), stdin);
             datos.estado[strcspn(datos.estado, "\n")] = 0; 
             cont1 = 0;
@@ -182,12 +187,12 @@ void empleadoMenu() {
             }
         } while (cont1 == 1);
 
-        fseek(archivo, (datos.numero_empleado - 1) * sizeof(struct empleado), SEEK_SET);
-        fwrite(&datos, sizeof(struct empleado), 1, archivo);
+        fseek(archivo, (datos.numero_empleado - 1) * sizeof(struct Empleado), SEEK_SET);
+        fwrite(&datos, sizeof(struct Empleado), 1, archivo);
 
         do {
             printf("¿Hay más registros? S/N: ");
-            fflush(stdin);
+            clear_input_buffer();
             scanf(" %c", &opcion);
             if (opcion == 'N' || opcion == 'n')
                 registros = false;
@@ -197,4 +202,18 @@ void empleadoMenu() {
     }
 
     fclose(archivo);
+}
+
+void inicializar_registrosEmpleado() {
+    char nombreArchivo[] = "empleados.dat";
+    FILE* cfptr;
+    struct Empleado empleadoInfo = {0};
+
+    // Comprueba si el archivo existe y, si no, lo crea
+    if (existeArchivo(cfptr, nombreArchivo) == 1) {
+        if (crearArchivo(cfptr, nombreArchivo, &empleadoInfo, 100, sizeof(struct Empleado)) != 0) {
+            printf("Error al crear el archivo\n");
+            return;
+        }
+    }
 }

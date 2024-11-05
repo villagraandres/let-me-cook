@@ -9,7 +9,7 @@ struct Insumo
 	
 	int provedores[10];
 	float precios[10]; 
-
+	int provedoresn;
 };
 
 

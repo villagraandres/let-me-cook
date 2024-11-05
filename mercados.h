@@ -1,4 +1,4 @@
-struct mercado{
+struct Mercado{
 	int clave;
 	char nombre[200];
 	char RFC[14];
