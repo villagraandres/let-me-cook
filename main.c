@@ -4,6 +4,7 @@
 #include "manejoArchivos.h"
 #include "utils.h"
 #include "ventas.h"
+#include "empleados.h"
 int main()
 {
 
@@ -46,7 +47,7 @@ int main()
                 break;
 
             case 4:
-                break;
+                empleadoMenu();
 
             case 5:
                 break;

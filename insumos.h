@@ -1,0 +1,12 @@
+struct Insumo
+{
+
+    int claveInsumo;
+    char descripcion[200];
+    int puntoReorden;
+    int inventario;
+
+    int provedores[10];
+    float precios;
+
+};
