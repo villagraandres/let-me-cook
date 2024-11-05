@@ -6,6 +6,31 @@
 #include "empleados.h"
 #include "manejoArchivos.h"
 
+// Function to print the contents of archivoMercados
+void printArchivoMercados(FILE *archivoMercados) {
+    struct mercado mercadoInfo;
+    rewind(archivoMercados);
+    printf("\nContenido de archivoMercados:\n");
+    while (fread(&mercadoInfo, sizeof(struct mercado), 1, archivoMercados)) {
+        printf("Clave: %d\n", mercadoInfo.clave);
+    }
+    rewind(archivoMercados);
+}
+
+// Function to print the contents of archivoArticulos
+void printArchivoArticulos(FILE *archivoArticulos) {
+    struct Articulo articuloInfo;
+    rewind(archivoArticulos);
+    printf("\nContenido de archivoArticulos:\n");
+    while (fread(&articuloInfo, sizeof(struct Articulo), 1, archivoArticulos)) {
+        if(articuloInfo.claveArticulo!=0) {
+            printf("Clave: %d, Inventario: %d, Precio: %d\n", articuloInfo.claveArticulo, articuloInfo.inventario, articuloInfo.precio);
+        }
+
+    }
+    rewind(archivoArticulos);
+}
+
 bool validarExistencia(int clave, int modo, FILE *archivoMercados, FILE *archivoArticulos);
 bool validarCantidad(int numeroArticulo, int cantidad, FILE *archivo);
 float obtenerPrecioArticulo(int claveArticulo, FILE *archivo);
@@ -19,11 +44,14 @@ void menuVenta() {
     float precioTotal = 0;
     char respuesta;
 
-    archivoMercados = fopen("empleados.dat", "rb+");
+    archivoMercados = fopen("mercado.dat", "rb+"); // Corrected file name
     if (archivoMercados == NULL) {
         printf("No existe ningun mercado registrado\n");
         return;
     }
+
+    // Print the contents of archivoMercados
+    printArchivoMercados(archivoMercados);
 
     archivoArticulos = fopen("articulos.dat", "rb+");
     if (archivoArticulos == NULL) {
@@ -31,6 +59,7 @@ void menuVenta() {
         fclose(archivoMercados);
         return;
     }
+    printArchivoArticulos(archivoArticulos);
 
     archivoEmpleados = fopen("empleados.dat", "rb+");
     if (archivoEmpleados == NULL) {
@@ -129,6 +158,7 @@ bool validarCantidad(int claveArticulo, int cantidad, FILE *archivo) {
     articulo.inventario -= cantidad;
     fseek(archivo, sizeof(struct Articulo) * (claveArticulo - 1), SEEK_SET);
     fwrite(&articulo, sizeof(struct Articulo), 1, archivo);
+    fflush(archivo); // Ensure data is written to the file
 
     return true;
 }
