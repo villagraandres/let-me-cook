@@ -5,6 +5,7 @@
 #include "utils.h"
 #include "ventas.h"
 #include "empleados.h"
+#include "mercados.h"
 int main()
 {
 
@@ -44,10 +45,12 @@ int main()
                 break;
 
             case 3:
+                mercados_main();
                 break;
 
             case 4:
                 empleadoMenu();
+                break;
 
             case 5:
                 break;

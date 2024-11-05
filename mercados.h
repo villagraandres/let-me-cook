@@ -1,7 +1,7 @@
 struct mercado{
 	int clave;
 	char nombre[200];
-	char RFC[13];
+	char RFC[14];
 	char correo_electronico[200];
 	float descuento;
 	int year;
@@ -13,3 +13,4 @@ struct mercado{
 	char municipio[100];
 	char estado[100];
 };
+void mercados_main();

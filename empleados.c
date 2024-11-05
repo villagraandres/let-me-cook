@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <ctype.h>
 #include "empleados.h"
 
 void empleadoMenu() {
@@ -34,9 +35,7 @@ void empleadoMenu() {
                 printf("Longitud inválida, asegúrese de que sean más de 10 caracteres\n");
             } else {
                 for (i = 0; i < strlen(datos.nombre); i++) {
-                    if (!((datos.nombre[i] >= 'A' && datos.nombre[i] <= 'Z') || 
-                          (datos.nombre[i] >= 'a' && datos.nombre[i] <= 'z') || 
-                          datos.nombre[i] == ' ')) {
+                    if (!isalpha(datos.nombre[i]) && datos.nombre[i] != ' ') {
                         printf("Hay datos inválidos\n");
                         cont1 = 1;
                         break;
@@ -55,7 +54,7 @@ void empleadoMenu() {
                 printf("Longitud inválida, asegúrese de que sean 13 caracteres\n");
                 cont3 = 1;
             }
-            for (int i = 0; i < 13; i++) {
+            for (i = 0; i < 13; i++) {
                 if (!isalnum(datos.rfc[i])) {
                     printf("RFC inválido, asegúrese de que solo contenga caracteres alfanuméricos\n");
                     cont3 = 1;
@@ -123,9 +122,7 @@ void empleadoMenu() {
             datos.calle[strcspn(datos.calle, "\n")] = 0; 
             cont1 = 0;
             for (i = 0; i < strlen(datos.calle); i++) {
-                if (!((datos.calle[i] >= 'A' && datos.calle[i] <= 'Z') || 
-                      (datos.calle[i] >= 'a' && datos.calle[i] <= 'z') || 
-                      datos.calle[i] == ' ')) {
+                if (!isalpha(datos.calle[i]) && datos.calle[i] != ' ') {
                     printf("Hay datos inválidos\n");
                     cont1 = 1;
                     break;
@@ -147,9 +144,7 @@ void empleadoMenu() {
             datos.colonia[strcspn(datos.colonia, "\n")] = 0; 
             cont1 = 0;
             for (i = 0; i < strlen(datos.colonia); i++) {
-                if (!((datos.colonia[i] >= 'A' && datos.colonia[i] <= 'Z') || 
-                      (datos.colonia[i] >= 'a' && datos.colonia[i] <= 'z') || 
-                      datos.colonia[i] == ' ')) {
+                if (!isalpha(datos.colonia[i]) && datos.colonia[i] != ' ') {
                     printf("Hay datos inválidos\n");
                     cont1 = 1;
                     break;
@@ -164,9 +159,7 @@ void empleadoMenu() {
             datos.municipio[strcspn(datos.municipio, "\n")] = 0; 
             cont1 = 0;
             for (i = 0; i < strlen(datos.municipio); i++) {
-                if (!((datos.municipio[i] >= 'A' && datos.municipio[i] <= 'Z') || 
-                      (datos.municipio[i] >= 'a' && datos.municipio[i] <= 'z') || 
-                      datos.municipio[i] == ' ')) {
+                if (!isalpha(datos.municipio[i]) && datos.municipio[i] != ' ') {
                     printf("Hay datos inválidos\n");
                     cont1 = 1;
                     break;
@@ -181,9 +174,7 @@ void empleadoMenu() {
             datos.estado[strcspn(datos.estado, "\n")] = 0; 
             cont1 = 0;
             for (i = 0; i < strlen(datos.estado); i++) {
-                if (!((datos.estado[i] >= 'A' && datos.estado[i] <= 'Z') || 
-                      (datos.estado[i] >= 'a' && datos.estado[i] <= 'z') || 
-                      datos.estado[i] == ' ')) {
+                if (!isalpha(datos.estado[i]) && datos.estado[i] != ' ') {
                     printf("Hay datos inválidos\n");
                     cont1 = 1;
                     break;
@@ -206,5 +197,4 @@ void empleadoMenu() {
     }
 
     fclose(archivo);
-    return ;
 }
