@@ -5,7 +5,7 @@
 
 main ()
 {
-	struct empleado datos = {0, "", "", "", 0, 0, 0, 0, "", "", "", "", ""};
+	struct empleado datos = {0, "", "", "", 0, 0, 0, 0, "", 0, "", "", ""};
 	FILE *archivo;
 	bool registros = true;
 	int i, cont1, cont2, cont3;
@@ -73,10 +73,10 @@ main ()
 			{
 				printf("comision: ");
 				scanf("%f", &datos.comision);
-				if (datos.comision < 0 || datos.comision > 1)
+				if (datos.comision < 0 || datos.comision > 100)
 					printf("dascuento invalido\n");
 			}
-			while (datos.comision < 0 || datos.comision > 1);
+			while (datos.comision < 0 || datos.comision > 100);
 			
 			do
 			{
@@ -150,17 +150,11 @@ main ()
 			do
 			{
 				printf("numero de calle: ");
-				fflush(stdin);
-				gets(datos.numero);
-				cont1 = 0;
-				for (i = 0; i < strlen(datos.numero); i++)
-				{
-					if (datos.numero[i] < '0' || datos.numero[i] > '9')
-						printf("dato invalido\n");
-						cont1 = 1;
-				}
+				scanf("%d", &datos.numero);
+				if (datos.numero < 1)
+					printf("dato invalido\n");
 			}
-			while (cont1 == 1);
+			while (datos.numero < 1);
 			
 			do
 			{
