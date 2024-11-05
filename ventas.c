@@ -12,7 +12,7 @@ void printArchivoMercados(FILE *archivoMercados) {
     rewind(archivoMercados);
     printf("\nContenido de archivoMercados:\n");
     while (fread(&mercadoInfo, sizeof(struct Mercado), 1, archivoMercados)) {
-        if(mercadoInfo.clave!=0)
+
         printf("Clave: %d\n", mercadoInfo.clave);
     }
     rewind(archivoMercados);

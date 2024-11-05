@@ -117,6 +117,7 @@ void mercados_main() {
         } while (cont1 == 1);
 
         // Verifica si fwrite tuvo éxito
+        fseek(archivo,sizeof(struct Mercado)*(datos.clave-1),SEEK_SET);
         if (fwrite(&datos, sizeof(struct Mercado), 1, archivo) != 1) {
             printf("Error al escribir en el archivo\n");
         }
