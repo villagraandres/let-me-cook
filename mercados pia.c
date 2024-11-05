@@ -6,7 +6,7 @@
 main ()
 {
 	
-	struct mercado datos = {0, "", "", "", 0, 0, 0, 0, "", "", "", "", ""};
+	struct mercado datos = {0, "", "", "", 0, 0, 0, 0, "", 0, "", "", ""};
 	FILE *archivo;
 	bool registros = true;
 	int i, cont1, cont2, cont3;
@@ -151,17 +151,11 @@ main ()
 			do
 			{
 				printf("numero de calle: ");
-				fflush(stdin);
-				gets(datos.numero);
-				cont1 = 0;
-				for (i = 0; i < strlen(datos.numero); i++)
-				{
-					if (datos.numero[i] < '0' || datos.numero[i] > '9')
-						printf("dato invalido\n");
-						cont1 = 1;
-				}
+				scanf("%d", &datos.numero);
+				if (datos.numero < 1)
+					printf("dato invalido\n");
 			}
-			while (cont1 == 1);
+			while (datos.numero < 1);
 			
 			do
 			{
