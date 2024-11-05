@@ -1,7 +1,18 @@
 # ninja log v6
-18	140	7517793695759590	CMakeFiles/let_me_cook.dir/ventas.c.obj	acd90d3fdaf6177d
-172	377	7517793697291558	let_me_cook.exe	8aeafc59dda94c63
-4	144	7517793695620936	CMakeFiles/let_me_cook.dir/main.c.obj	a8cb37a33d6f002f
-26	156	7517793695841891	CMakeFiles/let_me_cook.dir/manejoArchivos.c.obj	3c4ee3e883b76e89
-12	170	7517793695702303	CMakeFiles/let_me_cook.dir/articulos.c.obj	c5cb8b64496b875
-32	172	7517793695894995	CMakeFiles/let_me_cook.dir/utils.c.obj	5eaa5a55c8c9c5b9
+3	74	7524786841459931	CMakeFiles/let_me_cook.dir/ventas.c.obj	acd90d3fdaf6177d
+75	163	7524786842171771	let_me_cook.exe	f3b764cdbb57b735
+34	143	7524780732437140	CMakeFiles/let_me_cook.dir/main.c.obj	a8cb37a33d6f002f
+47	135	7524780732568721	CMakeFiles/let_me_cook.dir/manejoArchivos.c.obj	3c4ee3e883b76e89
+39	145	7524780732487166	CMakeFiles/let_me_cook.dir/articulos.c.obj	c5cb8b64496b875
+50	137	7524780732598716	CMakeFiles/let_me_cook.dir/utils.c.obj	5eaa5a55c8c9c5b9
+4	69	7524782153013783	CMakeFiles/let_me_cook.dir/compras.c.obj	7848544a00693e3e
+17	91	7524793937887395	CMakeFiles/let_me_cook.dir/main.c.obj	a8cb37a33d6f002f
+23	100	7524793937948710	CMakeFiles/let_me_cook.dir/ventas.c.obj	acd90d3fdaf6177d
+27	109	7524793937983897	CMakeFiles/let_me_cook.dir/empleados.c.obj	2b431c775d11513a
+109	191	7524793938809175	let_me_cook.exe	d91819dad5c0092b
+17	87	7524795826896162	CMakeFiles/let_me_cook.dir/empleados.c.obj	2b431c775d11513a
+88	171	7524795827598756	let_me_cook.exe	d91819dad5c0092b
+15	75	7524798015208264	CMakeFiles/let_me_cook.dir/main.c.obj	a8cb37a33d6f002f
+21	83	7524798015288336	CMakeFiles/let_me_cook.dir/ventas.c.obj	acd90d3fdaf6177d
+24	91	7524798015288336	CMakeFiles/let_me_cook.dir/empleados.c.obj	2b431c775d11513a
+91	177	7524798015929065	let_me_cook.exe	d91819dad5c0092b

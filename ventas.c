@@ -19,9 +19,9 @@ void menuVenta() {
     float precioTotal = 0;
     char respuesta;
 
-    archivoMercados = fopen("mercados.dat", "rb+");
+    archivoMercados = fopen("empleados.dat", "rb+");
     if (archivoMercados == NULL) {
-        printf("No existe ningún mercado registrado\n");
+        printf("No existe ningun mercado registrado\n");
         return;
     }
 

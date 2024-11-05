@@ -1,8 +1,12 @@
-//
-// Created by villa on 03/11/2024.
-//
+struct Insumo
+{
 
-#ifndef INSUMOS_H
-#define INSUMOS_H
+    int claveInsumo;
+    char descripcion[200];
+    int puntoReorden;
+    int inventario;
 
-#endif //INSUMOS_H
+    int provedores[10];
+    float precios;
+
+};

@@ -1,7 +1,7 @@
 struct empleado{
 	int numero_empleado;
 	char nombre[200];
-	char RFC[13];
+	char rfc[14];
 	char correo_electronico[200];
 	float comision;
 	int year;
@@ -13,3 +13,4 @@ struct empleado{
 	char municipio[100];
 	char estado[100];
 };
+void empleadoMenu();
