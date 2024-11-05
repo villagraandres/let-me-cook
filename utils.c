@@ -42,6 +42,41 @@ void validarCadena(char* cadena)
 	
 };
 
+void validarNombre(char* nombre)
+{
+	bool valido = true;
+	int i;
+	int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+
+
+	//Tener en cuenta que la ultima letra no tiene /n al utilizar gets
+	do
+	{	
+		//Leer cadena
+		printf("Nombre:\n");
+		fflush(stdin);
+
+		fgets(nombre,200,stdin);
+		nombre[strlen(nombre)-1] = '\0';
+
+		i = 0;
+		valido = true;
+
+		while(i < strlen(nombre) && valido)
+		{
+			//Eliminar el uso de esas funciones e implementar por mi cuenta las funciones
+			if(!isalpha(nombre[i]) && !isspace(nombre[i]))
+				valido = false;
+
+			i++;
+		};
+
+		//printf("%d %ld\n",valido,strlen(cadena));
+
+	}while(!valido || strlen(nombre) < 9);
+
+};
 
 
 

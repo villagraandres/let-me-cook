@@ -3,16 +3,17 @@
 #include "manejoArchivos.h"
 #include "articulos.h"
 #include "utils.h"
+#include "mercados.h"
+#include "insumos.h"
 
 void menuArticulos(){
 
 	bool continuar;
 	char c;
-	//Comprobar que los archivos correspondientes existan
-
 	struct Articulo articulo = {};
-	inicializarRegistros();
 
+	//Comprobar que los archivos correspondientes existan
+	inicializarRegistrosArticulos();
 
 	do{
 		printf("Desea agregar un articulo S/N)");
@@ -53,9 +54,15 @@ void lecturaArticulo(struct Articulo* fArticulo){
 
 	FILE* cfptr;
 	bool actualizarDatos;
+	bool continuar;
+	int i = 0;
+	int clave;
+	char c;
 
 	// Funciona solo para pasarlo a claveExiste y guardar la info en el
-	struct Articulo articulo;
+	struct Articulo articulo = {};
+	struct Mercado mercado = {};
+	struct Insumo insumo = {};
 	
 
 	// Clave del articulo
@@ -83,7 +90,7 @@ void lecturaArticulo(struct Articulo* fArticulo){
 		printf("[DEBUG MESSAJE Descripcion value] : %s\n",fArticulo->descripcion);
 
 		//Temporada de siembra
-		int c;
+		char c;
 		while ((c = getchar()) != '\n' && c != EOF); 
 		fflush(stdin);
 		printf("\n3) Temporada de siembra: ");
@@ -96,14 +103,118 @@ void lecturaArticulo(struct Articulo* fArticulo){
 		fgets(fArticulo->temporadaCosecha,20,stdin);
 		
 		// Clave de los mercados
-
 		/* Leer a lo más 10 claves y checar si existen en el archivo de claves de mercado*/
+		i = 0;
+		do
+		{	
+			do
+			{
+				printf("Ingresa la clave del mercado %d\n> ",i+1);
+				scanf("%d",&clave);
 
+				if (clave <= 0)
+					printf("Ingresa una clave mayor que 0\n");
+				else
+				{
+					// Validar que existan
+					cfptr = fopen("mercados.dat","rb");
+					if (cfptr == NULL)
+						printf("Error al abrir archivo mercados.dat\n");
+					else
+					{
+						fseek(cfptr,sizeof(struct Mercado) * (clave - 1) ,SEEK_SET);		
+						fread(&mercado,sizeof(struct Mercado),1,cfptr);
+
+						// Si está vacio no hay nada que actuaizar
+						if (mercado.clave == 0)
+							printf("Ingresa una clave registrada\n");
+						else{
+							fArticulo.claveMercados[i] = clave;
+							i++;
+							printf("Clave %d registrada con éxito\n",mercado.clave);
+						}
+					}
+				}
+			} while (clave <= 0);
+
+			do
+			{
+				printf("Desea agregar otro mercado S/N)\n");
+				scanf(" %c",&c);
+
+				if (c=='S' || c=='s')
+						continuar = true;
+				else if(c=='N' || c == 'n')
+						continuar = false;
+				else
+					printf("Ingrese una opción válida");
+
+			}while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
+			
+
+		} while (i<10 && continuar);
+		
+		
 		// Clave de los insumos
+		i = 0;
+		do
+		{	
+			do
+			{
+				printf("Ingresa la clave del insumo %d\n> ",i+1);
+				scanf("%d",&clave);
 
-		/* Leer a lo más 10 claves y checar si existen en el archivo de claves de insumos
-			Y calcular el costo de producción a partir de ellos
-		*/
+				if (clave < 1 || clave > 100)
+					printf("Ingresa una clave mayor entre 1 y 100\n");
+				else
+				{
+					// Validar que existan
+					cfptr = fopen("insumos.dat","rb");
+					if (cfptr == NULL)
+						printf("Error al abrir archivo insumos.dat\n");
+					else
+					{
+						fseek(cfptr,sizeof(struct Insumo) * (clave - 1) ,SEEK_SET);		
+						fread(&insumo,sizeof(struct Insumo),1,cfptr);
+
+						// Si está vacio no hay nada que actualizar
+						//Si no entonces preguntarle por e provedor al que le desea comprar
+						if (insumo.claveInsumo == 0)
+							printf("Ingresa una clave registrada\n");
+						else{
+
+							fArticulo.insumosRequeridos[i] = clave;
+
+							//Preguntarle a que provedor desea comprarle
+
+
+							i++;
+							printf("Clave %d registrada con éxito\n",insumo.claveInsumo);
+						}
+					}
+				}
+			} while (clave <= 0);
+
+
+
+			do
+			{
+				printf("Desea agregar un insumo S/N)");
+				scanf(" %c",&c);
+
+				if (c=='S' || c=='s')
+						continuar = true;
+				else if(c=='N' || c == 'n')
+						continuar = false;
+				else
+					printf("Ingrese una opción válida");
+
+			}while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
+			
+
+		} while (i<10 && continuar);
+
+
 
 		// Inventario
 
@@ -150,11 +261,11 @@ void lecturaArticulo(struct Articulo* fArticulo){
 
 }
 
-void inicializarRegistros(){
+void inicializarRegistrosArticulos(){
 
 	// Comprobar si el registro corespondiente exista sino crearlo
 
-	char nombreArchivo[] = "articulos.dat";
+	char nombreArchivo[] = "Registros/articulos.dat";
 	FILE* cfptr;
 	struct Articulo articulo = {};	
 
@@ -169,7 +280,7 @@ int claveExiste(int clave, FILE* fptr,char* fArchivo)
 	fptr = fopen(fArchivo,"rb");
 	bool sobreescrbir;
 	char c;
-	struct Articulo articulo;
+	struct Articulo articulo = {};
 	
 
 	if (fptr == NULL)
@@ -212,4 +323,24 @@ int claveExiste(int clave, FILE* fptr,char* fArchivo)
 
 	}
 
+};
+
+
+// Función generica para visualizar los elementos de un archivo secuencial
+
+void viewElements()
+{
+
+	FILE* fptr;
+	fptr = fopen("articulos.dat","rb");
+	struct Articulo articulo = {};
+
+	for(int i = 0;i<1000;i++){
+		fread(&articulo,sizeof(struct Articulo),1,fptr);
+		printf("%d\n",articulo.claveArticulo);
+
+	}
+
+	
 }
+

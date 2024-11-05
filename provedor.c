@@ -75,7 +75,7 @@ void lecturaProvedor(struct Provedor* fProvedor)
 {
 
     FILE* cfptr;
-	bool actualizarDatos;
+	bool actualizarDatos,valido;
 
 	// Funciona solo para pasarlo a claveExiste y guardar la info en el
 	struct Provedor provedor;
@@ -116,7 +116,7 @@ void lecturaProvedor(struct Provedor* fProvedor)
 			if (fProvedor->descuento < 0 && fProvedor->descuento > 100)
 				printf("Ingresa un porcentaje válido\n");
 
-		}while(fProvedor->descuento < 0 && fProvedor->descuento > 100);
+		}while(fProvedor->descuento < 0 || fProvedor->descuento > 100);
 
 		fProvedor->descuento/=100;
         
@@ -144,7 +144,7 @@ void lecturaProvedor(struct Provedor* fProvedor)
 
 		} while (fProvedor->mes < 1 || fProvedor->mes > 12);
 
-		// Día
+		// Nacimiento
 
 		do
 		{
@@ -152,48 +152,90 @@ void lecturaProvedor(struct Provedor* fProvedor)
 			scanf("%d",&fProvedor->dia);
 
 			if (fProvedor->dia < 1 || fProvedor->dia > 31)
+			{
 				printf("Ingresa un día válido");
-
+				valido = false;
+			}
+				
 			else if (fProvedor->mes == 2)
 			{
 				if (fProvedor->año%4 == 0 && fProvedor->dia > 29)
+				{
 					printf("Fecha inválida\n");
-				else if(fProvedor->dia > 28)
+					valido = false;
+				}
+					
+				else if(fProvedor->año%4 != 0 && fProvedor->dia > 28)
+				{
 					printf("Fecha inválida");
+					valido = false;
+				}
+					
 				else
+				{
 					printf("[DEBUG MESSAGE] : Fecha registrada");
+					valido = true;
+				}
+					
 
 
 			}
 			else if(fProvedor->mes != 1 && (fProvedor->mes%5 == 1 || fProvedor->mes%5 == 4))
 			{
 				if(fProvedor->dia > 30)
+				{
 					printf("Fecha inválida\n");
+					valido =  false;
+				}
+					
 				else
+				{
 					printf("[DEBUG MESSAGE] : Fecha registrada");
+					valido = true;
+				}	
+					
 			}
 			else
 			{
 
 				if(fProvedor->dia > 31)
+				{
 					printf("Fecha inválida\n");
+					valido = false;
+				}
+					
 				else
+				{
 					printf("[DEBUG MESSAGE] : Fecha registrada");
+					valido = true;
+				}
+					
 			};
 
 
-
-
-
-		} while (fProvedor->dia < 1 || fProvedor->dia > 31);
+		} while(!valido);
 
 		// Validar dirección
 		validarDireccion(fProvedor);
 		
+		// Escribir estructura en el archivo
+		cfptr = fopen("provedor.dat","r+b");
+		if (cfptr == NULL)
+			{
+				printf("[ERROR] - No se pudo escribir en el archivo provedor.dat\n");
+				return;
+			}
 		
+		else
+			{
+				fseek(cfptr,sizeof(struct Provedor) * (fProvedor->claveProvedor - 1) ,SEEK_SET);		
+				fwrite(fProvedor,sizeof(struct Provedor),1,cfptr);
+				printf("[DEBUG MESSAGE] : Escritura concretada\n");
+		};
 
+		fclose(cfptr);
+		
     }
-
 
 
 };
@@ -306,7 +348,7 @@ void validarDireccion(struct Provedor* fProvedor)
 	// Calle
 	do
 	{	valido = true;
-		printf("calle: ");
+		printf("\nCalle: ");
 		fgets(fProvedor->calle,sizeof(fProvedor->calle),stdin);
 		fProvedor->calle[strlen(fProvedor->calle)-1] = '\0';
 		
@@ -329,14 +371,18 @@ void validarDireccion(struct Provedor* fProvedor)
 	{
 		printf("numero de calle: ");
 		//fflush(stdin);
-		fgets(&fProvedor->numero,sizeof(fProvedor->calle),stdin);
+		fgets(fProvedor->numero,sizeof(fProvedor->numero),stdin);
 		valido = true;
 
-		for (i = 0; i < strlen(fProvedor->numero); i++)
+		printf("%s\n",fProvedor->numero);
+		printf("%ld\n",strlen(fProvedor->numero));
+
+		for (i = 0; i < strlen(fProvedor->numero) - 1; i++)
 		{
 			if (fProvedor->numero[i] < '0' || fProvedor->numero[i] > '9')
 			{
 				printf("dato invalido\n");
+				printf("\n%s\n",&fProvedor->numero[i]);
 				valido = false;
 			}	
 		}
@@ -407,5 +453,7 @@ void validarDireccion(struct Provedor* fProvedor)
 		}
 	}
 	while (!valido);
+
+
 
 }
