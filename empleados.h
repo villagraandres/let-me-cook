@@ -1,4 +1,4 @@
-struct empleado{
+struct Empleado{
 	int numero_empleado;
 	char nombre[200];
 	char rfc[14];

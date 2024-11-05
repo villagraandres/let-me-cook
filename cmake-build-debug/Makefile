@@ -153,6 +153,78 @@ articulos.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/let_me_cook.dir/build.make CMakeFiles/let_me_cook.dir/articulos.c.s
 .PHONY : articulos.c.s
 
+compras.o: compras.c.o
+.PHONY : compras.o
+
+# target to build an object file
+compras.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/let_me_cook.dir/build.make CMakeFiles/let_me_cook.dir/compras.c.o
+.PHONY : compras.c.o
+
+compras.i: compras.c.i
+.PHONY : compras.i
+
+# target to preprocess a source file
+compras.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/let_me_cook.dir/build.make CMakeFiles/let_me_cook.dir/compras.c.i
+.PHONY : compras.c.i
+
+compras.s: compras.c.s
+.PHONY : compras.s
+
+# target to generate assembly for a file
+compras.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/let_me_cook.dir/build.make CMakeFiles/let_me_cook.dir/compras.c.s
+.PHONY : compras.c.s
+
+empleados.o: empleados.c.o
+.PHONY : empleados.o
+
+# target to build an object file
+empleados.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/let_me_cook.dir/build.make CMakeFiles/let_me_cook.dir/empleados.c.o
+.PHONY : empleados.c.o
+
+empleados.i: empleados.c.i
+.PHONY : empleados.i
+
+# target to preprocess a source file
+empleados.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/let_me_cook.dir/build.make CMakeFiles/let_me_cook.dir/empleados.c.i
+.PHONY : empleados.c.i
+
+empleados.s: empleados.c.s
+.PHONY : empleados.s
+
+# target to generate assembly for a file
+empleados.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/let_me_cook.dir/build.make CMakeFiles/let_me_cook.dir/empleados.c.s
+.PHONY : empleados.c.s
+
+insumos.o: insumos.c.o
+.PHONY : insumos.o
+
+# target to build an object file
+insumos.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/let_me_cook.dir/build.make CMakeFiles/let_me_cook.dir/insumos.c.o
+.PHONY : insumos.c.o
+
+insumos.i: insumos.c.i
+.PHONY : insumos.i
+
+# target to preprocess a source file
+insumos.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/let_me_cook.dir/build.make CMakeFiles/let_me_cook.dir/insumos.c.i
+.PHONY : insumos.c.i
+
+insumos.s: insumos.c.s
+.PHONY : insumos.s
+
+# target to generate assembly for a file
+insumos.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/let_me_cook.dir/build.make CMakeFiles/let_me_cook.dir/insumos.c.s
+.PHONY : insumos.c.s
+
 main.o: main.c.o
 .PHONY : main.o
 
@@ -200,6 +272,30 @@ manejoArchivos.s: manejoArchivos.c.s
 manejoArchivos.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/let_me_cook.dir/build.make CMakeFiles/let_me_cook.dir/manejoArchivos.c.s
 .PHONY : manejoArchivos.c.s
+
+mercados.o: mercados.c.o
+.PHONY : mercados.o
+
+# target to build an object file
+mercados.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/let_me_cook.dir/build.make CMakeFiles/let_me_cook.dir/mercados.c.o
+.PHONY : mercados.c.o
+
+mercados.i: mercados.c.i
+.PHONY : mercados.i
+
+# target to preprocess a source file
+mercados.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/let_me_cook.dir/build.make CMakeFiles/let_me_cook.dir/mercados.c.i
+.PHONY : mercados.c.i
+
+mercados.s: mercados.c.s
+.PHONY : mercados.s
+
+# target to generate assembly for a file
+mercados.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/let_me_cook.dir/build.make CMakeFiles/let_me_cook.dir/mercados.c.s
+.PHONY : mercados.c.s
 
 utils.o: utils.c.o
 .PHONY : utils.o
@@ -261,12 +357,24 @@ help:
 	@echo "... articulos.o"
 	@echo "... articulos.i"
 	@echo "... articulos.s"
+	@echo "... compras.o"
+	@echo "... compras.i"
+	@echo "... compras.s"
+	@echo "... empleados.o"
+	@echo "... empleados.i"
+	@echo "... empleados.s"
+	@echo "... insumos.o"
+	@echo "... insumos.i"
+	@echo "... insumos.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
 	@echo "... manejoArchivos.o"
 	@echo "... manejoArchivos.i"
 	@echo "... manejoArchivos.s"
+	@echo "... mercados.o"
+	@echo "... mercados.i"
+	@echo "... mercados.s"
 	@echo "... utils.o"
 	@echo "... utils.i"
 	@echo "... utils.s"

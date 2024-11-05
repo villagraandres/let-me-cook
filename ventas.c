@@ -8,10 +8,11 @@
 
 // Function to print the contents of archivoMercados
 void printArchivoMercados(FILE *archivoMercados) {
-    struct mercado mercadoInfo;
+    struct Mercado mercadoInfo;
     rewind(archivoMercados);
     printf("\nContenido de archivoMercados:\n");
-    while (fread(&mercadoInfo, sizeof(struct mercado), 1, archivoMercados)) {
+    while (fread(&mercadoInfo, sizeof(struct Mercado), 1, archivoMercados)) {
+        if(mercadoInfo.clave!=0)
         printf("Clave: %d\n", mercadoInfo.clave);
     }
     rewind(archivoMercados);
@@ -29,6 +30,20 @@ void printArchivoArticulos(FILE *archivoArticulos) {
 
     }
     rewind(archivoArticulos);
+}
+
+// Function to print the contents of archivoEmpleados
+void printArchivoEmpleados(FILE *archivoEmpleados) {
+    struct Empleado empleadoInfo;
+    rewind(archivoEmpleados);
+    printf("\nContenido de archivoEmpleados:\n");
+    while (fread(&empleadoInfo, sizeof(struct Empleado), 1, archivoEmpleados)) {
+        if(empleadoInfo.numero_empleado!=0) {
+            printf("Número de Empleado: %d\n", empleadoInfo.numero_empleado);
+        }
+
+    }
+    rewind(archivoEmpleados);
 }
 
 bool validarExistencia(int clave, int modo, FILE *archivoMercados, FILE *archivoArticulos);
@@ -50,8 +65,8 @@ void menuVenta() {
         return;
     }
 
-    // Print the contents of archivoMercados
-    printArchivoMercados(archivoMercados);
+
+
 
     archivoArticulos = fopen("articulos.dat", "rb+");
     if (archivoArticulos == NULL) {
@@ -59,7 +74,7 @@ void menuVenta() {
         fclose(archivoMercados);
         return;
     }
-    printArchivoArticulos(archivoArticulos);
+
 
     archivoEmpleados = fopen("empleados.dat", "rb+");
     if (archivoEmpleados == NULL) {
@@ -69,16 +84,19 @@ void menuVenta() {
         return;
     }
 
-    printf("\nControl de Ventas\n");
 
+    printf("\nControl de Ventas\n");
+    printArchivoMercados(archivoMercados);
     do {
         printf("Número de Mercado: ");
         do {
             scanf("%d", &ventas[numVentas].numeroMercado);
         } while (!validarExistencia(ventas[numVentas].numeroMercado, 1, archivoMercados, archivoArticulos));
 
+        printArchivoArticulos(archivoArticulos);
         printf("\nNúmero de Artículo: ");
         do {
+
             scanf("%d", &ventas[numVentas].numeroArticulo);
         } while (!validarExistencia(ventas[numVentas].numeroArticulo, 2, archivoMercados, archivoArticulos));
 
@@ -93,6 +111,7 @@ void menuVenta() {
         numVentas++;
     } while (respuesta == 'S' || respuesta == 's');
 
+    printArchivoEmpleados(archivoEmpleados);
     do {
         printf("Ingresa el número de empleado: ");
         scanf("%d", &ventas[0].empleado);
@@ -116,9 +135,9 @@ void menuVenta() {
 }
 
 bool validarEmpleado(FILE *archivoEmpleado, int empleadoId) {
-    struct empleado empleadoInfo;
-    fseek(archivoEmpleado, sizeof(struct empleado) * (empleadoId - 1), SEEK_SET);
-    fread(&empleadoInfo, sizeof(struct empleado), 1, archivoEmpleado);
+    struct Empleado empleadoInfo;
+    fseek(archivoEmpleado, sizeof(struct Empleado) * (empleadoId - 1), SEEK_SET);
+    fread(&empleadoInfo, sizeof(struct Empleado), 1, archivoEmpleado);
 
     if (empleadoInfo.numero_empleado == 0) {
         printf("El empleado no existe\n");
@@ -170,9 +189,12 @@ bool validarExistencia(int clave, int modo, FILE *archivoMercados, FILE *archivo
     }
 
     if (modo == 1) {
-        struct mercado mercado;
-        fseek(archivoMercados, sizeof(struct mercado) * (clave - 1), SEEK_SET);
-        fread(&mercado, sizeof(struct mercado), 1, archivoMercados);
+        struct Mercado mercado;
+        fseek(archivoMercados, sizeof(struct Mercado) * (clave-1), SEEK_SET);
+        fread(&mercado, sizeof(struct Mercado), 1, archivoMercados);
+        
+        // Debugging print statement
+        printf("Debug: Leyendo mercado con clave %d, encontrado clave %d\n", clave, mercado.clave);
 
         if (mercado.clave == 0) {
             printf("El mercado no existe\n");
@@ -183,6 +205,9 @@ bool validarExistencia(int clave, int modo, FILE *archivoMercados, FILE *archivo
         struct Articulo articulo;
         fseek(archivoArticulos, sizeof(struct Articulo) * (clave - 1), SEEK_SET);
         fread(&articulo, sizeof(struct Articulo), 1, archivoArticulos);
+        
+        // Debugging print statement
+        printf("Debug: Leyendo articulo con clave %d, encontrado clave %d\n", clave, articulo.claveArticulo);
 
         if (articulo.claveArticulo == 0) {
             printf("La clave del producto no existe\n");

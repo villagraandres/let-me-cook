@@ -1,34 +1,31 @@
 #include <stdio.h>
 #include "manejoArchivos.h"
 
-int existeArchivo(FILE* fptr,char* fArchivo){
+// Verifica si el archivo existe
+int existeArchivo(FILE* fptr, char* fArchivo) {
+    fptr = fopen(fArchivo, "rb");
 
-	fptr = fopen(fArchivo,"rb");
+    if (fptr == NULL) {
+        return 1;  // El archivo no existe
+    } else {
+        fclose(fptr);
+        return 0;  // El archivo existe
+    }
+}
 
-	if (fptr == NULL){
-		return 1;
+// Crea el archivo con estructuras iniciales
+int crearArchivo(FILE* fptr, char* fArchivo, void* estructura, int cantidadEstructuras, int tamañoEstructura) {
+    fptr = fopen(fArchivo, "wb");
 
-	}else{
-		fclose(fptr);
-		return 0;
-	}
-};
+    if (fptr == NULL) {
+        return 1;  // Error al abrir el archivo para escritura
+    }
 
+    for (int i = 0; i < cantidadEstructuras; ++i) {
+        fwrite(estructura, tamañoEstructura, 1, fptr);
+    }
 
-int crearArchivo(FILE* fptr,char* fArchivo, void* estructura,int cantidadEstructuras,int tamañoEstructura){
+    fclose(fptr);
 
-	int i;
-	fptr = fopen(fArchivo,"wb");
-
-	if(fptr == NULL){
-		return 1;
-	};
-
-	for (i = 0; i < cantidadEstructuras; ++i)
-		fwrite(estructura,tamañoEstructura,1,fptr);
-
-	fclose(fptr);
-
-	return 0;
-
+    return 0;
 }

@@ -4,6 +4,11 @@
 #include <ctype.h>
 
 //Regresa 0 si es una cadena valida
+void clear_input_buffer() {
+	int c;
+	while ((c = getchar()) != '\n' && c != EOF);
+}
+
 void validarCadena(char* cadena)
 {	
 	bool valido = true;
