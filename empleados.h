@@ -8,7 +8,7 @@ struct empleado{
 	int mes;
 	int dia;
 	char calle[150];
-	char numero [10];
+	int numero;
 	char colonia[100];
 	char municipio[100];
 	char estado[100];
