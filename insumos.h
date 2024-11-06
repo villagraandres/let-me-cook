@@ -1,3 +1,6 @@
+#ifndef INSUMOS_H
+#define INSUMOS_H
+
 
 struct Insumo
 {
@@ -9,7 +12,7 @@ struct Insumo
 	
 	int provedores[10];
 	float precios[10]; 
-	int provedoresn;
+
 };
 
 
@@ -21,3 +24,7 @@ void inicializarRegistrosInsumos();
 void lecturaInsumo(struct Insumo*);
 
 int claveInsumoExiste(int , FILE* ,char*);
+
+void writeOutput2();
+
+#endif // INSUMOS_H

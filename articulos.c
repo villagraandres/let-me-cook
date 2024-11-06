@@ -47,6 +47,8 @@ void menuArticulos(){
 
 	}
 
+	writeOutput1();
+
 };
 
 
@@ -104,7 +106,7 @@ void lecturaArticulo(struct Articulo* fArticulo){
 		
 		// Clave de los mercados
 		/* Leer a lo más 10 claves y checar si existen en el archivo de claves de mercado*/
-		i = 0;
+		/*i = 0;
 		do
 		{	
 			do
@@ -152,7 +154,7 @@ void lecturaArticulo(struct Articulo* fArticulo){
 			}while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
 			
 
-		} while (i<10 && continuar);
+		} while (i<10 && continuar);*/
 		
 		
 		// Clave de los insumos
@@ -186,7 +188,7 @@ void lecturaArticulo(struct Articulo* fArticulo){
 							fArticulo->insumosRequeridos[i] = clave;
 
 							//Preguntarle a que provedor desea comprarle
-
+							preguntarProvedor(fArticulo,&insumo);
 
 							i++;
 							printf("Clave %d registrada con éxito\n",insumo.claveInsumo);
@@ -195,6 +197,7 @@ void lecturaArticulo(struct Articulo* fArticulo){
 				}
 			} while (clave <= 0);
 
+			printf("[DEBUG MESSAGE] - El articulo tiene un costo de producción de %.2f pesos\n",fArticulo->costo);
 
 
 			do
@@ -232,7 +235,7 @@ void lecturaArticulo(struct Articulo* fArticulo){
 		do
 		{
 			printf("6) Precio de venta: ");
-			scanf("%d",&fArticulo->precio);
+			scanf("%f",&fArticulo->precio);
 
 			if (fArticulo->precio < 0 )
 				printf("Ingrese una cantidad válida\n");
@@ -258,14 +261,16 @@ void lecturaArticulo(struct Articulo* fArticulo){
 	}
 	
 
+};
 
-}
+
+
 
 void inicializarRegistrosArticulos(){
 
 	// Comprobar si el registro corespondiente exista sino crearlo
 
-	char nombreArchivo[] = "Registros/articulos.dat";
+	char nombreArchivo[] = "articulos.dat";
 	FILE* cfptr;
 	struct Articulo articulo = {};	
 
@@ -342,5 +347,74 @@ void viewElements()
 	}
 
 	
+};
+
+
+void preguntarProvedor(struct Articulo* fArticulo,struct Insumo* fInsumo)
+{	
+	int i,provedor;
+	float precio;
+	bool valido;
+
+	do
+	{	
+		printf("%-20s %-20s\n","Provedor","Precio");
+
+		// Imprimir provedores y precios
+		i = 0;
+		while (i<10 && fInsumo->provedores[i] != 0)
+		{
+			printf("%-20d %-20.2f\n",fInsumo->provedores[i],fInsumo->precios[i]);
+			i++;
+		}
+			
+		printf("Ingresa la clave del provedor a comprar\n");
+		scanf("%d",&provedor);
+
+		if (provedor < 0 || provedor > 10 || fInsumo->provedores[provedor-1] == 0)
+		{
+			printf("Por favor selecciona un valor válido\n");
+			valido = false;
+		}
+		else
+		{
+			valido = true;
+			fArticulo->costo+=fInsumo->precios[provedor-1];
+		}
+
+	} while (!valido);
+	
+
 }
 
+void writeOutput1()
+{
+
+	FILE* fptr = fopen("articulos.dat","rb");
+	FILE *archivo = fopen("Logs/Articulo", "w");
+
+	struct Articulo articulo = {};
+
+	printf("%-10s %-20s\n","Clave","Nombre");
+
+	while (fread(&articulo, sizeof(struct Articulo), 1, fptr) == 1)
+	{
+		if (articulo.claveArticulo != 0)
+		{
+			fprintf(archivo,"%d %s\n",articulo.claveArticulo,articulo.descripcion);
+			for ( int i = 0; i < 10; i++)
+			{
+				fprintf(archivo,"%d:%d\n",articulo.claveMercados[i],articulo.insumosRequeridos[i]);
+			}
+			
+
+		}
+			
+		
+	}
+
+	fclose(fptr);
+	fclose(archivo);
+
+
+}

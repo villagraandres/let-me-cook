@@ -50,7 +50,9 @@ void menuProvedor()
 
 		}while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
 
-	}
+	};
+
+	writeOutput();
 
 };
 
@@ -455,5 +457,31 @@ void validarDireccion(struct Provedor* fProvedor)
 	while (!valido);
 
 
+}
+
+void writeOutput()
+{
+
+	FILE* fptr = fopen("provedor.dat","rb");
+	FILE *archivo = fopen("Logs/Provedor", "w");
+
+	struct Provedor provedor = {};
+
+	printf("%-10s %-20s\n","Clave","Nombre");
+
+	while (fread(&provedor, sizeof(struct Provedor), 1, fptr) == 1)
+	{
+		if (provedor.claveProvedor != 0)
+		{
+			fprintf(archivo,"%d %s\n",provedor.claveProvedor,provedor.nombre);
+		}
+			
+		
+	}
+
+	fclose(fptr);
+	fclose(archivo);
+
 
 }
+

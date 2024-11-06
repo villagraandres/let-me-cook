@@ -34,3 +34,6 @@ void validarCorreo(char*);
 void validarDireccion(struct Provedor*);
 
 int claveProvedorExiste(int , FILE* ,char* );
+
+
+void writeOutput();
