@@ -252,7 +252,7 @@ void lecturaArticulo(struct Articulo* fArticulo){
 		
 		else
 			{
-				fseek(cfptr,sizeof(struct Articulo) * fArticulo->claveArticulo ,SEEK_SET);		
+				fseek(cfptr,sizeof(struct Articulo) * (fArticulo->claveArticulo-1) ,SEEK_SET);
 				fwrite(fArticulo,sizeof(struct Articulo),1,cfptr);
 		};
 

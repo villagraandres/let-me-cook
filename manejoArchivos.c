@@ -14,7 +14,7 @@ int existeArchivo(FILE* fptr, char* fArchivo) {
 }
 
 // Crea el archivo con estructuras iniciales
-int crearArchivo(FILE* fptr, char* fArchivo, void* estructura, int cantidadEstructuras, int tamañoEstructura) {
+int crearArchivo(FILE* fptr, char* fArchivo, void* estructura, int cantidadEstructuras, int tamanoEstructura) {
     fptr = fopen(fArchivo, "wb");
 
     if (fptr == NULL) {
@@ -22,7 +22,7 @@ int crearArchivo(FILE* fptr, char* fArchivo, void* estructura, int cantidadEstru
     }
 
     for (int i = 0; i < cantidadEstructuras; ++i) {
-        fwrite(estructura, tamañoEstructura, 1, fptr);
+        fwrite(estructura, tamanoEstructura, 1, fptr);
     }
 
     fclose(fptr);
