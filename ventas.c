@@ -5,59 +5,23 @@
 #include "mercados.h"
 #include "empleados.h"
 #include "manejoArchivos.h"
+#include <time.h>
 
-// Function to print the contents of archivoMercados
-void printArchivoMercados(FILE *archivoMercados) {
-    struct Mercado mercadoInfo;
-    rewind(archivoMercados);
-    printf("\nContenido de archivoMercados:\n");
-    while (fread(&mercadoInfo, sizeof(struct Mercado), 1, archivoMercados)) {
 
-        printf("Clave: %d\n", mercadoInfo.clave);
-    }
-    rewind(archivoMercados);
-}
-
-// Function to print the contents of archivoArticulos
-void printArchivoArticulos(FILE *archivoArticulos) {
-    struct Articulo articuloInfo;
-    rewind(archivoArticulos);
-    printf("\nContenido de archivoArticulos:\n");
-    while (fread(&articuloInfo, sizeof(struct Articulo), 1, archivoArticulos)) {
-        if(articuloInfo.claveArticulo!=0) {
-            printf("Clave: %d, Inventario: %d, Precio: %d\n", articuloInfo.claveArticulo, articuloInfo.inventario, articuloInfo.precio);
-        }
-
-    }
-    rewind(archivoArticulos);
-}
-
-// Function to print the contents of archivoEmpleados
-void printArchivoEmpleados(FILE *archivoEmpleados) {
-    struct Empleado empleadoInfo;
-    rewind(archivoEmpleados);
-    printf("\nContenido de archivoEmpleados:\n");
-    while (fread(&empleadoInfo, sizeof(struct Empleado), 1, archivoEmpleados)) {
-        if(empleadoInfo.numero_empleado!=0) {
-            printf("Número de Empleado: %d\n", empleadoInfo.numero_empleado);
-        }
-
-    }
-    rewind(archivoEmpleados);
-}
-
-bool validarExistencia(int clave, int modo, FILE *archivoMercados, FILE *archivoArticulos);
-bool validarCantidad(int numeroArticulo, int cantidad, FILE *archivo);
-float obtenerPrecioArticulo(int claveArticulo, FILE *archivo);
-bool validarEmpleado(FILE *archivoEmpleado, int empleadoId);
-void generarFactura(struct Venta ventas[], int numVentas, float total, int empleadoId);
-
+void obtenerFecha(struct tm *fecha);
 void menuVenta() {
-    FILE *archivoMercados, *archivoArticulos, *archivoEmpleados;
+    FILE *archivoMercados, *archivoArticulos, *archivoEmpleados,*archivoVentas;
     struct Venta ventas[100]; 
     int numVentas = 0;
-    float precioTotal = 0;
+    float precioTotal = 0,precioArt;
     char respuesta;
+    struct tm fecha;
+    obtenerFecha(&fecha);
+
+    archivoVentas=fopen("ventas.txt","a");
+    if(archivoVentas==NULL) {
+        archivoVentas=fopen("ventas.txt","w");
+    }
 
     archivoMercados = fopen("mercado.dat", "rb+"); // Corrected file name
     if (archivoMercados == NULL) {
@@ -118,10 +82,13 @@ void menuVenta() {
     } while (!validarEmpleado(archivoEmpleados, ventas[0].empleado));
 
     for (int i = 0; i < numVentas; i++) {
-        precioTotal += obtenerPrecioArticulo(ventas[i].numeroArticulo, archivoArticulos) * ventas[i].cantidad;
+        precioArt= obtenerPrecioArticulo(ventas[i].numeroArticulo, archivoArticulos) * ventas[i].cantidad;
+        precioTotal +=precioArt;
+        fprintf(archivoVentas,"%d %d %f %d %d %d\n",ventas[i].numeroArticulo,ventas[i].cantidad,precioArt,fecha.tm_mday, fecha.tm_mon + 1, fecha.tm_year + 1900);
     }
 
     printf("El precio total de la venta es: %.2f\n", precioTotal);
+
 
     printf("¿Requiere factura? (S/N): ");
     scanf(" %c", &respuesta);
@@ -233,4 +200,52 @@ void generarFactura(struct Venta ventas[], int numVentas, float total, int emple
         printf("Artículo %d: %d unidades\n", ventas[i].numeroArticulo, ventas[i].cantidad);
     }
     printf("Total: %.2f\n", total);
+}
+
+// Function to print the contents of archivoMercados
+void printArchivoMercados(FILE *archivoMercados) {
+    struct Mercado mercadoInfo;
+    rewind(archivoMercados);
+    printf("\nContenido de archivoMercados:\n");
+    while (fread(&mercadoInfo, sizeof(struct Mercado), 1, archivoMercados)) {
+
+        printf("Clave: %d\n", mercadoInfo.clave);
+    }
+    rewind(archivoMercados);
+}
+
+// Function to print the contents of archivoArticulos
+void printArchivoArticulos(FILE *archivoArticulos) {
+    struct Articulo articuloInfo;
+    rewind(archivoArticulos);
+    printf("\nContenido de archivoArticulos:\n");
+    while (fread(&articuloInfo, sizeof(struct Articulo), 1, archivoArticulos)) {
+        if(articuloInfo.claveArticulo!=0)
+            printf("Clave: %d, Inventario: %d, Precio: %d\n", articuloInfo.claveArticulo, articuloInfo.inventario, articuloInfo.precio);
+
+
+    }
+    rewind(archivoArticulos);
+}
+
+// Function to print the contents of archivoEmpleados
+void printArchivoEmpleados(FILE *archivoEmpleados) {
+    struct Empleado empleadoInfo;
+    rewind(archivoEmpleados);
+    printf("\nContenido de archivoEmpleados:\n");
+    while (fread(&empleadoInfo, sizeof(struct Empleado), 1, archivoEmpleados)) {
+        if(empleadoInfo.numero_empleado!=0) {
+            printf("Número de Empleado: %d\n", empleadoInfo.numero_empleado);
+        }
+
+    }
+    rewind(archivoEmpleados);
+}
+
+
+void obtenerFecha(struct tm *fecha) {
+    time_t t = time(NULL);
+    *fecha = *localtime(&t);
+
+    mktime(fecha);
 }

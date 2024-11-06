@@ -13,4 +13,6 @@ add_executable(let_me_cook main.c articulos.c ventas.c manejoArchivos.c utils.c
         insumos.h
         empleados.c
         mercados.c
-        insumos.c)
+        insumos.c
+        reportes.h
+        reportes.c)
