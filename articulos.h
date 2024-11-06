@@ -1,3 +1,7 @@
+#ifndef ARTICULOS_H
+#define ARTICULOS_H
+
+#include "insumos.h"
 
 struct Articulo
 {
@@ -10,8 +14,8 @@ struct Articulo
     int claveMercados[10];
     int insumosRequeridos[10];  
     
-    int costo;
-    int precio;
+    float costo;
+    float precio;
     int inventario;
 
 };
@@ -31,3 +35,10 @@ int claveExiste(int , FILE* ,char* );
 
 void viewElements();
 
+// Funcion para registrar el provedor dado x insumo
+void preguntarProvedor(struct Articulo*,struct Insumo*);
+
+void writeOutput1();
+
+
+#endif //  ARTICULOS_H

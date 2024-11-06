@@ -48,6 +48,7 @@ void menuInsumos()
 		}while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
 
 	}
+	writeOutput2();
 
 
 };
@@ -93,9 +94,9 @@ void lecturaInsumo(struct Insumo* fInsumo){
 	}while(fInsumo->claveInsumo < 0 || fInsumo->claveInsumo > 100);
 
 	if (claveInsumoExiste(fInsumo->claveInsumo,cfptr,"insumos.dat"))
-		actualizarDatos = false;
-	else
 		actualizarDatos = true;
+	else
+		actualizarDatos = false;
 	
 
 	if(actualizarDatos == true)
@@ -153,8 +154,12 @@ void lecturaInsumo(struct Insumo* fInsumo){
 					printf("Ingresa la clave del provedor\n >");
 					scanf("%d",&clave);
 
-					if(clave < 1 || clave > 10)
+					if(clave < 1 || clave > 100)
+					{
 						printf("Ingresa una clave entre 1 y 100\n");
+						continue;
+					}
+						
 					
 					fseek(cfptr,(clave - 1) * sizeof(struct Provedor),SEEK_SET);
 					fread(&provedor,sizeof(struct Provedor),1,cfptr);
@@ -185,7 +190,7 @@ void lecturaInsumo(struct Insumo* fInsumo){
 						
 					// Preguntar si desean continuar
 					do{
-						printf("Desea agregar un insumo S/N)");
+						printf("Desea agregar otro provedor al insumo? S/N)");
 						scanf(" %c",&c);
 
 						if (c=='S' || c=='s')
@@ -197,7 +202,7 @@ void lecturaInsumo(struct Insumo* fInsumo){
 
 					}while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
 
-				} while (clave < 1 || clave > 10);
+				} while (clave < 1 || clave > 100);
 			
 
 			} while (i<10 && continuar);
@@ -216,7 +221,7 @@ void lecturaInsumo(struct Insumo* fInsumo){
 		
 		else
 			{
-				fseek(cfptr,sizeof(struct Insumo) * fInsumo->claveInsumo ,SEEK_SET);		
+				fseek(cfptr,sizeof(struct Insumo) * (fInsumo->claveInsumo - 1) ,SEEK_SET);		
 				fwrite(fInsumo,sizeof(struct Insumo),1,cfptr);
 		};
 
@@ -279,3 +284,37 @@ int claveInsumoExiste(int clave, FILE* fptr,char* fArchivo)
 	}
 
 };
+
+
+void writeOutput2()
+{
+
+	FILE* fptr = fopen("insumos.dat","rb");
+	FILE *archivo = fopen("Logs/Insumo", "w");
+
+	struct Insumo insumo= {};
+
+	printf("%-10s %-20s\n","Clave","Nombre");
+
+	while (fread(&insumo, sizeof(struct Insumo), 1, fptr) == 1)
+	{
+		if (insumo.claveInsumo != 0)
+		{
+			fprintf(archivo,"%d_%s\n",insumo.claveInsumo,insumo.descripcion);
+			
+			for ( int i = 0; i < 10; i++)
+			{
+				fprintf(archivo,"%d::%.2f\n",insumo.provedores[i],insumo.precios[i]);
+			}
+			
+
+		}
+			
+		
+	}
+
+	fclose(fptr);
+	fclose(archivo);
+
+
+}
