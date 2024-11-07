@@ -3,7 +3,7 @@
 #include <string.h>
 #include "mercados.h"
 
-void mercados_main ()
+main ()
 {
 	struct mercado datos = {0, "", "", "", 0, 0, 0, 0, "", 0, "", "", ""};
 	FILE *archivo;
