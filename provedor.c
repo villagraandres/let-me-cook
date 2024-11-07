@@ -76,6 +76,7 @@ void inicializarRegistrosProvedor()
 void lecturaProvedor(struct Provedor* fProvedor)
 {
 
+	char c;
     FILE* cfptr;
 	bool actualizarDatos,valido;
 
@@ -103,9 +104,6 @@ void lecturaProvedor(struct Provedor* fProvedor)
         // Leer nombre
         validarNombre(fProvedor->nombre);
 
-        // RFC
-
-
         // Correo
         validarCorreo(fProvedor->correo);
 
@@ -122,6 +120,12 @@ void lecturaProvedor(struct Provedor* fProvedor)
 
 		fProvedor->descuento/=100;
         
+
+		// RFC
+		while ((c = getchar()) != '\n' && c != EOF);
+
+		validarRFC(fProvedor);
+
 		// Año de nacimiento
 
 		do
@@ -216,6 +220,9 @@ void lecturaProvedor(struct Provedor* fProvedor)
 
 
 		} while(!valido);
+
+
+
 
 		// Validar dirección
 		validarDireccion(fProvedor);
@@ -467,7 +474,6 @@ void writeOutput()
 
 	struct Provedor provedor = {};
 
-	printf("%-10s %-20s\n","Clave","Nombre");
 
 	while (fread(&provedor, sizeof(struct Provedor), 1, fptr) == 1)
 	{
@@ -482,6 +488,71 @@ void writeOutput()
 	fclose(fptr);
 	fclose(archivo);
 
+
+};
+
+void validarRFC(struct Provedor* fProvedor)
+{
+	bool valido;
+	char *rfc = fProvedor->rfc;
+	int i;
+
+	printf("[DEBUG MESSAGE] - Se la estamos metiendo a Andres disculpe las molestias\n");
+
+	do
+	{	
+		valido = true;
+
+		printf("Ingrese su rfc\n");
+		fgets(rfc,sizeof(fProvedor->rfc),stdin);
+
+		if (strlen(rfc) != 13)
+		{
+			printf("Longitud inválida %ld %s\n",strlen(rfc),rfc);
+			valido = false;
+		}
+			
+
+		else
+		{
+
+			// Primeras 4 letras 
+			for ( i = 0; i < 4 && valido; i++)
+			{
+				if (rfc[i] < 'A' || rfc[i] > 'Z')
+				{
+					valido = false;
+					printf("Estructurá inválida del rfc\n");
+				}
+					
+			};
+
+			// 6 números siguientes
+			for ( i = 4; i < 10 && valido; i++)
+			{
+				if (rfc[i] < '0' || rfc[i] > '9')
+				{
+					valido = false;
+					printf("Estructurá inválida del rfc\n");
+				}
+			};
+
+			// 3 caracteres aleatorios
+			for (i = 10; i < 13 && valido; i++)
+			{
+				if (!isalnum(rfc[i]))
+				{
+					valido = false;
+					printf("Estructurá inválida del rfc\n");
+				}
+			}
+		}
+
+	} while (!valido);
+	
+	printf("[DEBUGG MESSAGE] - RFC valido\n");
+			
+	printf("[RFC VALUE] : %s\n",rfc);
 
 }
 

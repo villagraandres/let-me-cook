@@ -4,7 +4,7 @@ struct Provedor
 {
     int claveProvedor;
     char nombre[100];
-    char rfc[13];
+    char rfc[14];
     char correo[100];
     float descuento;
 
@@ -27,7 +27,7 @@ void inicializarRegistrosProvedor();
 
 void lecturaProvedor(struct Provedor*);
 
-void validarRFC();
+void validarRFC(struct Provedor*);
 
 void validarCorreo(char*);
 
