@@ -1,4 +1,4 @@
-
+#include <stdbool.h>
 
 struct Venta {
     int numeroMercado;

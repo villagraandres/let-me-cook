@@ -84,7 +84,7 @@ void menuVenta() {
     for (int i = 0; i < numVentas; i++) {
         precioArt= obtenerPrecioArticulo(ventas[i].numeroArticulo, archivoArticulos) * ventas[i].cantidad;
         precioTotal +=precioArt;
-        fprintf(archivoVentas,"%d %d %f %d %d %d\n",ventas[i].numeroArticulo,ventas[i].cantidad,precioArt,fecha.tm_mday, fecha.tm_mon + 1, fecha.tm_year + 1900);
+        fprintf(archivoVentas,"%d %d %f %d %d %d %d\n",ventas[i].numeroArticulo,ventas[i].cantidad,precioArt,ventas[i].empleado,fecha.tm_mday, fecha.tm_mon + 1, fecha.tm_year + 1900);
     }
 
     printf("El precio total de la venta es: %.2f\n", precioTotal);
@@ -221,7 +221,7 @@ void printArchivoArticulos(FILE *archivoArticulos) {
     printf("\nContenido de archivoArticulos:\n");
     while (fread(&articuloInfo, sizeof(struct Articulo), 1, archivoArticulos)) {
         if(articuloInfo.claveArticulo!=0)
-            printf("Clave: %d, Inventario: %d, Precio: %d\n", articuloInfo.claveArticulo, articuloInfo.inventario, articuloInfo.precio);
+            printf("Clave: %d, Inventario: %d, Precio: %f\n", articuloInfo.claveArticulo, articuloInfo.inventario, articuloInfo.precio);
 
 
     }

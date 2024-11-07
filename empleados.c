@@ -207,11 +207,11 @@ void empleadoMenu() {
 void inicializar_registrosEmpleado() {
     char nombreArchivo[] = "empleados.dat";
     FILE* cfptr;
-    struct Empleado empleadoInfo = {0};
+    struct Empleado empleadoInfo = {};
 
     // Comprueba si el archivo existe y, si no, lo crea
     if (existeArchivo(cfptr, nombreArchivo) == 1) {
-        if (crearArchivo(cfptr, nombreArchivo, &empleadoInfo, 100, sizeof(struct Empleado)) != 0) {
+        if (crearArchivo(cfptr, nombreArchivo, &empleadoInfo, 1000, sizeof(struct Empleado)) != 0) {
             printf("Error al crear el archivo\n");
             return;
         }

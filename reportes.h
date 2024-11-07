@@ -1,2 +1,4 @@
 
 void listadoArticulos();
+
+void listadoEmpleadosComision();
