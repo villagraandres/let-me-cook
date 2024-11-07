@@ -3,7 +3,7 @@
 #include <string.h>
 #include "mercados.h"
 
-main ()
+mercados_main ()
 {
 	struct mercado datos = {0, "", "", "", 0, 0, 0, 0, "", 0, "", "", ""};
 	FILE *archivo;
@@ -83,7 +83,7 @@ main ()
 			
 			do
 			{
-				printf("año de nacimiento: ");
+				printf("aÃ±o de nacimiento: ");
 				scanf("%d", &datos.year);
 				if (datos.year < 1950 || datos.year > 2006)
 					printf("dato invalida\n");
