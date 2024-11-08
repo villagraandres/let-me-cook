@@ -24,3 +24,10 @@ bool validarExistenciaPI(FILE *, int, int, int);
 float obtenerPrecio(int, int, FILE *);
 int obtenerUltimoID(FILE *);
 void menuCompra();
+
+
+void listadoArticulos();
+
+void listadoEmpleadosComision();
+
+void menuReporte();
