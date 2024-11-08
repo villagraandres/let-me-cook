@@ -7,3 +7,4 @@ struct Compra{
 };
 
 void menuCompra();
+int obtenerUltimoID();

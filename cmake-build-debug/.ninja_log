@@ -14,3 +14,12 @@
 65	253	7527493871497644	CMakeFiles/let_me_cook.dir/provedor.c.obj	8d781e0039fdf2f8
 6	199	7527497420494908	CMakeFiles/let_me_cook.dir/ventas.c.obj	acd90d3fdaf6177d
 200	349	7527497422437713	let_me_cook.exe	506eb90e2f4430e5
+38	129	7527887519600830	CMakeFiles/let_me_cook.dir/main.c.obj	a8cb37a33d6f002f
+49	135	7527887519701892	CMakeFiles/let_me_cook.dir/compras.c.obj	7848544a00693e3e
+53	135	7527887519742656	CMakeFiles/let_me_cook.dir/reportes.c.obj	4addca5a77d733d6
+46	179	7527887519680822	CMakeFiles/let_me_cook.dir/ventas.c.obj	acd90d3fdaf6177d
+179	391	7527887520999120	let_me_cook.exe	506eb90e2f4430e5
+17	85	7527888011710058	CMakeFiles/let_me_cook.dir/compras.c.obj	7848544a00693e3e
+86	167	7527888012386812	let_me_cook.exe	506eb90e2f4430e5
+3	68	7527888802863588	CMakeFiles/let_me_cook.dir/compras.c.obj	7848544a00693e3e
+68	151	7527888803515219	let_me_cook.exe	506eb90e2f4430e5

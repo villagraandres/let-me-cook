@@ -7,10 +7,19 @@
 bool validarExistenciaPI(FILE *, int, int, int);
 float obtenerPrecio(int, int, FILE *);
 void menuCompra() {
-    FILE *archivoProv, *archivoIns;
+    FILE *archivoProv, *archivoIns,*archivoCompras;
     int numeroProvedor, numeroInsumo, cantidad, comprasCont = 0;
     char respuesta;
     float precioTotal = 0;
+    struct Insumo insumoInfo;
+    int idCompra;
+
+    archivoCompras=fopen("compras.txt","a");
+    if(archivoCompras==NULL) {
+        printf("Error al abrir el archivo de compras");
+        return;
+    }
+    idCompra = obtenerUltimoID(archivoCompras)+1;
 
     archivoProv = fopen("provedor.dat", "rb+");
     if (archivoProv == NULL) {
@@ -45,10 +54,17 @@ void menuCompra() {
 
         printf("\nDesea agregar otro insumo? (S/N): ");
         scanf(" %c", &respuesta);
+        idCompra++;
+
+        fseek(archivoIns,sizeof(struct Insumo)*(numeroInsumo-1),SEEK_SET);
+        fread(&insumoInfo,sizeof(struct Insumo),1,archivoIns);
+        fprintf(archivoCompras, "%d %d %s %d\n", idCompra, numeroInsumo, insumoInfo.descripcion,cantidad);
 
     } while (respuesta == 'S' || respuesta == 's');
 
     printf("El precio total es: %.2f\n", precioTotal);
+    fclose(archivoCompras);
+    fclose(archivoIns);
 }
 
 float obtenerPrecio(int idInsumo, int idProvedor, FILE *insumoArch) {
@@ -97,4 +113,16 @@ bool validarExistenciaPI(FILE *archivoPtr, int modo, int id, int idProvedor) {
         return false;
     }
     return true;
+}
+
+
+int obtenerUltimoID(FILE *archivoCompras) {
+    int ultimoID = 0, tempID;
+    rewind(archivoCompras); // Volver al inicio del archivo
+    while (fscanf(archivoCompras, "%d", &tempID) == 1) {
+        ultimoID = tempID;
+        // Leer el resto de la línea para avanzar en el archivo
+        fscanf(archivoCompras, "%*[^\n]\n");
+    }
+    return ultimoID;
 }

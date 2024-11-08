@@ -10,7 +10,8 @@
 void obtenerFecha(struct tm *fecha);
 void menuVenta() {
     FILE *archivoMercados, *archivoArticulos, *archivoEmpleados,*archivoVentas;
-    struct Venta ventas[100]; 
+    struct Venta ventas[100];
+    struct Mercado datosMercado;
     int numVentas = 0;
     float precioTotal = 0,precioArt;
     char respuesta;
@@ -81,7 +82,9 @@ void menuVenta() {
     } while (!validarEmpleado(archivoEmpleados, ventas[0].empleado));
 
     for (int i = 0; i < numVentas; i++) {
-        precioArt= obtenerPrecioArticulo(ventas[i].numeroArticulo, archivoArticulos) * ventas[i].cantidad;
+        fseek(archivoMercados,sizeof(struct Mercado)*(ventas[i].numeroMercado-1),SEEK_SET);
+        fread(&datosMercado,sizeof(struct Mercado),1,archivoMercados);
+        precioArt=( obtenerPrecioArticulo(ventas[i].numeroArticulo, archivoArticulos) * ventas[i].cantidad)*datosMercado.descuento;
         precioTotal +=precioArt;
         fprintf(archivoVentas,"%d %d %f %d %d %d %d\n",ventas[i].numeroArticulo,ventas[i].cantidad,precioArt,ventas[i].empleado,fecha.tm_mday, fecha.tm_mon + 1, fecha.tm_year + 1900);
     }
