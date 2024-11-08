@@ -20,3 +20,7 @@ void printArchivoMercados();
 void printArchivoArticulos();
 void printArchivoEmpleados();
 
+bool validarExistenciaPI(FILE *, int, int, int);
+float obtenerPrecio(int, int, FILE *);
+int obtenerUltimoID(FILE *);
+void menuCompra();

@@ -6,7 +6,6 @@
 #include "empleados.h"
 #include "insumos.h"
 #include "provedor.h"
-#include "compras.h"
 #include "reportes.h"
 
 int main()

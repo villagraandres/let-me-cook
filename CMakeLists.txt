@@ -7,8 +7,6 @@ set(CMAKE_C_STANDARD 11)  # O la versión de C que estés usando
 add_executable(let_me_cook main.c articulos.c ventas.c manejoArchivos.c
         empleados.h
         manejoArchivos.h
-        compras.c
-        compras.h
         provedor.h
         insumos.h
         empleados.c
