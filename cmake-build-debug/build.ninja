@@ -67,26 +67,8 @@ build CMakeFiles/let_me_cook.dir/ventas.c.obj: C_COMPILER__let_me_cook_unscanned
   OBJECT_DIR = CMakeFiles\let_me_cook.dir
   OBJECT_FILE_DIR = CMakeFiles\let_me_cook.dir
 
-build CMakeFiles/let_me_cook.dir/manejoArchivos.c.obj: C_COMPILER__let_me_cook_unscanned_Debug C$:/Users/villa/OneDrive/Documentos/let-me-cook/manejoArchivos.c || cmake_object_order_depends_target_let_me_cook
-  DEP_FILE = CMakeFiles\let_me_cook.dir\manejoArchivos.c.obj.d
-  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\let_me_cook.dir
-  OBJECT_FILE_DIR = CMakeFiles\let_me_cook.dir
-
-build CMakeFiles/let_me_cook.dir/empleados.c.obj: C_COMPILER__let_me_cook_unscanned_Debug C$:/Users/villa/OneDrive/Documentos/let-me-cook/empleados.c || cmake_object_order_depends_target_let_me_cook
-  DEP_FILE = CMakeFiles\let_me_cook.dir\empleados.c.obj.d
-  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\let_me_cook.dir
-  OBJECT_FILE_DIR = CMakeFiles\let_me_cook.dir
-
 build CMakeFiles/let_me_cook.dir/insumos.c.obj: C_COMPILER__let_me_cook_unscanned_Debug C$:/Users/villa/OneDrive/Documentos/let-me-cook/insumos.c || cmake_object_order_depends_target_let_me_cook
   DEP_FILE = CMakeFiles\let_me_cook.dir\insumos.c.obj.d
-  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\let_me_cook.dir
-  OBJECT_FILE_DIR = CMakeFiles\let_me_cook.dir
-
-build CMakeFiles/let_me_cook.dir/reportes.c.obj: C_COMPILER__let_me_cook_unscanned_Debug C$:/Users/villa/OneDrive/Documentos/let-me-cook/reportes.c || cmake_object_order_depends_target_let_me_cook
-  DEP_FILE = CMakeFiles\let_me_cook.dir\reportes.c.obj.d
   FLAGS = -g -std=gnu11 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\let_me_cook.dir
   OBJECT_FILE_DIR = CMakeFiles\let_me_cook.dir
@@ -105,7 +87,7 @@ build CMakeFiles/let_me_cook.dir/provedor.c.obj: C_COMPILER__let_me_cook_unscann
 #############################################
 # Link the executable let_me_cook.exe
 
-build let_me_cook.exe: C_EXECUTABLE_LINKER__let_me_cook_Debug CMakeFiles/let_me_cook.dir/main.c.obj CMakeFiles/let_me_cook.dir/articulos.c.obj CMakeFiles/let_me_cook.dir/ventas.c.obj CMakeFiles/let_me_cook.dir/manejoArchivos.c.obj CMakeFiles/let_me_cook.dir/empleados.c.obj CMakeFiles/let_me_cook.dir/insumos.c.obj CMakeFiles/let_me_cook.dir/reportes.c.obj CMakeFiles/let_me_cook.dir/provedor.c.obj
+build let_me_cook.exe: C_EXECUTABLE_LINKER__let_me_cook_Debug CMakeFiles/let_me_cook.dir/main.c.obj CMakeFiles/let_me_cook.dir/articulos.c.obj CMakeFiles/let_me_cook.dir/ventas.c.obj CMakeFiles/let_me_cook.dir/insumos.c.obj CMakeFiles/let_me_cook.dir/provedor.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\let_me_cook.dir

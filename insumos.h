@@ -1,5 +1,3 @@
-#ifndef INSUMOS_H
-#define INSUMOS_H
 
 
 struct Insumo
@@ -27,4 +25,3 @@ int claveInsumoExiste(int , FILE* ,char*);
 
 void writeOutput2();
 
-#endif // INSUMOS_H

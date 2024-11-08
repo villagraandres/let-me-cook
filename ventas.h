@@ -1,3 +1,6 @@
+#ifndef VENTAS_H
+#define VENTAS_H
+
 #include <stdbool.h>
 
 struct Venta {
@@ -6,9 +9,8 @@ struct Venta {
     int cantidad;
     float precio;
     int empleado;
-
-
 };
+
 void menuVenta();
 bool validarExistencia(int clave, int modo, FILE *archivoMercados, FILE *archivoArticulos);
 bool validarCantidad(int numeroArticulo, int cantidad, FILE *archivo);
@@ -25,9 +27,20 @@ float obtenerPrecio(int, int, FILE *);
 int obtenerUltimoID(FILE *);
 void menuCompra();
 
-
 void listadoArticulos();
-
 void listadoEmpleadosComision();
-
 void menuReporte();
+
+// MANEJO DE ARCHIVOS
+int existeArchivo(FILE*, char*);
+int crearArchivo(FILE* fptr, char* fArchivo, void* estructura, int cantidadEstructuras, int tamanoEstructura);
+
+// Librera que utliza funciones de uso general como por ejemplo validar una cadena
+void validarCadena(char*);
+
+// Checa si la clave x existe en el registro
+void validarNombre(char*);
+
+void clear_input_buffer();
+
+#endif // VENTAS_H

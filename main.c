@@ -1,12 +1,10 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "articulos.h"
-#include "manejoArchivos.h"
 #include "ventas.h"
-#include "empleados.h"
+#include "ventas.h"
 #include "insumos.h"
 #include "provedor.h"
-#include "reportes.h"
 
 int main()
 {

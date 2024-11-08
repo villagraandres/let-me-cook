@@ -1,5 +1,5 @@
 #include "provedor.h"
-#include "manejoArchivos.h"
+#include "ventas.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>

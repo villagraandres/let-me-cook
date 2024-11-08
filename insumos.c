@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "insumos.h"
-#include "manejoArchivos.h"
+#include "ventas.h"
 #include "provedor.h"
 
 void menuInsumos()
