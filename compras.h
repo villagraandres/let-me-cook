@@ -5,3 +5,5 @@ struct Compra{
     int precio;
 
 };
+
+void menuCompra();

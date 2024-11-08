@@ -29,7 +29,6 @@ void menuReporte() {
             case 'a':
                 listadoArticulos();
                 break;
-
             case 'f':
                 listadoEmpleadosComision();
                 break;

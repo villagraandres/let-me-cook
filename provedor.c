@@ -1,7 +1,5 @@
 #include "provedor.h"
 #include "manejoArchivos.h"
-#include "utils.h"
-
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
@@ -51,6 +49,11 @@ void menuProvedor()
 		}while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
 
 	};
+
+    if (!continuar) {
+        printf("Saliendo del programa...\n");
+        return;
+    }
 
 	writeOutput();
 

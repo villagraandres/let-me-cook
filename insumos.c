@@ -2,7 +2,6 @@
 #include <stdbool.h>
 #include "insumos.h"
 #include "manejoArchivos.h"
-#include "utils.h"
 #include "provedor.h"
 
 void menuInsumos()
@@ -288,9 +287,18 @@ int claveInsumoExiste(int clave, FILE* fptr,char* fArchivo)
 
 void writeOutput2()
 {
-
 	FILE* fptr = fopen("insumos.dat","rb");
+	if (fptr == NULL) {
+		printf("[ERROR] - No se pudo abrir el archivo insumos.dat\n");
+		return;
+	}
+
 	FILE *archivo = fopen("Logs/Insumo", "w");
+	if (archivo == NULL) {
+		printf("[ERROR] - No se pudo abrir el archivo Logs/Insumo\n");
+		fclose(fptr);
+		return;
+	}
 
 	struct Insumo insumo= {};
 
@@ -306,15 +314,9 @@ void writeOutput2()
 			{
 				fprintf(archivo,"%d::%.2f\n",insumo.provedores[i],insumo.precios[i]);
 			}
-			
-
 		}
-			
-		
 	}
 
 	fclose(fptr);
 	fclose(archivo);
-
-
 }

@@ -2,7 +2,6 @@
 #include <stdbool.h>
 #include "ventas.h"
 #include "articulos.h"
-#include "mercados.h"
 #include "empleados.h"
 #include "manejoArchivos.h"
 #include <time.h>

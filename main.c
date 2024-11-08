@@ -2,14 +2,15 @@
 #include <stdbool.h>
 #include "articulos.h"
 #include "manejoArchivos.h"
-#include "utils.h"
 #include "ventas.h"
 #include "empleados.h"
-#include "mercados.h"
+#include "insumos.h"
+#include "provedor.h"
+#include "compras.h"
 int main()
 {
 
-    // Declaración de variables
+    // Declaracion de variables
     int opcion;
 
     printf("#### Bienvenido al sistema más moderno del mundo mundial ####\n");
@@ -19,7 +20,7 @@ int main()
         do
         {
             printf("Ingresa una de las siguientes opciones\n");
-            printf("1) Artículos\n");
+            printf("1) Articulos\n");
             printf("2) Insumos\n");
             printf("3) Mercados\n");
             printf("4) Empleados\n");
@@ -42,6 +43,7 @@ int main()
                 break;
 
             case 2:
+                menuInsumos();
                 break;
 
             case 3:
@@ -53,6 +55,7 @@ int main()
                 break;
 
             case 5:
+                menuProvedor();
                 break;
 
             case 6:
@@ -60,7 +63,7 @@ int main()
                 break;
 
             case 7:
-                break;
+                menuCompra();
 
             case 8:
                 break;

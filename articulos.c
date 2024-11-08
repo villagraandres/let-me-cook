@@ -2,8 +2,7 @@
 #include <stdbool.h>
 #include "manejoArchivos.h"
 #include "articulos.h"
-#include "utils.h"
-#include "mercados.h"
+#include "empleados.h"
 #include "insumos.h"
 
 void menuArticulos(){
