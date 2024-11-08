@@ -7,6 +7,8 @@
 #include "insumos.h"
 #include "provedor.h"
 #include "compras.h"
+#include "reportes.h"
+
 int main()
 {
 
@@ -69,6 +71,7 @@ int main()
                 break;
 
             case 9:
+                menuReporte();
                 break;
 
             }

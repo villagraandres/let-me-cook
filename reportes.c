@@ -9,8 +9,6 @@ void menuReporte() {
     
     do
     {
-
-    
         do {
             printf("Reportes\n");
             printf("a) Listado de artículos\n");
@@ -59,7 +57,7 @@ void listadoArticulos() {
 void listadoEmpleadosComision()
 {
     FILE *ptrVentas=fopen("ventas.txt","r");
-    FILE *ptrEmpleados=fopen("empleados.txt","r");
+    FILE *ptrEmpleados=fopen("empleados.dat","rb");
     struct Empleado empleado = {};
     struct Venta venta = {};
 
@@ -69,20 +67,23 @@ void listadoEmpleadosComision()
         printf("No se pudo abrir el archivo ventas.txt\n");
 
     else if (ptrEmpleados == NULL)
-        printf("No se pudo abrir el archivo empleados.txt\n");
+        printf("No se pudo abrir el archivo empleados.dat\n");
     else
     {
 
-        for (i = 0; i < 1000; i++)
-        {
+        for (i = 0; i < 10; i++)
+        {   
+            rewind(ptrVentas);
             fread(&empleado,sizeof(struct Empleado),1,ptrEmpleados);
+            
 
             if (empleado.numero_empleado > 0)
-            {   
+            {
+                //printf("%s%d\n",empleado.nombre,empleado.numero_empleado);   
                 ocurrencias = 0;
                 while(fscanf(ptrVentas,"%d %d %f %d %d %d %d",&venta.numeroArticulo,&venta.cantidad,&venta.precio,&venta.empleado,&dia,&mes,&año) != EOF)
                 {
-
+                    //printf("pepe\n");
                     if (venta.empleado == empleado.numero_empleado)
                         ocurrencias++;
                 }
@@ -94,7 +95,8 @@ void listadoEmpleadosComision()
 
         }
         
-
+    fclose(ptrEmpleados);
+    fclose(ptrVentas);
     }
 
 

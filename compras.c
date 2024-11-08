@@ -8,7 +8,8 @@ bool validarExistenciaPI(FILE *, int, int, int);
 float obtenerPrecio(int, int, FILE *);
 void menuCompra() {
     FILE *archivoProv, *archivoIns;
-    int numeroProvedor, numeroInsumo, cantidad, comprasCont = 0, respuesta;
+    int numeroProvedor, numeroInsumo, cantidad, comprasCont = 0;
+    char respuesta;
     float precioTotal = 0;
 
     archivoProv = fopen("provedor.dat", "rb+");
