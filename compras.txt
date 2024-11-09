@@ -1,7 +1,2 @@
-1 69 |asdas dasdasda| 100 69 1
-1 10 |me chupa un huevo| 40 50 1
-1 10 |me chupa un huevo| 3 50 1
-1 69 |asdas dasdasda| 1 69 1
-1 69 |asdas dasdasda| 1 69 1
-1 69 |asdas dasdasda| 2 69 1
-2 69 |asdas dasdasda| 222 69 0
+1 69 |asdas dasdasda| 44 69 0
+1 69 |asdas dasdasda| 30 69 0
