@@ -715,14 +715,17 @@ void  mercados_main()
     FILE *archivo;
     bool registros = true;
     char opcion;
+	bool valido;
     int i, cont1;
 
-    archivo = fopen("mercado.dat", "rb+");
+    archivo = fopen("mercado.dat", "r+b");
     if (archivo == NULL)
     {
         printf("Error al abrir el archivo\n");
         return;
     }
+
+	writeOutput5();
 
     while (registros)
     {
@@ -734,9 +737,7 @@ void  mercados_main()
                 printf("Clave invalida\n");
         }
         while (datos.clave <= 0);
-
-        clear_input_buffer();
-
+		
 		// Validar nombre
 		validarNombre(datos.nombre);
 
@@ -759,9 +760,99 @@ void  mercados_main()
         
         clear_input_buffer();
 
-        printf("Fecha (YYYY MM DD): ");
-        scanf("%d %d %d", &datos.year, &datos.mes, &datos.dia);
-        clear_input_buffer();
+		// Año de nacimiento
+
+		do
+		{
+			printf("Ingresa año de nacimiento\n");
+			scanf("%d",&datos.año);
+
+			if (datos.año < 1950 || datos.año > 2006)
+				printf("Ingresa un año entre 1950 y 2006\n");
+
+		} while (datos.año < 1950 || datos.año > 2006);
+
+
+		// Mes
+		do
+		{
+			printf("Ingresa número del mes de nacimiento\n");
+			scanf("%d",&datos.mes);
+
+			if (datos.mes < 1 || datos.mes > 12)
+				printf("Ingresa un mes válido\n");
+
+		} while (datos.mes < 1 || datos.mes > 12);
+
+
+		// Día
+		// Nacimiento
+
+		do
+		{
+			printf("Ingresa el día del mes\n");
+			scanf("%d",&datos.dia);
+
+			if (datos.dia < 1 || datos.dia > 31)
+			{
+				printf("Ingresa un día válido");
+				valido = false;
+			}
+				
+			else if (datos.mes == 2)
+			{
+				if (datos.año%4 == 0 && datos.dia > 29)
+				{
+					printf("Fecha inválida\n");
+					valido = false;
+				}
+					
+				else if(datos.año%4 != 0 && datos.dia > 28)
+				{
+					printf("Fecha inválida");
+					valido = false;
+				}
+					
+				else
+				{
+					printf("[DEBUG MESSAGE] : Fecha registrada");
+					valido = true;
+				}
+
+			}
+			else if(datos.mes != 1 && (datos.mes%5 == 1 || datos.mes%5 == 4))
+			{
+				if(datos.dia > 30)
+				{
+					printf("Fecha inválida\n");
+					valido =  false;
+				}
+					
+				else
+				{
+					printf("[DEBUG MESSAGE] : Fecha registrada");
+					valido = true;
+				}	
+					
+			}
+			else
+			{
+
+				if(datos.dia > 31)
+				{
+					printf("Fecha inválida\n");
+					valido = false;
+				}
+					
+				else
+				{
+					printf("[DEBUG MESSAGE] : Fecha registrada");
+					valido = true;
+				}
+					
+			};
+
+		} while(!valido);
 
 
 		validarDireccion(datos.calle,datos.numero,datos.colonia,datos.municipio,datos.estado);
@@ -769,9 +860,11 @@ void  mercados_main()
 
         fseek(archivo,sizeof(struct Mercado)*(datos.clave-1),SEEK_SET);
         if (fwrite(&datos, sizeof(struct Mercado), 1, archivo) != 1)
-        {
             printf("Error al escribir en el archivo\n");
-        }
+		else
+			printf("CORRECTA ESCRITUTA\n");
+
+		printf("%s %d\n",datos.nombre,datos.clave);
 
         do
         {
@@ -832,11 +925,11 @@ void writeOutput5()
 
 	//printf("%-10s %-20s\n","Clave","Nombre");
 
-	while (fread(&mercado, sizeof(struct Insumo), 1, fptr) == 1)
+	while (fread(&mercado, sizeof(struct Mercado), 1, fptr))
 	{
-		if (mercado.clave != 0)
+		if (mercado.clave != 0 || mercado.año != 0)
 		{
-			fprintf(archivo,"%d_%s\n",mercado.clave,mercado.nombre);
+			fprintf(archivo,"%d :: %s %d\n",mercado.clave,mercado.nombre,mercado.año);
 			
 		}
 	}

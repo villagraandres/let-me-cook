@@ -59,7 +59,7 @@ struct Mercado{
     char RFC[14];
     char correo_electronico[200];
     float descuento;
-    int year;
+    int año;
     int mes;
     int dia;
     char calle[150];
