@@ -1,7 +1,10 @@
+#include <stdbool.h>
+#include <stdio.h>
+
 #ifndef VENTAS_H
 #define VENTAS_H
 
-#include <stdbool.h>
+
 
 struct Venta {
     int numeroMercado;

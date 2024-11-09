@@ -2,9 +2,7 @@
 #include <stdbool.h>
 #include "ventas.h"
 #include "articulos.h"
-#include "insumos.h"
 #include <time.h>
-#include "provedor.h"
 
 
 void obtenerFecha(struct tm *fecha);

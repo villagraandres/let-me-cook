@@ -3,8 +3,6 @@
 #include "articulos.h"
 #include "ventas.h"
 #include "ventas.h"
-#include "insumos.h"
-#include "provedor.h"
 
 int main()
 {
