@@ -711,7 +711,7 @@ void inicializar_registros();
 void  mercados_main()
 {
     inicializar_registros();
-    struct Mercado datos = {0, "", "", "", 0, 0, 0, 0, "", 0, "", "", ""};
+    struct Mercado datos = {};
     FILE *archivo;
     bool registros = true;
     char opcion;
@@ -737,108 +737,35 @@ void  mercados_main()
 
         clear_input_buffer();
 
-        do
-        {
-            printf("\nNombre: ");
-            fgets(datos.nombre, sizeof(datos.nombre), stdin);
-            datos.nombre[strcspn(datos.nombre, "\n")] = '\0';
-        }
-        while (strlen(datos.nombre) == 0);
+		// Validar nombre
+		validarNombre(datos.nombre);
 
-        do
-        {
-            printf("\nRFC: ");
-            fgets(datos.RFC, sizeof(datos.RFC), stdin);
-            datos.RFC[strcspn(datos.RFC, "\n")] = '\0';
-        }
-        while (strlen(datos.RFC) == 0);
+		// Validar RFC
+		validarRFC(datos.RFC);
+	
+        validarCorreo(datos.correo_electronico);
 
-        do
-        {
-            printf("\nCorreo Electronico: ");
-            fgets(datos.correo_electronico, sizeof(datos.correo_electronico), stdin);
-            datos.correo_electronico[strcspn(datos.correo_electronico, "\n")] = '\0';
-        }
-        while (strlen(datos.correo_electronico) == 0);
+		do
+		{
+			printf("\nDescuento: ");
+			scanf("%f", &datos.descuento);
 
-        printf("Descuento: ");
-        scanf("%f", &datos.descuento);
+			if (datos.descuento < 0 || datos.descuento > 100)
+				printf("Ingresa un porcentaje\n");
+
+		} while (datos.descuento < 0 || datos.descuento > 100);
+		
+		datos.descuento /= 100; 
+        
         clear_input_buffer();
 
         printf("Fecha (YYYY MM DD): ");
         scanf("%d %d %d", &datos.year, &datos.mes, &datos.dia);
         clear_input_buffer();
 
-        do
-        {
-            printf("Calle: ");
-            fgets(datos.calle, sizeof(datos.calle), stdin);
-            datos.calle[strcspn(datos.calle, "\n")] = '\0';
-        }
-        while (strlen(datos.calle) == 0);
 
-        printf("Numero: ");
-        scanf("%d", &datos.numero);
-        clear_input_buffer();
+		validarDireccion(datos.calle,datos.numero,datos.colonia,datos.municipio,datos.estado);
 
-        do
-        {
-            printf("Colonia: ");
-            fgets(datos.colonia, sizeof(datos.colonia), stdin);
-            datos.colonia[strcspn(datos.colonia, "\n")] = '\0';
-            cont1 = 0;
-            for (i = 0; i < strlen(datos.colonia); i++)
-            {
-                if (!((datos.colonia[i] >= 'A' && datos.colonia[i] <= 'Z') ||
-                      (datos.colonia[i] >= 'a' && datos.colonia[i] <= 'z') ||
-                      datos.colonia[i] == ' '))
-                {
-                    printf("Hay datos invalidos\n");
-                    cont1 = 1;
-                    break;
-                }
-            }
-        }
-        while (cont1 == 1);
-
-        do
-        {
-            printf("Municipio: ");
-            fgets(datos.municipio, sizeof(datos.municipio), stdin);
-            datos.municipio[strcspn(datos.municipio, "\n")] = '\0';
-            cont1 = 0;
-            for (i = 0; i < strlen(datos.municipio); i++)
-            {
-                if (!((datos.municipio[i] >= 'A' && datos.municipio[i] <= 'Z') ||
-                      (datos.municipio[i] >= 'a' && datos.municipio[i] <= 'z') ||
-                      datos.municipio[i] == ' '))
-                {
-                    printf("Hay datos invalidos\n");
-                    cont1 = 1;
-                    break;
-                }
-            }
-        }
-        while (cont1 == 1);
-
-        do
-        {
-            printf("Estado: ");
-            fgets(datos.estado, sizeof(datos.estado), stdin);
-            datos.estado[strcspn(datos.estado, "\n")] = '\0';
-            cont1 = 0;
-            for (i = 0; i < strlen(datos.estado); i++)
-            {
-                if (!((datos.estado[i] >= 'A' && datos.estado[i] <= 'Z') ||
-                      (datos.estado[i] >= 'a' && datos.estado[i] <= 'z') ||
-                      datos.estado[i] == ' '))
-                {
-                    printf("Hay datos invalidos\n");
-                    cont1 = 1;
-                    break;
-                }
-            }
-        } while (cont1 == 1);
 
         fseek(archivo,sizeof(struct Mercado)*(datos.clave-1),SEEK_SET);
         if (fwrite(&datos, sizeof(struct Mercado), 1, archivo) != 1)
@@ -1253,7 +1180,6 @@ void menuProvedor()
     //Comprobar que los archivos correspondientes existan
 	inicializarRegistrosProvedor();
 
-
     do
     {
 		printf("Desea agregar un provedor S/N)");
@@ -1360,7 +1286,7 @@ void lecturaProvedor(struct Provedor* fProvedor)
 		// RFC
 		while ((c = getchar()) != '\n' && c != EOF);
 
-		validarRFC(fProvedor);
+		validarRFC(fProvedor->rfc);
 
 		// Año de nacimiento
 
@@ -1457,7 +1383,7 @@ void lecturaProvedor(struct Provedor* fProvedor)
 
 
 		// Validar dirección
-		validarDireccion(fProvedor);
+		validarDireccion(fProvedor->calle,fProvedor->numero,fProvedor->colonia,fProvedor->municipio,fProvedor->estado);
 		
 		// Escribir estructura en el archivo
 		cfptr = fopen("provedor.dat","r+b");
@@ -1581,7 +1507,183 @@ void validarCorreo(char* correo)
 };
 
 
-void validarDireccion(struct Provedor* fProvedor)
+void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, char* estado)
+{
+	bool valido;
+	int i,nEspacios;
+	char c;
+
+	// Calle
+	while ((c = getchar()) != '\n' && c != EOF);
+
+	do
+	{	valido = true;
+		nEspacios = 0;
+
+		printf("\nIngresa la calle donde vives\n");
+		fgets(calle,sizeof(calle),stdin);
+		calle[strlen(calle)-1] = '\0';
+		
+		//fflush(stdin);
+		//gets(datos.calle);
+		for (i = 0; i < strlen(calle) && valido; i++)
+		{	
+			if (calle[i] == ' ')
+				nEspacios++;
+
+			else if ((calle[i] < 'A' || calle[i] > 'Z') && (calle[i] < 'a' || calle[i] > 'z'))
+			{
+				printf("Nombre de calle inválida\n");
+				valido = false;
+				
+			}
+		};
+
+		// Checar que no sea una cadena Vacia
+		if (strlen(calle) == nEspacios)
+		{
+			printf("Nombre de calle inválida\n");
+			valido = false;
+		}
+			
+	}
+	while (!valido);
+
+	// Número
+	do
+	{	
+		printf("Ingresa el número de tú casa\n");
+		//fflush(stdin);
+		fgets(numero,sizeof(numero),stdin);
+		valido = true;
+
+		//printf("%s\n",fProvedor->numero);
+		//printf("%ld\n",strlen(fProvedor->numero));
+		numero[strlen(numero) - 1] = '\0';
+		if(strlen(numero) == 0)
+		{
+			printf("Número de casa incorrecto\n");
+			valido = false;
+		}
+
+		for (i = 0; i < strlen(numero) && valido; i++)
+		{
+			if (numero[i] < '0' || numero[i] > '9')
+			{
+				printf("Número de casa incorrecto\n");
+				//printf("\n%s\n",&fProvedor->numero[i]);
+				valido = false;
+			}	
+		}
+	}
+	while (!valido);
+
+	// Colonia
+	do
+	{	valido = true;
+		nEspacios = 0;
+		printf("Ingresa el nombre de la colonia\n");
+		fgets(colonia,sizeof(colonia),stdin);
+		colonia[strlen(colonia)-1] = '\0';
+		
+		//fflush(stdin);
+		//gets(datos.calle);
+		for (i = 0; i < strlen(colonia) && valido; i++)
+		{	
+
+			if(colonia[i] == ' ')
+				nEspacios++;
+
+			else if ((colonia[i] < 'A' || colonia[i] > 'Z') && (colonia[i] < 'a' || colonia[i] > 'z'))
+			{
+				printf("Error, nombre inválido\n");
+				valido = false;
+				
+			}
+		};
+
+		// Checar que no sea una cadena Vacia
+		if (strlen(colonia) == nEspacios)
+		{
+			printf("Nombre de colonia inválida\n");
+			valido = false;
+		}
+	}
+	while (!valido);
+	
+
+	// Municipio
+	do
+	{	valido = true;
+		nEspacios = 0;
+		printf("Ingresa el nombre del municipio\n");
+		fgets(municipio, sizeof(municipio), stdin);
+		municipio[strlen(municipio)-1] = '\0';
+		
+		//fflush(stdin);
+		//gets(datos.calle);
+		for (i = 0; i < strlen(municipio) && valido; i++)
+		{	
+
+			if (municipio[i] == ' ')
+				nEspacios++;
+
+			else if ((municipio[i] < 'A' || municipio[i] > 'Z') && (municipio[i] < 'a' || municipio[i] > 'z'))
+			{
+				printf("Error, nombre inválido\n");
+				valido = false;
+				
+			}
+		};
+
+		// Checar que no sea una cadena Vacia
+		if (strlen(municipio) == nEspacios)
+		{
+			printf("Nombre de municipio inválida\n");
+			valido = false;
+		}
+	}
+	while (!valido);
+
+	// Estado
+	do
+	{	valido = true;
+		nEspacios = 0;
+		printf("Ingresa el nombre del estado\n");
+		fgets(estado, sizeof(estado), stdin);
+		estado[strlen(estado)-1] = '\0';
+		
+		//fflush(stdin);
+		//gets(datos.calle);
+		for (i = 0; i < strlen(estado) && valido; i++)
+		{
+
+			if (estado[i] == ' ')
+				nEspacios++;
+
+			if ((estado[i] < 'A' || estado[i] > 'Z') && (estado[i] < 'a' || estado[i] > 'z'))
+			{
+				printf("Error, nombre inválido\n");
+				valido = false;
+				
+			}
+		};
+
+		// Checar que no sea una cadena Vacia
+		if (strlen(estado) == nEspacios)
+		{
+			printf("Nombre de estado inválida\n");
+			valido = false;
+		}
+
+		
+	}
+	while (!valido);
+
+
+}
+
+/*void validarDireccion(struct Provedor* fProvedor)
 {
 	bool valido;
 	int i,nEspacios;
@@ -1756,6 +1858,8 @@ void validarDireccion(struct Provedor* fProvedor)
 
 
 }
+*/
+
 
 void writeOutput()
 {
@@ -1770,7 +1874,7 @@ void writeOutput()
 	{
 		if (provedor.claveProvedor != 0)
 		{
-			fprintf(archivo,"%d %s\n",provedor.claveProvedor,provedor.nombre);
+			fprintf(archivo,"%d %s %s\n",provedor.claveProvedor,provedor.nombre,provedor.rfc);
 		}
 			
 		
@@ -1782,7 +1886,73 @@ void writeOutput()
 
 };
 
-void validarRFC(struct Provedor* fProvedor)
+
+void validarRFC(char* rfc)
+{
+	bool valido;
+	int i;
+
+	printf("[DEBUG MESSAGE] - Se la estamos metiendo a Andres disculpe las molestias\n");
+
+	do
+	{	
+		valido = true;
+
+		printf("Ingrese su rfc\n");
+		fgets(rfc,15,stdin);
+		rfc[strlen(rfc)-1] = '\0';
+
+
+		if (strlen(rfc) != 13)
+		{
+			printf("Longitud inválida %ld %s\n",strlen(rfc),rfc);
+			valido = false;
+		}
+			
+		else
+		{
+
+			// Primeras 4 letras 
+			for ( i = 0; i < 4 && valido; i++)
+			{
+				if (rfc[i] < 'A' || rfc[i] > 'Z')
+				{
+					valido = false;
+					printf("Estructurá inválida del rfc\n");
+				}
+					
+			};
+
+			// 6 números siguientes
+			for ( i = 4; i < 10 && valido; i++)
+			{
+				if (rfc[i] < '0' || rfc[i] > '9')
+				{
+					valido = false;
+					printf("Estructurá inválida del rfc\n");
+				}
+			};
+
+			// 3 caracteres aleatorios
+			for (i = 10; i < 13 && valido; i++)
+			{
+				if (!isalnum(rfc[i]))
+				{
+					valido = false;
+					printf("Estructurá inválida del rfc\n");
+				}
+			}
+		}
+
+	} while (!valido);
+	
+	printf("[DEBUGG MESSAGE] - RFC valido\n");
+			
+	printf("[RFC VALUE] : %s\n",rfc);
+
+}
+
+/*void validarRFC(struct Provedor* fProvedor)
 {
 	bool valido;
 	char *rfc = fProvedor->rfc;
@@ -1848,3 +2018,4 @@ void validarRFC(struct Provedor* fProvedor)
 
 }
 
+*/

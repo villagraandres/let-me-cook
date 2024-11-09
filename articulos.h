@@ -63,7 +63,7 @@ struct Mercado{
     int mes;
     int dia;
     char calle[150];
-    int numero;
+    char numero[12];
     char colonia[100];
     char municipio[100];
     char estado[100];
@@ -103,7 +103,7 @@ struct Provedor
 {
     int claveProvedor;
     char nombre[100];
-    char rfc[50];
+    char rfc[15];
     char correo[100];
     float descuento;
 
@@ -112,7 +112,7 @@ struct Provedor
     int dia;
 
     char calle[150];
-	char numero [10];
+	char numero [12];
 	char colonia[100];
 	char municipio[100];
 	char estado[100];
@@ -126,11 +126,11 @@ void inicializarRegistrosProvedor();
 
 void lecturaProvedor(struct Provedor*);
 
-void validarRFC(struct Provedor*);
+void validarRFC(char *);
 
 void validarCorreo(char*);
 
-void validarDireccion(struct Provedor*);
+void validarDireccion(char* ,char* , char* ,char* , char* );
 
 int claveProvedorExiste(int , FILE* ,char* );
 
