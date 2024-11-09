@@ -1029,7 +1029,7 @@ void lecturaInsumo(struct Insumo* fInsumo){
 			printf("Ingresa un número entre 1 y 100\n");
 	}while(fInsumo->claveInsumo < 1 || fInsumo->claveInsumo > 100);
 
-	if (claveInsumoExiste(fInsumo->claveInsumo,cfptr,"insumos.dat"))
+	if (!claveInsumoExiste(fInsumo->claveInsumo,cfptr,"insumos.dat"))
 		actualizarDatos = true;
 	else
 		actualizarDatos = false;
@@ -1191,7 +1191,7 @@ int claveInsumoExiste(int clave, FILE* fptr,char* fArchivo)
 
 		// Si está vacio no hay nada que actuaizar
 		if (insumo.claveInsumo == 0)
-			return 1;
+			return 0;
 
 		do
 		{
