@@ -3,6 +3,8 @@
 #include "ventas.h"
 #include "articulos.h"
 #include <time.h>
+#include <string.h>
+#include <ctype.h>
 
 
 void obtenerFecha(struct tm *fecha);
@@ -263,7 +265,7 @@ void menuCompra() {
     struct Insumo insumoInfo;
     int idCompra;
 
-    archivoCompras=fopen("compras.txt","a");
+    archivoCompras=fopen("compras.txt","a+");
     if(archivoCompras==NULL) {
         printf("Error al abrir el archivo de compras");
         return;
@@ -303,11 +305,11 @@ void menuCompra() {
 
         printf("\nDesea agregar otro insumo? (S/N): ");
         scanf(" %c", &respuesta);
-        idCompra++;
+
 
         fseek(archivoIns,sizeof(struct Insumo)*(numeroInsumo-1),SEEK_SET);
         fread(&insumoInfo,sizeof(struct Insumo),1,archivoIns);
-        fprintf(archivoCompras, "%d %d %s %d\n", idCompra, numeroInsumo, insumoInfo.descripcion,cantidad);
+        fprintf(archivoCompras, "%d %d |%s| %d %d %d\n", idCompra, numeroInsumo, insumoInfo.descripcion,cantidad,numeroProvedor,0);
 
     } while (respuesta == 'S' || respuesta == 's');
 
@@ -367,12 +369,17 @@ bool validarExistenciaPI(FILE *archivoPtr, int modo, int id, int idProvedor) {
 
 int obtenerUltimoID(FILE *archivoCompras) {
     int ultimoID = 0, tempID;
-    rewind(archivoCompras); // Volver al inicio del archivo
-    while (fscanf(archivoCompras, "%d", &tempID) == 1) {
-        ultimoID = tempID;
-        // Leer el resto de la línea para avanzar en el archivo
-        fscanf(archivoCompras, "%*[^\n]\n");
+    char buffer[256];  // Buffer para almacenar la línea completa
+    rewind(archivoCompras);  // Volver al inicio del archivo
+
+    // Leer línea por línea
+    while (fgets(buffer, sizeof(buffer), archivoCompras) != NULL) {
+        // Analizar solo el primer valor en la línea (el idCompra)
+        if (sscanf(buffer, "%d", &tempID) == 1) {
+            ultimoID = tempID;
+        }
     }
+
     return ultimoID;
 }
 
@@ -511,10 +518,7 @@ int crearArchivo(FILE* fptr, char* fArchivo, void* estructura, int cantidadEstru
 }
 
 
-#include <stdio.h>
-#include <string.h>
-#include <stdbool.h>
-#include <ctype.h>
+
 
 //Regresa 0 si es una cadena valida
 void clear_input_buffer() {
@@ -597,6 +601,129 @@ void validarNombre(char* nombre)
 };
 
 
+//SECCION CONTROL DE INVENTARIOS
+
+void menuControl() {
+    FILE *archivoProv, *archivoCompras, *insumoArch;
+    int idCompra, numeroInsumo, cantidad, numeroProvedor, cero, provedorId, ultimo = -1;
+    char descripcion[100];
+    int vistos[1000], i = 0, numeroCompra, recibida;
+    float precio, total = 0;
+
+    archivoProv = fopen("provedor.dat", "rb");
+    if (archivoProv == NULL) {
+        printf("No hay ningun provedor registrado\n");
+        return;
+    }
+
+    archivoCompras = fopen("compras.txt", "r+");  // Abrir en modo lectura y escritura
+    if (archivoCompras == NULL) {
+        printf("No hay ninguna compra registrada\n");
+        fclose(archivoProv);  // Cerrar archivo abierto
+        return;
+    }
+
+    insumoArch = fopen("insumos.dat", "rb");
+    if (insumoArch == NULL) {
+        printf("No hay ningun archivo de insumos\n");
+        fclose(archivoProv);  // Cerrar archivo abierto
+        fclose(archivoCompras);  // Cerrar archivo abierto
+        return;
+    }
+
+    do {
+        printf("\n1) Numero de provedor: ");
+        scanf("%d", &provedorId);
+    } while (!validarProvedor(provedorId, archivoProv));
+
+    printf("\n%15s %15s %15s %15s\n", "ID Compra", "Numero Insumo", "Descripcion", "Proveedor");
+
+    while (!feof(archivoCompras)) {
+        if (fscanf(archivoCompras, "%d %d |%[^|]| %d %d %d\n", &idCompra, &numeroInsumo, descripcion, &cantidad, &numeroProvedor, &cero) != 6) {
+            break;  // Salir si no se puede leer la línea correctamente
+        }
+
+        if (ultimo != -1 && idCompra != ultimo) {
+            printf("Total: %.2f\n", total);
+            total = 0;
+        }
+
+        total += obtenerPrecio(numeroInsumo, numeroProvedor, insumoArch);
+
+        if (numeroProvedor == provedorId && cero == 0) {
+            printf("%15d %15d %15s %15d\n", idCompra, numeroInsumo, descripcion, numeroProvedor);
+        }
+
+        ultimo = idCompra;
+        vistos[i] = idCompra;
+        i++;
+    }
+
+    if (ultimo != -1) {
+        printf("Total: %.2f\n", total);
+    }
+
+    do {
+        printf("\nNumero de compra: ");
+        scanf("%d", &numeroCompra);
+    } while (!existeNumero(vistos, i, numeroCompra));
+
+    printf("\nLa orden fue recibida? 1: si 2: no");
+    scanf("%d", &recibida);
+
+    if (recibida == 1) {
+        FILE *archivoTemp = fopen("compras_temp.txt", "w+");  // Archivo temporal para guardar cambios
+        if (archivoTemp == NULL) {
+            printf("No se pudo crear el archivo temporal\n");
+            return;
+        }
+
+        rewind(archivoCompras);
+
+        while (!feof(archivoCompras)) {
+            if (fscanf(archivoCompras, "%d %d |%[^|]| %d %d %d\n", &idCompra, &numeroInsumo, descripcion, &cantidad, &numeroProvedor, &cero) != 6) {
+                break;
+            }
+
+            if (numeroCompra == idCompra) {
+                cero = 1;
+            }
+
+            fprintf(archivoTemp, "%d %d |%s| %d %d %d\n", idCompra, numeroInsumo, descripcion, cantidad, numeroProvedor, cero);
+        }
+
+        fclose(archivoCompras);
+        fclose(archivoTemp);
+
+        remove("compras.txt");  // Eliminar el archivo original
+        rename("compras_temp.txt", "compras.txt");
+
+        printf("La orden ha sido marcada como recibida.\n");
+    }
+
+    fclose(archivoProv);
+    fclose(insumoArch);
+}
+bool validarProvedor(int id, FILE *archivof) {
+    struct Provedor datosB;
+    fseek(archivof, sizeof(struct Provedor) * (id - 1), SEEK_SET);
+    if (fread(&datosB, sizeof(struct Provedor), 1, archivof) == 1) {
+        printf("Proveedor leído: numero = %d\n", datosB.claveProvedor);
+        if (datosB.numero != 0) {
+            return true;
+        }
+    } else {
+        printf("Error al leer el registro de proveedor.\n");
+    }
+    return false;
+}
 
 
-
+int existeNumero(int arreglo[], int tam, int numero) {
+    for (int i = 0; i < tam; i++) {
+        if (arreglo[i] == numero) {
+            return 1;
+        }
+    }
+    return 0;
+}

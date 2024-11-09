@@ -61,8 +61,9 @@ int main()
 
             case 7:
                 menuCompra();
-
+                break;
             case 8:
+                menuControl();
                 break;
 
             case 9:

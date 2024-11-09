@@ -45,5 +45,12 @@ void validarCadena(char*);
 void validarNombre(char*);
 
 void clear_input_buffer();
+void menuControl();
+bool validarProvedor(int, FILE *);
+
+int existeNumero(int arreglo[], int tam, int numero);
+
+
+
 
 #endif // VENTAS_H
