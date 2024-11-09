@@ -41,7 +41,7 @@ struct Empleado{
     char rfc[14];
     char correo_electronico[200];
     float comision;
-    int year;
+    int anos;
     int mes;
     int dia;
     char calle[150];
@@ -59,7 +59,7 @@ struct Mercado{
     char RFC[14];
     char correo_electronico[200];
     float descuento;
-    int año;
+    int anos;
     int mes;
     int dia;
     char calle[150];
@@ -107,7 +107,7 @@ struct Provedor
     char correo[100];
     float descuento;
 
-    int año;
+    int anos;
     int mes;
     int dia;
 
