@@ -456,7 +456,7 @@ bool validarCorreoE(const char* correo)
 void empleadoMenu()
 {
     inicializar_registrosEmpleado();
-    struct Empleado datos = {0, "", "", "", 0, 0, 0, 0, "", 0, "", "", ""};
+    struct Empleado datos = {};
     FILE *archivo;
     bool registros = true;
     int i, cont1, cont3;
@@ -510,19 +510,12 @@ void empleadoMenu()
         }
         while (cont1 == 1);
 
-        printf("RFC: ");
-        while (getchar() != '\n');
-        fgets(datos.rfc, sizeof(datos.rfc), stdin);
-        datos.rfc[strcspn(datos.rfc, "\n")] = 0;
-
+        // Validar rfc
+		validarRFC(datos.rfc);
 
         printf("Correo electrónico: ");
         clear_input_buffer();
-        fgets(datos.correo_electronico, sizeof(datos.correo_electronico), stdin);
-        datos.correo_electronico[strcspn(datos.correo_electronico, "\n")] = 0;
-
-
-
+		validarCorreo(datos.correo_electronico);
 
         do
         {
@@ -1029,7 +1022,7 @@ void lecturaInsumo(struct Insumo* fInsumo){
 			printf("Ingresa un número entre 1 y 100\n");
 	}while(fInsumo->claveInsumo < 1 || fInsumo->claveInsumo > 100);
 
-	if (claveInsumoExiste(fInsumo->claveInsumo,cfptr,"insumos.dat"))
+	if (!claveInsumoExiste(fInsumo->claveInsumo,cfptr,"insumos.dat"))
 		actualizarDatos = true;
 	else
 		actualizarDatos = false;
@@ -1191,7 +1184,7 @@ int claveInsumoExiste(int clave, FILE* fptr,char* fArchivo)
 
 		// Si está vacio no hay nada que actuaizar
 		if (insumo.claveInsumo == 0)
-			return 1;
+			return 0;
 
 		do
 		{
@@ -1643,6 +1636,7 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 	while (!valido);
 
 	// Número
+	while ((c = getchar()) != '\n' && c != EOF);
 	do
 	{	
 		printf("Ingresa el número de tú casa\n");
@@ -1671,6 +1665,7 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 	}
 	while (!valido);
 
+	while ((c = getchar()) != '\n' && c != EOF);
 	// Colonia
 	do
 	{	valido = true;
@@ -1704,7 +1699,7 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 	}
 	while (!valido);
 	
-
+	while ((c = getchar()) != '\n' && c != EOF);
 	// Municipio
 	do
 	{	valido = true;
@@ -1738,6 +1733,7 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 	}
 	while (!valido);
 
+	while ((c = getchar()) != '\n' && c != EOF);
 	// Estado
 	do
 	{	valido = true;
