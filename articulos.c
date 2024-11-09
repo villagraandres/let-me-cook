@@ -456,7 +456,7 @@ bool validarCorreoE(const char* correo)
 void empleadoMenu()
 {
     inicializar_registrosEmpleado();
-    struct Empleado datos = {0, "", "", "", 0, 0, 0, 0, "", 0, "", "", ""};
+    struct Empleado datos = {};
     FILE *archivo;
     bool registros = true;
     int i, cont1, cont3;
@@ -510,19 +510,12 @@ void empleadoMenu()
         }
         while (cont1 == 1);
 
-        printf("RFC: ");
-        while (getchar() != '\n');
-        fgets(datos.rfc, sizeof(datos.rfc), stdin);
-        datos.rfc[strcspn(datos.rfc, "\n")] = 0;
-
+        // Validar rfc
+		validarRFC(datos.rfc);
 
         printf("Correo electrónico: ");
         clear_input_buffer();
-        fgets(datos.correo_electronico, sizeof(datos.correo_electronico), stdin);
-        datos.correo_electronico[strcspn(datos.correo_electronico, "\n")] = 0;
-
-
-
+		validarCorreo(datos.correo_electronico);
 
         do
         {
