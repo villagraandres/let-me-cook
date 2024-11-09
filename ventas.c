@@ -642,21 +642,23 @@ void menuControl() {
         if (fscanf(archivoCompras, "%d %d |%[^|]| %d %d %d\n", &idCompra, &numeroInsumo, descripcion, &cantidad, &numeroProvedor, &cero) != 6) {
             break;  // Salir si no se puede leer la línea correctamente
         }
+        if(numeroProvedor==provedorId) {
+            if (ultimo != -1 && idCompra != ultimo) {
+                printf("Total: %.2f\n", total);
+                total = 0;
+            }
 
-        if (ultimo != -1 && idCompra != ultimo) {
-            printf("Total: %.2f\n", total);
-            total = 0;
+            total += obtenerPrecio(numeroInsumo, numeroProvedor, insumoArch)*cantidad;
+
+            if (numeroProvedor == provedorId && cero == 0) {
+                printf("%15d %15d %15s %15d\n", idCompra, numeroInsumo, descripcion, numeroProvedor);
+            }
+
+            ultimo = idCompra;
+            vistos[i] = idCompra;
+            i++;
         }
 
-        total += obtenerPrecio(numeroInsumo, numeroProvedor, insumoArch);
-
-        if (numeroProvedor == provedorId && cero == 0) {
-            printf("%15d %15d %15s %15d\n", idCompra, numeroInsumo, descripcion, numeroProvedor);
-        }
-
-        ultimo = idCompra;
-        vistos[i] = idCompra;
-        i++;
     }
 
     if (ultimo != -1) {
@@ -705,17 +707,20 @@ void menuControl() {
     fclose(insumoArch);
 }
 bool validarProvedor(int id, FILE *archivof) {
+
     struct Provedor datosB;
-    fseek(archivof, sizeof(struct Provedor) * (id - 1), SEEK_SET);
-    if (fread(&datosB, sizeof(struct Provedor), 1, archivof) == 1) {
-        printf("Proveedor leído: numero = %d\n", datosB.claveProvedor);
-        if (datosB.numero != 0) {
-            return true;
-        }
-    } else {
-        printf("Error al leer el registro de proveedor.\n");
+    fseek(archivof, sizeof(struct Provedor) * (id-1), SEEK_SET);
+    fread(&datosB, sizeof(struct Provedor), 1, archivof);
+
+
+
+    if (datosB.claveProvedor == 0) {
+        printf("El provedor no existe\n");
+        return false;
     }
-    return false;
+    return true;
+
+
 }
 
 
@@ -725,5 +730,6 @@ int existeNumero(int arreglo[], int tam, int numero) {
             return 1;
         }
     }
+    printf("El numero indicado no existe");
     return 0;
 }
