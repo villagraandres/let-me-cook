@@ -519,6 +519,8 @@ void empleadoMenu()
         }
         while (datos.comision < 0 || datos.comision > 100);
 
+        datos.comision /= 100;
+
         do
         {
             printf("Año de nacimiento: ");

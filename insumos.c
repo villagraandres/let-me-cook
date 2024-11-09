@@ -88,9 +88,9 @@ void lecturaInsumo(struct Insumo* fInsumo){
 		printf("Clave del insumo:\n");
 		scanf("%d",&fInsumo->claveInsumo);
 
-		if (fInsumo->claveInsumo < 0 || fInsumo->claveInsumo > 100)
+		if (fInsumo->claveInsumo < 1 || fInsumo->claveInsumo > 100)
 			printf("Ingresa un número entre 1 y 100\n");
-	}while(fInsumo->claveInsumo < 0 || fInsumo->claveInsumo > 100);
+	}while(fInsumo->claveInsumo < 1 || fInsumo->claveInsumo > 100);
 
 	if (claveInsumoExiste(fInsumo->claveInsumo,cfptr,"insumos.dat"))
 		actualizarDatos = true;
@@ -168,7 +168,7 @@ void lecturaInsumo(struct Insumo* fInsumo){
 						printf("[ERROR MESSAGE] - Clave %d no registrada\n ",clave);
 					else
 					{
-						printf("CLAVE REGISTRADA");
+						printf("CLAVE REGISTRADA\n");
 						fInsumo->provedores[i] = provedor.claveProvedor;
 
 						// Preguntar precio
@@ -247,7 +247,7 @@ int claveInsumoExiste(int clave, FILE* fptr,char* fArchivo)
 	else{
 
 		// Buscar clave
-		fseek(fptr,sizeof(struct Insumo) * clave ,SEEK_SET);		
+		fseek(fptr,sizeof(struct Insumo) * (clave - 1) ,SEEK_SET);		
 		fread(&insumo,sizeof(struct Insumo),1,fptr);
 
 		printf("[DEBUG MESSAJE] Search clave : %d\n",insumo.claveInsumo);
@@ -302,7 +302,7 @@ void writeOutput2()
 
 	struct Insumo insumo= {};
 
-	printf("%-10s %-20s\n","Clave","Nombre");
+	//printf("%-10s %-20s\n","Clave","Nombre");
 
 	while (fread(&insumo, sizeof(struct Insumo), 1, fptr) == 1)
 	{

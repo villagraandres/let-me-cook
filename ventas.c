@@ -254,10 +254,7 @@ void obtenerFecha(struct tm *fecha) {
 
 
 
-//COMPRASSSS
-
-
-
+//SECCION COMPRAS
 
 
 void menuCompra() {
@@ -460,7 +457,7 @@ void listadoEmpleadosComision()
 
             if (empleado.numero_empleado > 0)
             {
-                //printf("%s%d\n",empleado.nombre,empleado.numero_empleado);
+                printf("%s%d\n",empleado.nombre,empleado.numero_empleado);
                 ocurrencias = 0;
                 while(fscanf(ptrVentas,"%d %d %f %d %d %d %d",&venta.numeroArticulo,&venta.cantidad,&venta.precio,&venta.empleado,&dia,&mes,&año) != EOF)
                 {
@@ -470,8 +467,8 @@ void listadoEmpleadosComision()
                 }
 
                 if (ocurrencias>0)
-                    printf("El número de ventas del empeado %d fueron de %d\n",empleado.numero_empleado,ocurrencias);
-
+                    //printf("El número de ventas del empleado %d fueron de %d\n",empleado.numero_empleado,ocurrencias);
+                    printf("La comisión correspondiente el empleado : %s es de %.2f pesos argentinos\n",empleado.nombre,empleado.comision * ocurrencias);
             }
 
         }

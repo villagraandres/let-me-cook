@@ -4,7 +4,7 @@ struct Provedor
 {
     int claveProvedor;
     char nombre[100];
-    char rfc[14];
+    char rfc[50];
     char correo[100];
     float descuento;
 
