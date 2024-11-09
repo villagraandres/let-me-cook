@@ -1643,6 +1643,7 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 	while (!valido);
 
 	// Número
+	while ((c = getchar()) != '\n' && c != EOF);
 	do
 	{	
 		printf("Ingresa el número de tú casa\n");
@@ -1671,6 +1672,7 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 	}
 	while (!valido);
 
+	while ((c = getchar()) != '\n' && c != EOF);
 	// Colonia
 	do
 	{	valido = true;
@@ -1704,7 +1706,7 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 	}
 	while (!valido);
 	
-
+	while ((c = getchar()) != '\n' && c != EOF);
 	// Municipio
 	do
 	{	valido = true;
@@ -1738,6 +1740,7 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 	}
 	while (!valido);
 
+	while ((c = getchar()) != '\n' && c != EOF);
 	// Estado
 	do
 	{	valido = true;
