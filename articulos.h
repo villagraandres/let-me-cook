@@ -31,6 +31,8 @@ void preguntarProvedor(struct Articulo*, struct Insumo*); // Use the declared st
 
 void writeOutput1();
 
+void writeOutput5();
+
 
 struct Empleado{
     int numero_empleado;
