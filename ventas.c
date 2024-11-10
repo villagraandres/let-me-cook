@@ -492,6 +492,16 @@ void menuReporte()
                 break;
 
             case 'e':
+                FILE *archivoC=fopen("compras.txt","r+");
+                if(archivoC==NULL)
+                {
+                    printf("No existe ninguna compra registrada");
+                }
+                else
+                {
+                    listadoSaldos(archivoC);
+                }
+
 
                 break;
 
@@ -502,6 +512,42 @@ void menuReporte()
 
     }
     while(opcion != 'h' && opcion != 'H');
+}
+
+void listadoSaldos(FILE *archivoC)
+{
+    int idCompra, numeroInsumo, cantidad, numeroProvedor, cero;
+    char descripcion[100];
+    int vistos[1000];
+    int i=0,j;
+    FILE *archivoProveedores=fopen("provedor.dat","rb");
+
+    while (fscanf(archivoC, "%d %d |%[^|]| %d %d %d\n", &idCompra, &numeroInsumo, descripcion, &cantidad, &numeroProvedor, &cero) == 6)
+    {
+        if(!existeNumero(vistos,i,numeroProvedor,0) && cero==0) {
+            vistos[i]=numeroProvedor;
+            i++;
+        }
+    }
+
+    struct Provedor provedorInfo;
+    printf("\n%-10s %-20s %-25s %-12s %-15s\n", "Clave", "Nombre", "Correo", "Descuento", "RFC");
+    printf("----------------------------------------------------------------------------------------\n");
+
+    for (j = 0; j < i; j++) {
+        fseek(archivoProveedores, sizeof(struct Provedor) * (vistos[j] - 1), SEEK_SET);
+        fread(&provedorInfo, sizeof(struct Provedor), 1, archivoProveedores);
+        printf("%-10d %-20s %-25s %-12.2f %-15s\n",
+               provedorInfo.claveProvedor,
+               provedorInfo.nombre,
+               provedorInfo.correo,
+               provedorInfo.descuento,
+               provedorInfo.rfc);
+    }
+    if(i==0) {
+        printf("No existen registros\n");
+    }
+
 }
 
 void listadoInsumos(FILE *archivoInsumos) 
@@ -620,25 +666,38 @@ void ventaFecha()
     else 
         printf("No hay ninguna venta registrada en esa fecha");
 }
-void listadoArticulos() 
+void listadoArticulos()
 {
-    FILE *archivoArt=fopen("articulos.dat","rb");
-    if(archivoArt==NULL) 
-        printf("No existe ningun articulo registrado");
-    else 
+    FILE *archivoArt = fopen("articulos.dat", "rb");
+    if (archivoArt == NULL)
+    {
+        printf("No existe ningún artículo registrado\n");
+    } else
     {
         struct Articulo articuloInfo;
         rewind(archivoArt);
-        printf("\nContenido de archivoArticulos:\n");
-        while (fread(&articuloInfo, sizeof(struct Articulo), 1, archivoArt)) 
+
+        // Imprimir encabezado con formato fijo
+        printf("\n%-15s %-20s %-15s %-15s %-10s\n",
+               "Clave", "Descripcion", "Costo", "Precio", "Inventario");
+        printf("-------------------------------------------------------------------------------\n");
+
+        // Iterar a través de los artículos e imprimir cada uno con el mismo formato
+        while (fread(&articuloInfo, sizeof(struct Articulo), 1, archivoArt))
         {
-            if(articuloInfo.claveArticulo!=0)
-                printf("Clave: %d, Inventario: %d, Precio: %f\n", articuloInfo.claveArticulo, articuloInfo.inventario, articuloInfo.precio);
+            if (articuloInfo.claveArticulo != 0)
+                {
+                printf("%-15d %-20s %-15.2f %-15.2f %-10d\n",
+                       articuloInfo.claveArticulo,
+                       articuloInfo.descripcion,
+                       articuloInfo.costo,
+                       articuloInfo.precio,
+                       articuloInfo.inventario);
+            }
         }
-        rewind(archivoArt);
+        fclose(archivoArt);  // Cerrar archivo después de la lectura
     }
 }
-
 
 void listadoEmpleadosComision()
 {
@@ -868,8 +927,9 @@ void menuControl()
     {
         printf("\nNumero de compra: ");
         scanf("%d", &numeroCompra);
+
     } 
-    while (!existeNumero(vistos, i, numeroCompra));
+    while (!existeNumero(vistos, i, numeroCompra,1));
 
     printf("\nLa orden fue recibida? 1: si 2: no");
     scanf("%d", &recibida);
@@ -926,13 +986,16 @@ bool validarProvedor(int id, FILE *archivof)
 }
 
 
-int existeNumero(int arreglo[], int tam, int numero) 
+int existeNumero(int arreglo[], int tam, int numero,int modo)
 {
     for (int i = 0; i < tam; i++) 
     {
         if (arreglo[i] == numero) 
             return 1;
     }
-    printf("El numero indicado no existe");
+    if(modo==1) {
+        printf("El numero indicado no existe");
+    }
+
     return 0;
 }

@@ -48,11 +48,12 @@ void clear_input_buffer();
 void menuControl();
 bool validarProvedor(int, FILE *);
 
-int existeNumero(int arreglo[], int tam, int numero);
+int existeNumero(int arreglo[], int tam, int numero, int modo);
 
 void ventaFecha();
 
 void listadoventaArticulos(FILE *archivoV);
 bool validarArticulo(FILE *,int);
 void listadoInsumos(FILE *);
+void listadoSaldos(FILE *);
 #endif // VENTAS_H
