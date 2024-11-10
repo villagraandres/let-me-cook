@@ -26,7 +26,7 @@ void menuVenta()
         archivoVentas=fopen("ventas.txt","w");
     }
 
-    archivoMercados = fopen("mercado.dat", "rb+"); // Corrected file name
+    archivoMercados = fopen("mercado.dat", "rb+"); 
     if (archivoMercados == NULL) 
     {
         printf("No existe ningun mercado registrado\n");
@@ -122,7 +122,7 @@ void menuVenta()
 
 bool validarEmpleado(FILE *archivoEmpleado, int empleadoId) 
 {
-    struct Empleado empleadoInfo;
+    struct Empleado empleadoInfo = {};
     fseek(archivoEmpleado, sizeof(struct Empleado) * (empleadoId - 1), SEEK_SET);
     fread(&empleadoInfo, sizeof(struct Empleado), 1, archivoEmpleado);
 
@@ -290,7 +290,6 @@ void obtenerFecha(struct tm *fecha)
 
 
 //SECCION COMPRAS
-
 
 void menuCompra() 
 {
@@ -617,7 +616,7 @@ void ventaFecha()
             total+=precio;
     }
     if(total!=0) 
-        printf("el total fue de $%d\n",total);
+        printf("el total fue de $%.2f\n",total);
     else 
         printf("No hay ninguna venta registrada en esa fecha");
 }
@@ -768,13 +767,16 @@ void validarNombre(char* nombre)
     
     //Tener en cuenta que la ultima letra no tiene /n al utilizar gets
     do
-    {
+    {   
         //Leer cadena
         printf("Nombre:\n");
         fflush(stdin);
 
         fgets(nombre,200,stdin);
         nombre[strlen(nombre)-1] = '\0';
+
+
+        //printf("%ld _%s_",strlen(nombre),nombre);
 
         i = 0;
         valido = true;
@@ -784,6 +786,7 @@ void validarNombre(char* nombre)
             //Eliminar el uso de esas funciones e implementar por mi cuenta las funciones
             if(!isalpha(nombre[i]) && !isspace(nombre[i]))
                 valido = false;
+                
 
             i++;
         }

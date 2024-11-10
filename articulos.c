@@ -452,13 +452,19 @@ void empleadoMenu()
         }
         while (datos.numero_empleado < 1 || datos.numero_empleado > 1000);
 
+
+		clear_input_buffer();
+
         do
         {
-            printf("Nombre: ");
-            clear_input_buffer();
+            printf("Nombre: \n");
+            
             fgets(datos.nombre, sizeof(datos.nombre), stdin);
-            datos.nombre[strcspn(datos.nombre, "\n")] = 0;
+            datos.nombre[strlen(datos.nombre) - 1] = '\0';
             cont1 = 0;
+
+
+			printf("%s %ld",datos.nombre,strlen(datos.nombre));
 
             if (strlen(datos.nombre) < 10)
             {
@@ -480,10 +486,9 @@ void empleadoMenu()
         }
         while (cont1 == 1);
 
-        // Validar rfc
-	validarRFC(datos.rfc);
+    	// Validar rfc
+		validarRFC(datos.rfc);
 
-        printf("Correo electrónico: ");
         clear_input_buffer();
 		validarCorreo(datos.correo_electronico);
 
@@ -498,140 +503,10 @@ void empleadoMenu()
 
         datos.comision /= 100;
 
-        do
-        {
-            printf("Año de nacimiento: ");
-            scanf("%d", &datos.anos);
-            if (datos.anos < 1950)
-                printf("Dato inválido\n");
-        }
-        while (datos.anos < 1950 || datos.anos > 2006);
+        validarFecha(&datos.anos,&datos.mes,&datos.dia);
 
-        do
-        {
-            printf("Mes de nacimiento: ");
-            scanf("%d", &datos.mes);
-            if (datos.mes < 1 || datos.mes > 12)
-                printf("Dato inválido\n");
-        }
-        while (datos.mes < 1 || datos.mes > 12);
+		validarDireccion(datos.calle,datos.numero,datos.colonia,datos.municipio,datos.estado);
 
-        do
-        {
-            printf("Día de nacimiento: ");
-            scanf("%d", &datos.dia);
-            cont3 = 0;
-            if (datos.mes == 2)
-            {
-                if (datos.dia < 1 || datos.dia > 28)
-                {
-                    printf("Dato inválido\n");
-                    cont3 = 1;
-                }
-            }
-            else if (datos.mes == 1 || datos.mes == 3 || datos.mes == 5 || datos.mes == 7 || datos.mes == 8 || datos.mes == 10 || datos.mes == 12)
-            {
-                if (datos.dia < 1 || datos.dia > 31)
-                {
-                    printf("Dato inválido\n");
-                    cont3 = 1;
-                }
-            }
-            else if (datos.mes == 4 || datos.mes == 6 || datos.mes == 9 || datos.mes == 11)
-            {
-                if (datos.dia < 1 || datos.dia > 30)
-                {
-                    printf("Dato inválido\n");
-                    cont3 = 1;
-                }
-            }
-        }
-        while (cont3 == 1);
-
-        do
-        {
-            printf("Calle: ");
-            clear_input_buffer();
-            fgets(datos.calle, sizeof(datos.calle), stdin);
-            datos.calle[strcspn(datos.calle, "\n")] = 0;
-            cont1 = 0;
-            for (i = 0; i < strlen(datos.calle); i++)
-            {
-                if (!isalpha(datos.calle[i]) && datos.calle[i] != ' ')
-                {
-                    printf("Hay datos inválidos\n");
-                    cont1 = 1;
-                    break;
-                }
-            }
-        }
-        while (cont1 == 1);
-
-        do
-        {
-            printf("Número de calle: ");
-            scanf("%d", &datos.numero);
-            if (datos.numero < 1)
-                printf("Dato inválido\n");
-        }
-        while (datos.numero < 1);
-
-        do
-        {
-            printf("Colonia: ");
-            clear_input_buffer();
-            fgets(datos.colonia, sizeof(datos.colonia), stdin);
-            datos.colonia[strcspn(datos.colonia, "\n")] = 0;
-            cont1 = 0;
-            for (i = 0; i < strlen(datos.colonia); i++)
-            {
-                if (!isalpha(datos.colonia[i]) && datos.colonia[i] != ' ')
-                {
-                    printf("Hay datos inválidos\n");
-                    cont1 = 1;
-                    break;
-                }
-            }
-        }
-        while (cont1 == 1);
-
-        do
-        {
-            printf("Municipio: ");
-            clear_input_buffer();
-            fgets(datos.municipio, sizeof(datos.municipio), stdin);
-            datos.municipio[strcspn(datos.municipio, "\n")] = 0;
-            cont1 = 0;
-            for (i = 0; i < strlen(datos.municipio); i++)
-            {
-                if (!isalpha(datos.municipio[i]) && datos.municipio[i] != ' ')
-                {
-                    printf("Hay datos inválidos\n");
-                    cont1 = 1;
-                    break;
-                }
-            }
-        }
-        while (cont1 == 1);
-
-        do
-        {
-            printf("Estado: ");
-            clear_input_buffer();
-            fgets(datos.estado, sizeof(datos.estado), stdin);
-            datos.estado[strcspn(datos.estado, "\n")] = 0;
-            cont1 = 0;
-            for (i = 0; i < strlen(datos.estado); i++)
-            {
-                if (!isalpha(datos.estado[i]) && datos.estado[i] != ' ')
-                {
-                    printf("Hay datos inválidos\n");
-                    cont1 = 1;
-                    break;
-                }
-            }
-        }
-        while (cont1 == 1);
 
         fseek(archivo, (datos.numero_empleado - 1) * sizeof(struct Empleado), SEEK_SET);
         fwrite(&datos, sizeof(struct Empleado), 1, archivo);
@@ -1319,99 +1194,9 @@ void lecturaProvedor(struct Provedor* fProvedor)
 		while ((c = getchar()) != '\n' && c != EOF);
 			validarRFC(fProvedor->rfc);
 
-		// Año de nacimiento
 
-		do
-		{
-			printf("Ingresa año de nacimiento\n");
-			scanf("%d",&fProvedor->anio);
-
-			if (fProvedor->anio < 1950 || fProvedor->anio > 2006)
-				printf("Ingresa un año entre 1950 y 2006\n");
-
-		} 
-		while (fProvedor->anio < 1950 || fProvedor->anio > 2006);
-
-		// Mes
-		do
-		{
-			printf("Ingresa número del mes de nacimiento\n");
-			scanf("%d",&fProvedor->mes);
-
-			if (fProvedor->mes < 1 || fProvedor->mes > 12)
-				printf("Ingresa un mes válido\n");
-
-		} 
-		while (fProvedor->mes < 1 || fProvedor->mes > 12);
-
-		// Nacimiento
-		do
-		{
-			printf("Ingresa el día del mes\n");
-			scanf("%d",&fProvedor->dia);
-
-			if (fProvedor->dia < 1 || fProvedor->dia > 31)
-			{
-				printf("Ingresa un día válido");
-				valido = false;
-			}
-				
-			else if (fProvedor->mes == 2)
-			{
-				if (fProvedor->anio%4 == 0 && fProvedor->dia > 29)
-				{
-					printf("Fecha inválida\n");
-					valido = false;
-				}
-					
-				else if(fProvedor->anio%4 != 0 && fProvedor->dia > 28)
-				{
-					printf("Fecha inválida");
-					valido = false;
-				}
-					
-				else
-				{
-					printf("[DEBUG MESSAGE] : Fecha registrada");
-					valido = true;
-				}
-
-			}
-			else if(fProvedor->mes != 1 && (fProvedor->mes%5 == 1 || fProvedor->mes%5 == 4))
-			{
-				if(fProvedor->dia > 30)
-				{
-					printf("Fecha inválida\n");
-					valido =  false;
-				}
-					
-				else
-				{
-					printf("[DEBUG MESSAGE] : Fecha registrada");
-					valido = true;
-				}	
-					
-			}
-			else
-			{
-
-				if(fProvedor->dia > 31)
-				{
-					printf("Fecha inválida\n");
-					valido = false;
-				}
-					
-				else
-				{
-					printf("[DEBUG MESSAGE] : Fecha registrada");
-					valido = true;
-				}
-					
-			}
-
-
-		} 
-		while(!valido);
+		validarFecha(&fProvedor->anio,&fProvedor->mes,&fProvedor->dia);
+		
 
 		// Validar dirección
 		validarDireccion(fProvedor->calle,fProvedor->numero,fProvedor->colonia,fProvedor->municipio,fProvedor->estado);
@@ -1432,7 +1217,112 @@ void lecturaProvedor(struct Provedor* fProvedor)
 		}
 		fclose(cfptr);
     }
-}
+};
+
+
+
+void validarFecha(int* ano, int* mes ,int* dia)
+{	
+	bool valido;
+
+	// Año de nacimiento
+	do
+	{
+		printf("Ingresa año de nacimiento\n");
+		scanf("%d",ano);
+
+		if (*ano < 1950 || *ano > 2006)
+			printf("Ingresa un año entre 1950 y 2006\n");
+
+	} 
+	while (*ano < 1950 || *ano > 2006);
+
+
+	// Mes de nacimiento
+	// Mes
+	do
+	{
+		printf("Ingresa número del mes de nacimiento\n");
+		scanf("%d",mes);
+
+		if (*mes < 1 || *mes > 12)
+			printf("Ingresa un mes válido\n");
+
+	} 
+	while (*mes < 1 || *mes > 12);
+
+
+	// Nacimiento
+	do
+	{
+		printf("Ingresa el día del mes\n");
+		scanf("%d",dia);
+
+		if (*dia < 1 || *dia > 31)
+		{
+			printf("Ingresa un día válido");
+			valido = false;
+		}
+			
+		else if (*mes == 2)
+		{
+			if (*ano%4 == 0 && *dia > 29)
+			{
+				printf("Fecha inválida\n");
+				valido = false;
+			}
+				
+			else if(*ano%4 != 0 && *dia > 28)
+			{
+				printf("Fecha inválida");
+				valido = false;
+			}
+				
+			else
+			{
+				printf("[DEBUG MESSAGE] : Fecha registrada");
+				valido = true;
+			}
+
+		}
+		else if(*mes != 1 && (*mes%5 == 1 || *mes%5 == 4))
+		{
+			if(*dia > 30)
+			{
+				printf("Fecha inválida\n");
+				valido =  false;
+			}
+				
+			else
+			{
+				printf("[DEBUG MESSAGE] : Fecha registrada");
+				valido = true;
+			}	
+				
+		}
+		else
+		{
+
+			if(*dia > 31)
+			{
+				printf("Fecha inválida\n");
+				valido = false;
+			}
+				
+			else
+			{
+				printf("[DEBUG MESSAGE] : Fecha registrada");
+				valido = true;
+			}
+				
+		}
+
+	} 
+	while(!valido);
+
+};
+
+
 
 int claveProvedorExiste(int clave, FILE* fptr,char* fArchivo)
 {

@@ -132,6 +132,8 @@ void validarCorreo(char*);
 
 void validarDireccion(char* ,char* , char* ,char* , char* );
 
+void validarFecha(int*,int*,int*);
+
 int claveProvedorExiste(int , FILE* ,char* );
 
 
@@ -141,4 +143,4 @@ void writeOutput();
 
 
 
-#endif // ARTICULOS_H
+#endif // 
