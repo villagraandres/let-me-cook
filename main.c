@@ -6,14 +6,12 @@
 
 int main()
 {
-
     // Declaracion de variables
     int opcion;
 
     printf("#### Bienvenido al sistema más moderno del mundo mundial ####\n");
     do
     {
-
         do
         {
             printf("Ingresa una de las siguientes opciones\n");
@@ -35,48 +33,44 @@ int main()
 
             switch (opcion)
             {
-            case 1:
-            	menuArticulos();
-                break;
+                case 1:
+            	    menuArticulos();
+                    break;
 
-            case 2:
-                menuInsumos();
-                break;
+                case 2:
+                    menuInsumos();
+                    break;
 
-            case 3:
-                mercados_main();
-                break;
+                case 3:
+                    mercados_main();
+                    break;
 
-            case 4:
-                empleadoMenu();
-                break;
-
-            case 5:
-                menuProvedor();
-                break;
-
-            case 6:
-                menuVenta();
-                break;
-
-            case 7:
-                menuCompra();
-                break;
-            case 8:
-                menuControl();
-                break;
-
-            case 9:
-                menuReporte();
-                break;
-
+                case 4:
+                    empleadoMenu();
+                    break;
+    
+                case 5:
+                    menuProvedor();
+                    break;
+    
+                case 6:
+                    menuVenta();
+                    break;
+    
+                case 7:
+                    menuCompra();
+                    break;
+                case 8:
+                    menuControl();
+                    break;
+    
+                case 9:
+                    menuReporte();
+                    break;
             }
-
-
-        } while (opcion < 1 || opcion > 10);
-
-    }while(opcion != 10);
-
-
+        }
+        while (opcion < 1 || opcion > 10);
+    }
+    while(opcion != 10);
     return 0;
 }
