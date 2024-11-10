@@ -7,55 +7,53 @@
 
 
 
-void menuArticulos(){
-
+void menuArticulos()
+{
 	bool continuar;
 	char c;
 	struct Articulo articulo = {};
 
 	//Comprobar que los archivos correspondientes existan
 	inicializarRegistrosArticulos();
-    writeOutput5();
+    	writeOutput5();
 
-	do{
+	do
+	{
 		printf("Desea agregar un articulo S/N)");
 		scanf(" %c",&c);
 
 		if (c=='S' || c=='s')
-				continuar = true;
+			continuar = true;
 		else if(c=='N' || c == 'n')
-				continuar = false;
+			continuar = false;
 		else
 			printf("Ingrese una opción válida");
+	}
+	while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
 
-	}while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
-
-	while(continuar){
-
+	while(continuar)
+	{
 		lecturaArticulo(&articulo);
-
-		do{
+		do
+		{
 			printf("Desea agregar un articulo S/N)");
 			scanf(" %c",&c);
 
 			if (c=='S' || c=='s')
-					continuar = true;
+				continuar = true;
 			else if(c=='N' || c == 'n')
-					continuar = false;
+				continuar = false;
 			else
 				printf("Ingrese una opción válida");
-
-		}while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
-
+		}
+		while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
 	}
-
 	writeOutput1();
+}
 
-};
 
-
-void lecturaArticulo(struct Articulo* fArticulo){
-
+void lecturaArticulo(struct Articulo* fArticulo)
+{
 	FILE* cfptr;
 	bool actualizarDatos;
 	bool continuar;
@@ -77,7 +75,8 @@ void lecturaArticulo(struct Articulo* fArticulo){
 
 		if (fArticulo->claveArticulo < 0 || fArticulo->claveArticulo > 1000)
 			printf("Ingresa un número entre 1 y 1000");
-	}while(fArticulo->claveArticulo < 0 || fArticulo->claveArticulo > 1000);
+	}
+	while(fArticulo->claveArticulo < 0 || fArticulo->claveArticulo > 1000);
 
 	// Comprobar que la clave no exista y si existe preguntar si desea rescribir o no los datos
 	if (!claveExiste(fArticulo->claveArticulo,cfptr,"articulos.dat"))
@@ -109,10 +108,10 @@ void lecturaArticulo(struct Articulo* fArticulo){
 		// Clave de los mercados
 		//Leer a lo más 10 claves y checar si existen en el archivo de claves de mercado*/
 		
-        cfptr = fopen("mercado.dat","rb");
+        	cfptr = fopen("mercado.dat","rb");
 		if (cfptr == NULL)
-            printf("Error al abrir archivo mercado.dat\n");
-        
+            		printf("Error al abrir archivo mercado.dat\n");
+	}
         else
         {
             i = 0;
@@ -120,56 +119,55 @@ void lecturaArticulo(struct Articulo* fArticulo){
             {	
                 do
                 {
-                    printf("Ingresa la clave del mercado %d\n> ",i+1);
-                    scanf("%d",&clave);
-
-                    if (clave <= 0)
-                        printf("Ingresa una clave mayor que 0\n");
-                    else
-                    {
-                        fseek(cfptr,sizeof(struct Mercado) * (clave - 1) ,SEEK_SET);		
-                        fread(&mercado,sizeof(struct Mercado),1,cfptr);
-
-                        // Si está vacio no hay nada que actualizar
-                        if (mercado.clave == 0)
-                            printf("Ingresa una clave registrada\n");
-                        else{
-                            fArticulo->claveMercados[i] = clave;
-                            i++;
-                            printf("Clave %d registrada con éxito\n",mercado.clave);
-                        }
-                        
-                    }
-                } while (clave <= 0);
+	        	printf("Ingresa la clave del mercado %d\n> ",i+1);
+	                scanf("%d",&clave);
+	
+	                if (clave <= 0)
+	                	printf("Ingresa una clave mayor que 0\n");
+	                else
+	                {
+	                	fseek(cfptr,sizeof(struct Mercado) * (clave - 1) ,SEEK_SET);		
+	                        fread(&mercado,sizeof(struct Mercado),1,cfptr);
+	
+	                        // Si está vacio no hay nada que actualizar
+	                        if (mercado.clave == 0)
+	                        	printf("Ingresa una clave registrada\n");
+	                        else
+				{
+	                        	fArticulo->claveMercados[i] = clave;
+	                            	i++;
+	                            	printf("Clave %d registrada con éxito\n",mercado.clave);
+	                	}
+	                }
+                }
+		while (clave <= 0);
 
                 if (i<10)
                 {
-                   do
-                   {
-                        printf("Desea agregar otro mercado S/N)");
-                        scanf(" %c",&c);
+                	do
+                   	{
+                        	printf("Desea agregar otro mercado S/N)");
+                        	scanf(" %c",&c);
 
-                        if (c=='S' || c=='s')
-                                continuar = true;
-                        else if(c=='N' || c == 'n')
-                                continuar = false;
-                        else
-                            printf("Ingrese una opción válida");
-
-                    }while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
+                        	if (c=='S' || c=='s')
+                                	continuar = true;
+                        	else if(c=='N' || c == 'n')
+                                	continuar = false;
+                        	else
+                            		printf("Ingrese una opción válida");
+                    	}
+			while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
                 }
-                
-
-            } while (i<10 && continuar);    
-
-            fclose(cfptr);
+        } 
+	while (i<10 && continuar);    
+	fclose(cfptr);
         }
 
         
 		// Clave de los insumos
         cfptr = fopen("insumos.dat","rb");
-		if (cfptr == NULL)
-			printf("Error al abrir archivo insumos.dat\n");
+	if (cfptr == NULL)
+		printf("Error al abrir archivo insumos.dat\n");
         else
         {
             i = 0;
@@ -192,19 +190,18 @@ void lecturaArticulo(struct Articulo* fArticulo){
                         //Si no entonces preguntarle por e provedor al que le desea comprar
                         if (insumo.claveInsumo == 0)
                             printf("Ingresa una clave registrada\n");
-                        else{
-
+                        else
+			{
                             fArticulo->insumosRequeridos[i] = clave;
-
                             //Preguntarle a que provedor desea comprarle
                             preguntarProvedor(fArticulo,&insumo);
-
                             i++;
                             printf("Clave %d registrada con éxito\n",insumo.claveInsumo);
                         }
                         
                     }
-                } while (clave <= 0);
+                } 
+		while (clave <= 0);
 
 
                 if (i<10)
@@ -222,70 +219,58 @@ void lecturaArticulo(struct Articulo* fArticulo){
                         else
                             printf("Ingrese una opción válida");
 
-                    }while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
-
+                    }
+		while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
                 }
-                    
+            } 
+	while (i<10 && continuar);
 
-            } while (i<10 && continuar);
-
-            printf("[DEBUG MESSAGE] - El articulo tiene un costo de producción de %.2f pesos\n",fArticulo->costo);
-            fclose(cfptr);
-
+        printf("[DEBUG MESSAGE] - El articulo tiene un costo de producción de %.2f pesos\n",fArticulo->costo);
+        fclose(cfptr);
         }
-
-
-
 		// Inventario
 
-		do
-		{
-			printf("\n5) Inventario: ");
-			scanf("%d",&fArticulo->inventario);
+	do
+	{
+		printf("\n5) Inventario: ");
+		scanf("%d",&fArticulo->inventario);
 
-			if (fArticulo->inventario < 0 )
-				printf("Ingrese una cantidad válida\n");
+		if (fArticulo->inventario < 0 )
+			printf("Ingrese una cantidad válida\n");
 
-		} while (fArticulo->inventario < 0 );
+	} 
+	while (fArticulo->inventario < 0 );
 
 		// Precio de venta
-		do
-		{
-			printf("6) Precio de venta: ");
-			scanf("%f",&fArticulo->precio);
+	do
+	{
+		printf("6) Precio de venta: ");
+		scanf("%f",&fArticulo->precio);
 
-			if (fArticulo->precio < 0 )
-				printf("Ingrese una cantidad válida\n");
+		if (fArticulo->precio < 0 )
+			printf("Ingrese una cantidad válida\n");
 
-		} while (fArticulo->precio < 0 );
+	} 
+	while (fArticulo->precio < 0 );
 
 		// Escribir estructura en el archivo
-		cfptr = fopen("articulos.dat","r+b");
-		if (cfptr == NULL)
-			{
-				printf("[ERROR] - No se pudo escribir en el archivo articulos.dat\n");
-				return;
-			}
-		
-		else
-			{
-				fseek(cfptr,sizeof(struct Articulo) * (fArticulo->claveArticulo-1) ,SEEK_SET);
-				fwrite(fArticulo,sizeof(struct Articulo),1,cfptr);
-		};
-
-		fclose(cfptr);
-
+	cfptr = fopen("articulos.dat","r+b");
+	if (cfptr == NULL)
+	{
+		printf("[ERROR] - No se pudo escribir en el archivo articulos.dat\n");
+		return;
 	}
+	else
+	{
+		fseek(cfptr,sizeof(struct Articulo) * (fArticulo->claveArticulo-1) ,SEEK_SET);
+		fwrite(fArticulo,sizeof(struct Articulo),1,cfptr);
+	}
+	fclose(cfptr);
+}
 
-};
-
-
-
-
-void inicializarRegistrosArticulos(){
-
+void inicializarRegistrosArticulos()
+{
 	// Comprobar si el registro corespondiente exista sino crearlo
-
 	char nombreArchivo[] = "articulos.dat";
 	FILE* cfptr;
 	struct Articulo articulo = {};	
@@ -293,8 +278,7 @@ void inicializarRegistrosArticulos(){
 	if (existeArchivo(cfptr,nombreArchivo))
 		// Si regresa false salir del programa
 		crearArchivo(cfptr,nombreArchivo,&articulo,1000,sizeof(struct Articulo));
-
-};
+}
 
 int claveExiste(int clave, FILE* fptr,char* fArchivo)
 {
@@ -303,12 +287,11 @@ int claveExiste(int clave, FILE* fptr,char* fArchivo)
 	char c;
 	struct Articulo articulo = {};
 	
-
 	if (fptr == NULL)
 		return 2;
 
-	else{
-
+	else
+	{
 		// Buscar clave
 		fseek(fptr,sizeof(struct Articulo) * clave ,SEEK_SET);		
 		fread(&articulo,sizeof(struct Articulo),1,fptr);
@@ -332,37 +315,33 @@ int claveExiste(int clave, FILE* fptr,char* fArchivo)
 			else
 				printf("Ingresa una opción válida\n");
 
-		} while (c!='S' && c!= 's' && c!= 'N' && c!= 'n');
+		}
+		while (c!='S' && c!= 's' && c!= 'N' && c!= 'n');
 
 		fclose(fptr);
 
 		if(sobreescrbir)
 			return 0;
-
 		else 
 			return 1;
-
 	}
-
-};
+}
 
 
 // Función generica para visualizar los elementos de un archivo secuencial
 
 void viewElements()
 {
-
 	FILE* fptr;
 	fptr = fopen("articulos.dat","rb");
 	struct Articulo articulo = {};
 
-	for(int i = 0;i<1000;i++){
+	for(int i = 0;i<1000;i++)
+	{
 		fread(&articulo,sizeof(struct Articulo),1,fptr);
 		printf("%d\n",articulo.claveArticulo);
-
 	}
-
-};
+}
 
 
 void preguntarProvedor(struct Articulo* fArticulo,struct Insumo* fInsumo)
@@ -397,9 +376,8 @@ void preguntarProvedor(struct Articulo* fArticulo,struct Insumo* fInsumo)
 			fArticulo->costo+=fInsumo->precios[provedor-1];
 		}
 
-	} while (!valido);
-	
-
+	} 
+	while (!valido);
 }
 
 void writeOutput1()
@@ -421,23 +399,14 @@ void writeOutput1()
 			{
 				fprintf(archivo,"%d:%d\n",articulo.claveMercados[i],articulo.insumosRequeridos[i]);
 			}
-			
-
 		}
-			
-		
 	}
-
+	
 	fclose(fptr);
 	fclose(archivo);
-
-
 }
 
 //EMPLEADOS
-
-
-
 
 
 void inicializar_registrosEmpleado();
@@ -445,6 +414,7 @@ void inicializar_registrosEmpleado();
 bool validarCorreoE(const char* correo)
 {
     const char* at = strchr(correo, '@');
+	
     if (at == NULL)
         return false;
     const char* dot = strrchr(at, '.');
@@ -511,7 +481,7 @@ void empleadoMenu()
         while (cont1 == 1);
 
         // Validar rfc
-		validarRFC(datos.rfc);
+	validarRFC(datos.rfc);
 
         printf("Correo electrónico: ");
         clear_input_buffer();
@@ -708,7 +678,7 @@ void  mercados_main()
     FILE *archivo;
     bool registros = true;
     char opcion;
-	bool valido;
+    bool valido;
     int i, cont1;
 
     archivo = fopen("mercado.dat", "r+b");
@@ -732,132 +702,133 @@ void  mercados_main()
         while (datos.clave <= 0);
 		
 		// Validar nombre
-		validarNombre(datos.nombre);
+	validarNombre(datos.nombre);
 
 		// Validar RFC
-		validarRFC(datos.RFC);
+	validarRFC(datos.RFC);
 	
         validarCorreo(datos.correo_electronico);
 
-		do
-		{
-			printf("\nDescuento: ");
-			scanf("%f", &datos.descuento);
+	do
+	{
+		printf("\nDescuento: ");
+		scanf("%f", &datos.descuento);
 
-			if (datos.descuento < 0 || datos.descuento > 100)
-				printf("Ingresa un porcentaje\n");
+		if (datos.descuento < 0 || datos.descuento > 100)
+			printf("Ingresa un porcentaje\n");
 
-		} while (datos.descuento < 0 || datos.descuento > 100);
+	} 
+	while (datos.descuento < 0 || datos.descuento > 100);
 		
-		datos.descuento /= 100; 
+	datos.descuento /= 100; 
         
         clear_input_buffer();
 
 		// Año de nacimiento
 
-		do
-		{
-			printf("Ingresa año de nacimiento\n");
-			scanf("%d",&datos.anio);
+	do
+	{
+		printf("Ingresa año de nacimiento\n");
+		scanf("%d",&datos.anio);
 
-			if (datos.anio < 1950 || datos.anio > 2006)
-				printf("Ingresa un año entre 1950 y 2006\n");
+		if (datos.anio < 1950 || datos.anio > 2006)
+			printf("Ingresa un año entre 1950 y 2006\n");
 
-		} while (datos.anio < 1950 || datos.anio > 2006);
+	} 
+	while (datos.anio < 1950 || datos.anio > 2006);
 
 
 		// Mes
-		do
-		{
-			printf("Ingresa número del mes de nacimiento\n");
-			scanf("%d",&datos.mes);
+	do
+	{
+		printf("Ingresa número del mes de nacimiento\n");
+		scanf("%d",&datos.mes);
 
-			if (datos.mes < 1 || datos.mes > 12)
-				printf("Ingresa un mes válido\n");
+		if (datos.mes < 1 || datos.mes > 12)
+			printf("Ingresa un mes válido\n");
 
-		} while (datos.mes < 1 || datos.mes > 12);
+	} 
+	while (datos.mes < 1 || datos.mes > 12);
 
 
 		// Día
 		// Nacimiento
 
-		do
-		{
-			printf("Ingresa el día del mes\n");
-			scanf("%d",&datos.dia);
+	do
+	{
+		printf("Ingresa el día del mes\n");
+		scanf("%d",&datos.dia);
 
-			if (datos.dia < 1 || datos.dia > 31)
+		if (datos.dia < 1 || datos.dia > 31)
+		{
+			printf("Ingresa un día válido");
+			valido = false;
+		}
+				
+		else if (datos.mes == 2)
+		{
+			if (datos.anio%4 == 0 && datos.dia > 29)
 			{
-				printf("Ingresa un día válido");
+				printf("Fecha inválida\n");
 				valido = false;
 			}
-				
-			else if (datos.mes == 2)
+					
+			else if(datos.anio%4 != 0 && datos.dia > 28)
 			{
-				if (datos.anio%4 == 0 && datos.dia > 29)
-				{
-					printf("Fecha inválida\n");
-					valido = false;
-				}
-					
-				else if(datos.anio%4 != 0 && datos.dia > 28)
-				{
-					printf("Fecha inválida");
-					valido = false;
-				}
-					
-				else
-				{
-					printf("[DEBUG MESSAGE] : Fecha registrada");
-					valido = true;
-				}
-
+				printf("Fecha inválida");
+				valido = false;
 			}
-			else if(datos.mes != 1 && (datos.mes%5 == 1 || datos.mes%5 == 4))
-			{
-				if(datos.dia > 30)
-				{
-					printf("Fecha inválida\n");
-					valido =  false;
-				}
 					
-				else
-				{
-					printf("[DEBUG MESSAGE] : Fecha registrada");
-					valido = true;
-				}	
-					
-			}
 			else
 			{
+				printf("[DEBUG MESSAGE] : Fecha registrada");
+				valido = true;
+			}
 
-				if(datos.dia > 31)
-				{
-					printf("Fecha inválida\n");
-					valido = false;
-				}
+		}
+		else if(datos.mes != 1 && (datos.mes%5 == 1 || datos.mes%5 == 4))
+		{
+			if(datos.dia > 30)
+			{
+				printf("Fecha inválida\n");
+				valido =  false;
+			}
 					
-				else
-				{
-					printf("[DEBUG MESSAGE] : Fecha registrada");
-					valido = true;
-				}
+			else
+			{
+				printf("[DEBUG MESSAGE] : Fecha registrada");
+				valido = true;
+			}	
 					
-			};
+		}
+		else
+		{
+			if(datos.dia > 31)
+			{
+				printf("Fecha inválida\n");
+				valido = false;
+			}
+					
+			else
+			{
+				printf("[DEBUG MESSAGE] : Fecha registrada");
+				valido = true;
+			}		
+		}
+	} 
+	while(!valido);
 
-		} while(!valido);
 
-
-		validarDireccion(datos.calle,datos.numero,datos.colonia,datos.municipio,datos.estado);
+	validarDireccion(datos.calle,datos.numero,datos.colonia,datos.municipio,datos.estado);
 
 
         fseek(archivo,sizeof(struct Mercado)*(datos.clave-1),SEEK_SET);
         if (fwrite(&datos, sizeof(struct Mercado), 1, archivo) != 1)
             printf("Error al escribir en el archivo\n");
-		else
-			printf("CORRECTA ESCRITUTA\n");
+	else
+	    printf("CORRECTA ESCRITUTA\n");
 
-		printf("%s %d\n",datos.nombre,datos.clave);
+	printf("%s %d\n",datos.nombre,datos.clave);
 
         do
         {
@@ -875,9 +846,7 @@ void  mercados_main()
         }
         while (opcion != 'N' && opcion != 'n' && opcion != 'S' && opcion != 's');
     }
-
     fclose(archivo);
-
 }
 
 void inicializar_registros()
@@ -896,19 +865,18 @@ void inicializar_registros()
     }
 }
 
-
-
-
 void writeOutput5()
 {
 	FILE* fptr = fopen("mercado.dat","rb");
-	if (fptr == NULL) {
+	if (fptr == NULL) 
+	{
 		printf("[ERROR] - No se pudo abrir el archivo mercado.dat\n");
 		return;
 	}
 
 	FILE *archivo = fopen("Logs/Mercado", "w");
-	if (archivo == NULL) {
+	if (archivo == NULL) 
+	{
 		printf("[ERROR] - No se pudo abrir el archivo Logs/Insumo\n");
 		fclose(fptr);
 		return;
@@ -923,10 +891,8 @@ void writeOutput5()
 		if (mercado.clave != 0 || mercado.anio != 0)
 		{
 			fprintf(archivo,"%d :: %s %d\n",mercado.clave,mercado.nombre,mercado.anio);
-			
 		}
 	}
-
 	fclose(fptr);
 	fclose(archivo);
 }
@@ -936,8 +902,6 @@ void writeOutput5()
 
 void menuInsumos()
 {
-
-
 	bool continuar;
 	char c;
 	struct Insumo insumo = {};
@@ -945,49 +909,49 @@ void menuInsumos()
 	//Comprobar que los archivos correspondientes existan
 	inicializarRegistrosInsumos();
 
-	do{
+	do
+	{
 		printf("Desea agregar un insumo S/N)");
 		scanf(" %c",&c);
 
 		if (c=='S' || c=='s')
-				continuar = true;
+			continuar = true;
 		else if(c=='N' || c == 'n')
-				continuar = false;
+			continuar = false;
 		else
 			printf("Ingrese una opción válida");
 
-	}while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
+	}
+	while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
 
 	while(continuar)
 	{
 
 		lecturaInsumo(&insumo);
 
-		do{
+		do
+		{
 			printf("Desea agregar un insumo S/N)");
 			scanf(" %c",&c);
 
 			if (c=='S' || c=='s')
-					continuar = true;
+				continuar = true;
 			else if(c=='N' || c == 'n')
-					continuar = false;
+				continuar = false;
 			else
 				printf("Ingrese una opción válida");
 
-		}while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
+		}
+		while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
 
 	}
 	writeOutput2();
-
-
-};
+}
 
 
 void inicializarRegistrosInsumos()
 {
-
 	// Comprobar si el registro corespondiente exista sino crearlo
-
 	char nombreArchivo[] = "insumos.dat";
 	FILE* cfptr;
 	struct Insumo insumo = {};	
@@ -995,12 +959,10 @@ void inicializarRegistrosInsumos()
 	if (existeArchivo(cfptr,nombreArchivo))
 		// Si regresa false salir del programa
 		crearArchivo(cfptr,nombreArchivo,&insumo,100,sizeof(struct Insumo));
+}
 
-};
-
-
-void lecturaInsumo(struct Insumo* fInsumo){
-
+void lecturaInsumo(struct Insumo* fInsumo)
+{
 	FILE* cfptr;
 	bool actualizarDatos;
 	bool continuar;
@@ -1020,7 +982,8 @@ void lecturaInsumo(struct Insumo* fInsumo){
 
 		if (fInsumo->claveInsumo < 1 || fInsumo->claveInsumo > 100)
 			printf("Ingresa un número entre 1 y 100\n");
-	}while(fInsumo->claveInsumo < 1 || fInsumo->claveInsumo > 100);
+	}
+	while(fInsumo->claveInsumo < 1 || fInsumo->claveInsumo > 100);
 
 	if (!claveInsumoExiste(fInsumo->claveInsumo,cfptr,"insumos.dat"))
 		actualizarDatos = true;
@@ -1030,12 +993,10 @@ void lecturaInsumo(struct Insumo* fInsumo){
 
 	if(actualizarDatos == true)
 	{
-
 		//Descripcion
 		//Al utilizar gets no recibe salto de linea la cadena
 		validarCadena(fInsumo->descripcion);
 		printf("[DEBUG MESSAJE Descripcion value] : %s\n",fInsumo->descripcion);
-
 
 		// Punto de reorden
 		do
@@ -1046,11 +1007,10 @@ void lecturaInsumo(struct Insumo* fInsumo){
 			if (fInsumo->puntoReorden <= 0)
 				printf("\n[ERROR] agrega un valor mayor que 0\n");
 
-		}while(fInsumo->puntoReorden <= 0);
-
+		}
+		while(fInsumo->puntoReorden <= 0);
 
 		// Inventario
-
 		do
 		{
 			printf("\n4) Inventario: \n");
@@ -1059,8 +1019,8 @@ void lecturaInsumo(struct Insumo* fInsumo){
 			if (fInsumo->inventario < 0)
 				printf("\n[ERROR] agrega un valor mayor o igual a 0\n");
 		
-		}while(fInsumo->inventario < 0);
-
+		}
+		while(fInsumo->inventario < 0);
 
 		// Preguntar 10 veces para los provedores y sus respectivos precios
 		i = 0;
@@ -1089,7 +1049,6 @@ void lecturaInsumo(struct Insumo* fInsumo){
 						continue;
 					}
 						
-					
 					fseek(cfptr,(clave - 1) * sizeof(struct Provedor),SEEK_SET);
 					fread(&provedor,sizeof(struct Provedor),1,cfptr);
 
@@ -1110,7 +1069,8 @@ void lecturaInsumo(struct Insumo* fInsumo){
 							if (precio<=0)
 								printf("Ingresa un valor mayor que 0\n");
 
-						} while (precio <= 0);
+						} 
+						while (precio <= 0);
 
 						*(fInsumo->precios+i) = precio;
 						i++;
@@ -1118,54 +1078,47 @@ void lecturaInsumo(struct Insumo* fInsumo){
 					}
 						
 					// Preguntar si desean continuar
-					do{
+					do
+					{
 						printf("Desea agregar otro provedor al insumo? S/N)");
 						scanf(" %c",&c);
 
 						if (c=='S' || c=='s')
-								continuar = true;
+							continuar = true;
 						else if(c=='N' || c == 'n')
-								continuar = false;
+							continuar = false;
 						else
 							printf("Ingrese una opción válida");
 
-					}while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
+					}
+					while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
 
-				} while (clave < 1 || clave > 100);
-			
-
-			} while (i<10 && continuar);
-
-
+				}
+				while (clave < 1 || clave > 100);
+			} 
+			while (i<10 && continuar);
 			fclose(cfptr);
 		}
 
 		// Escribir estructura en el archivo	
 		cfptr = fopen("insumos.dat","r+b");
 		if (cfptr == NULL)
-			{
-				printf("[ERROR] - No se pudo escribir en el archivo insumos.dat\n");
-				return;
-			}
+		{
+			printf("[ERROR] - No se pudo escribir en el archivo insumos.dat\n");
+			return;
+		}
 		
 		else
-			{
-				fseek(cfptr,sizeof(struct Insumo) * (fInsumo->claveInsumo - 1) ,SEEK_SET);		
-				fwrite(fInsumo,sizeof(struct Insumo),1,cfptr);
-		};
-
+		{
+			fseek(cfptr,sizeof(struct Insumo) * (fInsumo->claveInsumo - 1) ,SEEK_SET);		
+			fwrite(fInsumo,sizeof(struct Insumo),1,cfptr);
+		}
 		fclose(cfptr);
-
-	}
-
-
-	
-};
-
+	}	
+}
 
 int claveInsumoExiste(int clave, FILE* fptr,char* fArchivo)
 {
-
 	fptr = fopen(fArchivo,"rb");
 	bool sobreescrbir;
 	char c;
@@ -1174,7 +1127,8 @@ int claveInsumoExiste(int clave, FILE* fptr,char* fArchivo)
 	if (fptr == NULL)
 		return 1;
 
-	else{
+	else
+	{
 
 		// Buscar clave
 		fseek(fptr,sizeof(struct Insumo) * (clave - 1) ,SEEK_SET);		
@@ -1199,7 +1153,8 @@ int claveInsumoExiste(int clave, FILE* fptr,char* fArchivo)
 			else
 				printf("Ingresa una opción válida\n");
 
-		} while (c!='S' && c!= 's' && c!= 'N' && c!= 'n');
+		} 
+		while (c!='S' && c!= 's' && c!= 'N' && c!= 'n');
 
 		fclose(fptr);
 
@@ -1208,23 +1163,22 @@ int claveInsumoExiste(int clave, FILE* fptr,char* fArchivo)
 
 		else 
 			return 1;
-
-	
 	}
-
-};
+}
 
 
 void writeOutput2()
 {
 	FILE* fptr = fopen("insumos.dat","rb");
-	if (fptr == NULL) {
+	if (fptr == NULL) 
+	{
 		printf("[ERROR] - No se pudo abrir el archivo insumos.dat\n");
 		return;
 	}
 
 	FILE *archivo = fopen("Logs/Insumo", "w");
-	if (archivo == NULL) {
+	if (archivo == NULL) 
+	{
 		printf("[ERROR] - No se pudo abrir el archivo Logs/Insumo\n");
 		fclose(fptr);
 		return;
@@ -1246,7 +1200,6 @@ void writeOutput2()
 			}
 		}
 	}
-
 	fclose(fptr);
 	fclose(archivo);
 }
@@ -1258,74 +1211,68 @@ void writeOutput2()
 
 void menuProvedor()
 {
-
     bool continuar;
-	char c;
-	struct Provedor provedor = {};
+    char c;
+    struct Provedor provedor = {};
 
     //Comprobar que los archivos correspondientes existan
-	inicializarRegistrosProvedor();
+    inicializarRegistrosProvedor();
 
     do
     {
-		printf("Desea agregar un provedor S/N)");
+	printf("Desea agregar un provedor S/N)");
+	scanf(" %c",&c);
+
+	if (c=='S' || c=='s')
+		continuar = true;
+	else if(c=='N' || c == 'n')
+		continuar = false;
+	else
+		printf("Ingrese una opción válida");
+
+	}
+	while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
+
+    while(continuar)
+    {
+	lecturaProvedor(&provedor);
+
+	do
+	{
+		printf("Desea agregar otro provedor S/N)");
 		scanf(" %c",&c);
 
 		if (c=='S' || c=='s')
-				continuar = true;
+			continuar = true;
 		else if(c=='N' || c == 'n')
-				continuar = false;
+			continuar = false;
 		else
 			printf("Ingrese una opción válida");
 
-	}while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
-
-    while(continuar)
-	{
-
-		lecturaProvedor(&provedor);
-
-		do{
-			printf("Desea agregar otro provedor S/N)");
-			scanf(" %c",&c);
-
-			if (c=='S' || c=='s')
-					continuar = true;
-			else if(c=='N' || c == 'n')
-					continuar = false;
-			else
-				printf("Ingrese una opción válida");
-
-		}while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
-
-	};
-
+		}
+		while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
+	}
 	writeOutput();
-
-};
+}
 
 
 void inicializarRegistrosProvedor()
 {
-
     // Comprobar si el registro corespondiente exista sino crearlo
-
 	char nombreArchivo[] = "provedor.dat";
 	FILE* cfptr;
 	struct Provedor provedor = {};	
 
 	if (existeArchivo(cfptr,nombreArchivo))
-		
         // Si regresa false salir del programa
 		crearArchivo(cfptr,nombreArchivo,&provedor,100,sizeof(struct Provedor));
-};
+}
 
 
 void lecturaProvedor(struct Provedor* fProvedor)
 {
-
 	char c;
-    FILE* cfptr;
+	FILE* cfptr;
 	bool actualizarDatos,valido;
 
 	// Funciona solo para pasarlo a claveExiste y guardar la info en el
@@ -1339,21 +1286,21 @@ void lecturaProvedor(struct Provedor* fProvedor)
 
 		if (fProvedor->claveProvedor < 1 || fProvedor->claveProvedor > 100)
 			printf("Ingresa un número entre 1 y 100\n");
-	}while(fProvedor->claveProvedor < 1 || fProvedor->claveProvedor > 100);
+	}
+	while(fProvedor->claveProvedor < 1 || fProvedor->claveProvedor > 100);
 
-    if (claveProvedorExiste(fProvedor->claveProvedor,cfptr,"provedor.dat"))
+	if (claveProvedorExiste(fProvedor->claveProvedor,cfptr,"provedor.dat"))
 		actualizarDatos = false;
 	else
 		actualizarDatos = true;
 
-    if(actualizarDatos == true)
-    {
-
+	if(actualizarDatos == true)
+    	{
         // Leer nombre
-        validarNombre(fProvedor->nombre);
+        	validarNombre(fProvedor->nombre);
 
         // Correo
-        validarCorreo(fProvedor->correo);
+        	validarCorreo(fProvedor->correo);
 
 		// Descuento
 		do
@@ -1364,15 +1311,13 @@ void lecturaProvedor(struct Provedor* fProvedor)
 			if (fProvedor->descuento < 0 && fProvedor->descuento > 100)
 				printf("Ingresa un porcentaje válido\n");
 
-		}while(fProvedor->descuento < 0 || fProvedor->descuento > 100);
+		}
+		while(fProvedor->descuento < 0 || fProvedor->descuento > 100);
 
 		fProvedor->descuento/=100;
-        
-
 		// RFC
 		while ((c = getchar()) != '\n' && c != EOF);
-
-		validarRFC(fProvedor->rfc);
+			validarRFC(fProvedor->rfc);
 
 		// Año de nacimiento
 
@@ -1384,8 +1329,8 @@ void lecturaProvedor(struct Provedor* fProvedor)
 			if (fProvedor->anio < 1950 || fProvedor->anio > 2006)
 				printf("Ingresa un año entre 1950 y 2006\n");
 
-		} while (fProvedor->anio < 1950 || fProvedor->anio > 2006);
-
+		} 
+		while (fProvedor->anio < 1950 || fProvedor->anio > 2006);
 
 		// Mes
 		do
@@ -1396,10 +1341,10 @@ void lecturaProvedor(struct Provedor* fProvedor)
 			if (fProvedor->mes < 1 || fProvedor->mes > 12)
 				printf("Ingresa un mes válido\n");
 
-		} while (fProvedor->mes < 1 || fProvedor->mes > 12);
+		} 
+		while (fProvedor->mes < 1 || fProvedor->mes > 12);
 
 		// Nacimiento
-
 		do
 		{
 			printf("Ingresa el día del mes\n");
@@ -1462,11 +1407,11 @@ void lecturaProvedor(struct Provedor* fProvedor)
 					valido = true;
 				}
 					
-			};
+			}
 
 
-		} while(!valido);
-
+		} 
+		while(!valido);
 
 		// Validar dirección
 		validarDireccion(fProvedor->calle,fProvedor->numero,fProvedor->colonia,fProvedor->municipio,fProvedor->estado);
@@ -1474,28 +1419,23 @@ void lecturaProvedor(struct Provedor* fProvedor)
 		// Escribir estructura en el archivo
 		cfptr = fopen("provedor.dat","r+b");
 		if (cfptr == NULL)
-			{
-				printf("[ERROR] - No se pudo escribir en el archivo provedor.dat\n");
-				return;
-			}
+		{
+			printf("[ERROR] - No se pudo escribir en el archivo provedor.dat\n");
+			return;
+		}
 		
 		else
-			{
-				fseek(cfptr,sizeof(struct Provedor) * (fProvedor->claveProvedor - 1) ,SEEK_SET);		
-				fwrite(fProvedor,sizeof(struct Provedor),1,cfptr);
-				printf("[DEBUG MESSAGE] : Escritura concretada\n");
-		};
-
+		{
+			fseek(cfptr,sizeof(struct Provedor) * (fProvedor->claveProvedor - 1) ,SEEK_SET);		
+			fwrite(fProvedor,sizeof(struct Provedor),1,cfptr);
+			printf("[DEBUG MESSAGE] : Escritura concretada\n");
+		}
 		fclose(cfptr);
-		
     }
-
-
-};
+}
 
 int claveProvedorExiste(int clave, FILE* fptr,char* fArchivo)
 {
-
 	fptr = fopen(fArchivo,"rb");
 	bool sobreescrbir;
 	char c;
@@ -1504,8 +1444,8 @@ int claveProvedorExiste(int clave, FILE* fptr,char* fArchivo)
 	if (fptr == NULL)
 		return 2;
 
-	else{
-
+	else
+	{
 		// Buscar clave
 		fseek(fptr,sizeof(struct Provedor) * (clave - 1) ,SEEK_SET);		
 		fread(&provedor,sizeof(struct Provedor),1,fptr);
@@ -1529,7 +1469,8 @@ int claveProvedorExiste(int clave, FILE* fptr,char* fArchivo)
 			else
 				printf("Ingresa una opción válida\n");
 
-		} while (c!='S' && c!= 's' && c!= 'N' && c!= 'n');
+		} 
+		while (c!='S' && c!= 's' && c!= 'N' && c!= 'n');
 
 		fclose(fptr);
 
@@ -1538,22 +1479,16 @@ int claveProvedorExiste(int clave, FILE* fptr,char* fArchivo)
 
 		else 
 			return 1;
-
-	
 	}
-
-};
+}
 
 
 
 void validarCorreo(char* correo)
 {
-
-    bool valido;
-    int i,c,arrobaPos;
+    	bool valido;
+	int i,c,arrobaPos;
     //while ((c = getchar()) != '\n' && c != EOF);
-
-
 	do
 	{
 		printf("Ingresa tu correo electronico:\n");
@@ -1569,7 +1504,6 @@ void validarCorreo(char* correo)
 		if (correo[i] != '@' || i<1)
 			valido = false;
 
-		
 		// Buscar los caracteres entre el arroba y el punto, Validar que el punto no sea el fin de la cadena
 		if (valido)
 		{	
@@ -1578,19 +1512,12 @@ void validarCorreo(char* correo)
 			while(i<strlen(correo) && i!='.' && isalnum(correo[i]))i++;
 
 			//printf("%d %d \n",arrobaPos,i);
-
-
 			if (correo[i] != '.' || (i-arrobaPos)<2 || i+1==strlen(correo))
 				valido = false;
-
-		};
-
-
-
-	} while (!valido);
-	
-
-};
+		}
+	} 
+	while (!valido);
+}
 
 
 void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, char* estado)
@@ -1603,7 +1530,8 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 	while ((c = getchar()) != '\n' && c != EOF);
 
 	do
-	{	valido = true;
+	{	
+		valido = true;
 		nEspacios = 0;
 
 		printf("\nIngresa la calle donde vives\n");
@@ -1616,14 +1544,12 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 		{	
 			if (calle[i] == ' ')
 				nEspacios++;
-
 			else if ((calle[i] < 'A' || calle[i] > 'Z') && (calle[i] < 'a' || calle[i] > 'z'))
 			{
 				printf("Nombre de calle inválida\n");
 				valido = false;
-				
 			}
-		};
+		}
 
 		// Checar que no sea una cadena Vacia
 		if (strlen(calle) == nEspacios)
@@ -1668,7 +1594,8 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 	while ((c = getchar()) != '\n' && c != EOF);
 	// Colonia
 	do
-	{	valido = true;
+	{	
+		valido = true;
 		nEspacios = 0;
 		printf("Ingresa el nombre de la colonia\n");
 		fgets(colonia,sizeof(colonia),stdin);
@@ -1688,7 +1615,7 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 				valido = false;
 				
 			}
-		};
+		}
 
 		// Checar que no sea una cadena Vacia
 		if (strlen(colonia) == nEspacios)
@@ -1702,7 +1629,8 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 	while ((c = getchar()) != '\n' && c != EOF);
 	// Municipio
 	do
-	{	valido = true;
+	{	
+		valido = true;
 		nEspacios = 0;
 		printf("Ingresa el nombre del municipio\n");
 		fgets(municipio, sizeof(municipio), stdin);
@@ -1712,17 +1640,14 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 		//gets(datos.calle);
 		for (i = 0; i < strlen(municipio) && valido; i++)
 		{	
-
 			if (municipio[i] == ' ')
 				nEspacios++;
-
 			else if ((municipio[i] < 'A' || municipio[i] > 'Z') && (municipio[i] < 'a' || municipio[i] > 'z'))
 			{
 				printf("Error, nombre inválido\n");
 				valido = false;
-				
 			}
-		};
+		}
 
 		// Checar que no sea una cadena Vacia
 		if (strlen(municipio) == nEspacios)
@@ -1736,7 +1661,8 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 	while ((c = getchar()) != '\n' && c != EOF);
 	// Estado
 	do
-	{	valido = true;
+	{	
+		valido = true;
 		nEspacios = 0;
 		printf("Ingresa el nombre del estado\n");
 		fgets(estado, sizeof(estado), stdin);
@@ -1746,30 +1672,22 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 		//gets(datos.calle);
 		for (i = 0; i < strlen(estado) && valido; i++)
 		{
-
 			if (estado[i] == ' ')
 				nEspacios++;
-
 			if ((estado[i] < 'A' || estado[i] > 'Z') && (estado[i] < 'a' || estado[i] > 'z'))
 			{
 				printf("Error, nombre inválido\n");
 				valido = false;
-				
 			}
-		};
-
+		}
 		// Checar que no sea una cadena Vacia
 		if (strlen(estado) == nEspacios)
 		{
 			printf("Nombre de estado inválida\n");
 			valido = false;
 		}
-
-		
 	}
 	while (!valido);
-
-
 }
 
 /*void validarDireccion(struct Provedor* fProvedor)
@@ -1958,23 +1876,15 @@ void writeOutput()
 
 	struct Provedor provedor = {};
 
-
 	while (fread(&provedor, sizeof(struct Provedor), 1, fptr) == 1)
 	{
 		if (provedor.claveProvedor != 0)
-		{
 			fprintf(archivo,"%d %s %s\n",provedor.claveProvedor,provedor.nombre,provedor.rfc);
-		}
-			
-		
 	}
 
 	fclose(fptr);
 	fclose(archivo);
-
-
-};
-
+}
 
 void validarRFC(char* rfc)
 {
@@ -2000,7 +1910,6 @@ void validarRFC(char* rfc)
 			
 		else
 		{
-
 			// Primeras 4 letras 
 			for ( i = 0; i < 4 && valido; i++)
 			{
@@ -2010,7 +1919,7 @@ void validarRFC(char* rfc)
 					printf("Estructura invalida del rfc\n");
 				}
 					
-			};
+			}
 
 			// 6 números siguientes
 			for ( i = 4; i < 10 && valido; i++)
@@ -2020,7 +1929,7 @@ void validarRFC(char* rfc)
 					valido = false;
 					printf("Estructurá inválida del rfc\n");
 				}
-			};
+			}
 
 			// 3 caracteres aleatorios
 			for (i = 10; i < 13 && valido; i++)
@@ -2033,12 +1942,11 @@ void validarRFC(char* rfc)
 			}
 		}
 
-	} while (!valido);
+	}
+	while (!valido);
 	
-	printf("[DEBUGG MESSAGE] - RFC valido\n");
-			
+	printf("[DEBUGG MESSAGE] - RFC valido\n");	
 	printf("[RFC VALUE] : %s\n",rfc);
-
 }
 
 /*void validarRFC(struct Provedor* fProvedor)
