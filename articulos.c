@@ -2007,7 +2007,7 @@ void validarRFC(char* rfc)
 				if (rfc[i] < 'A' || rfc[i] > 'Z')
 				{
 					valido = false;
-					printf("Estructurá inválida del rfc\n");
+					printf("Estructura invalida del rfc\n");
 				}
 					
 			};
