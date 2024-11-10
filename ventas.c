@@ -67,7 +67,7 @@ void menuVenta() {
         printf("\nIngrese la cantidad del Artículo: ");
         do {
             scanf("%d", &ventas[numVentas].cantidad);
-        } while (!validarCantidad(ventas[numVentas].numeroArticulo, ventas[numVentas].cantidad, archivoArticulos));
+        } while (!validarCantidad(ventas[numVentas].numeroArticulo, &ventas[numVentas].cantidad, archivoArticulos));
 
         printf("¿Desea agregar otro artículo? (S/N): ");
         scanf(" %c", &respuesta);
@@ -115,19 +115,19 @@ bool validarEmpleado(FILE *archivoEmpleado, int empleadoId) {
     return true;
 }
 
-bool validarCantidad(int claveArticulo, int cantidad, FILE *archivo) {
+bool validarCantidad(int claveArticulo, int *cantidad, FILE *archivo) {
     struct Articulo articulo;
     int opcion;
 
     fseek(archivo, sizeof(struct Articulo) * (claveArticulo - 1), SEEK_SET);
     fread(&articulo, sizeof(struct Articulo), 1, archivo);
 
-    if (cantidad <= 0) {
+    if (*cantidad <= 0) {
         printf("Debes ingresar una cantidad mayor a 0\n");
         return false;
     }
 
-    if (articulo.inventario < cantidad) {
+    if (articulo.inventario < *cantidad) {
         printf("No hay suficientes unidades para el producto que quieres\n");
         printf("Cantidad actual: %d\n", articulo.inventario);
         printf("1) Elegir otro producto \n2) Actualizar cantidad del producto actual\n");
@@ -138,12 +138,12 @@ bool validarCantidad(int claveArticulo, int cantidad, FILE *archivo) {
         } else if (opcion == 2) {
             do {
                 printf("Ingresa la nueva cantidad: ");
-                scanf("%d", &cantidad);
-            } while (cantidad <= 0 || cantidad > articulo.inventario);
+                scanf("%d", cantidad);
+            } while (*cantidad <= 0 || *cantidad > articulo.inventario);
         }
     }
 
-    articulo.inventario -= cantidad;
+    articulo.inventario -= *cantidad;
     fseek(archivo, sizeof(struct Articulo) * (claveArticulo - 1), SEEK_SET);
     fwrite(&articulo, sizeof(struct Articulo), 1, archivo);
     fflush(archivo); // Ensure data is written to the file
@@ -162,8 +162,7 @@ bool validarExistencia(int clave, int modo, FILE *archivoMercados, FILE *archivo
         fseek(archivoMercados, sizeof(struct Mercado) * (clave-1), SEEK_SET);
         fread(&mercado, sizeof(struct Mercado), 1, archivoMercados);
         
-        // Debugging print statement
-        printf("Debug: Leyendo mercado con clave %d, encontrado clave %d\n", clave, mercado.clave);
+
 
         if (mercado.clave == 0) {
             printf("El mercado no existe\n");
@@ -174,9 +173,6 @@ bool validarExistencia(int clave, int modo, FILE *archivoMercados, FILE *archivo
         struct Articulo articulo;
         fseek(archivoArticulos, sizeof(struct Articulo) * (clave - 1), SEEK_SET);
         fread(&articulo, sizeof(struct Articulo), 1, archivoArticulos);
-        
-        // Debugging print statement
-        printf("Debug: Leyendo articulo con clave %d, encontrado clave %d\n", clave, articulo.claveArticulo);
 
         if (articulo.claveArticulo == 0) {
             printf("La clave del producto no existe\n");
@@ -402,24 +398,61 @@ void menuReporte() {
             printf("f) Cálculo de comisiones\n");
             printf("g) Compras pendientes de recepción\n");
             printf("h) Salir\n\n");
-            scanf("%c",&opcion);
-
+            scanf(" %c",&opcion);
+            printf("Opción seleccionada: %c\n", opcion);
         }while (opcion<'a' || opcion>'h');
 
         switch (opcion) {
             case 'a':
                 listadoArticulos();
-                break;
+            break;
+            case 'b':
+                ventaFecha();
+            break;
             case 'f':
                 listadoEmpleadosComision();
-                break;
+            break;
 
         }
 
     }while(opcion != 'h' && opcion != 'H');
 }
 
+void ventaFecha() {
+    FILE *archivoV=fopen("ventas.txt","r+");
+    int mes,dia,mes2,dia2,numeroArticulo,cantidad,empleado,ano;
+    float precio,total=0;
 
+    if(archivoV==NULL) {
+        printf("No existe ninguna venta registrada\n");
+        return;
+    }
+    do {
+        printf("Ingrese el mes de la venta que desea buscar\n");
+        scanf("%d",&mes);
+    }while(mes>12 || mes<0);
+
+    do {
+        printf("Ingrese el dia de la venta que desea buscar\n");
+        scanf("%d",&dia);
+    }while(dia>31|| dia<0);
+
+    while(!feof(archivoV)) {
+        fscanf(archivoV,"%d %d %f %d %d %d %d",&numeroArticulo,&cantidad,&precio,&empleado,&dia2,&mes2,&ano);
+        if(dia2==dia || mes==mes2) {
+            total+=precio;
+        }
+    }
+    if(total!=0) {
+        printf("el total fue de $%d\n",total);
+    }else {
+        printf("No hay ninguna venta registrada en esa fecha");
+    }
+
+
+
+
+}
 void listadoArticulos() {
     FILE *archivoArt=fopen("articulos.dat","rb");
     if(archivoArt==NULL) {
@@ -609,6 +642,7 @@ void menuControl() {
     char descripcion[100];
     int vistos[1000], i = 0, numeroCompra, recibida;
     float precio, total = 0;
+    struct Insumo insumosInfo;
 
     archivoProv = fopen("provedor.dat", "rb");
     if (archivoProv == NULL) {
@@ -690,6 +724,13 @@ void menuControl() {
             if (numeroCompra == idCompra) {
                 cero = 1;
             }
+
+            fseek(insumoArch,sizeof(struct Insumo)*(numeroInsumo-1),SEEK_SET);
+            fread(&insumosInfo,sizeof(struct Insumo),1,insumoArch);
+            insumosInfo.inventario+=cantidad;
+            fseek(insumoArch, sizeof(struct Insumo) * (numeroInsumo - 1), SEEK_SET);
+            fwrite(&insumosInfo, sizeof(struct Insumo), 1, insumoArch);
+
 
             fprintf(archivoTemp, "%d %d |%s| %d %d %d\n", idCompra, numeroInsumo, descripcion, cantidad, numeroProvedor, cero);
         }
