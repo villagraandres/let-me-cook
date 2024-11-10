@@ -531,11 +531,11 @@ void empleadoMenu()
         do
         {
             printf("Año de nacimiento: ");
-            scanf("%d", &datos.year);
-            if (datos.year < 1950 || datos.year > 2006)
+            scanf("%d", &datos.anos);
+            if (datos.anos < 1950 || datos.year > anos)
                 printf("Dato inválido\n");
         }
-        while (datos.year < 1950 || datos.year > 2006);
+        while (datos.anos < 1950 || datos.anos > 2006);
 
         do
         {
@@ -758,12 +758,12 @@ void  mercados_main()
 		do
 		{
 			printf("Ingresa año de nacimiento\n");
-			scanf("%d",&datos.año);
+			scanf("%d",&datos.anos);
 
-			if (datos.año < 1950 || datos.año > 2006)
+			if (datos.anos < 1950 || datos.anos > 2006)
 				printf("Ingresa un año entre 1950 y 2006\n");
 
-		} while (datos.año < 1950 || datos.año > 2006);
+		} while (datos.anos < 1950 || datos.anos > 2006);
 
 
 		// Mes
