@@ -26,13 +26,16 @@ void menuArticulos();
 void lecturaArticulo();
 void inicializarRegistrosArticulos();
 int claveExiste(int, FILE*, char*);
-void viewElements();
 void preguntarProvedor(struct Articulo*, struct Insumo*); // Use the declared struct Insumo here
 
 
-void writeOutput1();
+void EscribirLogProvedor();
 
-void writeOutput5();
+void EscribirLogInsumo();
+
+void EscribirLogArticulo();
+
+void EscribirLogMercado();
 
 
 struct Empleado{
@@ -45,7 +48,7 @@ struct Empleado{
     int mes;
     int dia;
     char calle[150];
-    int numero;
+    char numero[20];
     char colonia[100];
     char municipio[100];
     char estado[100];
@@ -95,7 +98,6 @@ void lecturaInsumo(struct Insumo*);
 
 int claveInsumoExiste(int , FILE* ,char*);
 
-void writeOutput2();
 
 // Provedor
 
@@ -137,7 +139,6 @@ void validarFecha(int*,int*,int*);
 int claveProvedorExiste(int , FILE* ,char* );
 
 
-void writeOutput();
 
 
 

@@ -2,11 +2,10 @@
 #include <stdbool.h>
 #include "articulos.h"
 #include "ventas.h"
-#include "ventas.h"
+
 
 int main()
 {
-    // Declaracion de variables
     int opcion;
 
     printf("#### Bienvenido al sistema más moderno del mundo mundial ####\n");
@@ -30,6 +29,7 @@ int main()
 
             if (opcion < 1 || opcion > 10)
                 printf("\nIngresa un número de opción válida\n\n");
+
 
             switch (opcion)
             {
@@ -72,5 +72,14 @@ int main()
         while (opcion < 1 || opcion > 10);
     }
     while(opcion != 10);
+
+    // Escribir logs
+    EscribirLogProvedor();
+    EscribirLogInsumo();
+    EscribirLogArticulo();
+    EscribirLogMercado();
+
+
+
     return 0;
 }
