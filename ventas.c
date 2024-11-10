@@ -393,7 +393,7 @@ void menuReporte() {
             printf("a) Listado de artículos\n");
             printf("b) Total de venta por fecha\n");
             printf("c) Total de venta por artículo\n");
-            printf("d) Listado de artículos a solicitar\n");
+            printf("d) Listado de insumos a solicitar\n");
             printf("e) Saldos por pagar\n");
             printf("f) Cálculo de comisiones\n");
             printf("g) Compras pendientes de recepción\n");
@@ -408,7 +408,16 @@ void menuReporte() {
             break;
             case 'b':
                 ventaFecha();
+            case 'c':
+                FILE *archivoV=fopen("ventas.txt","r+");
+                if(archivoV==NULL) {
+                    printf("No existe ninguna venta registrada");
+                }else {
+                    listadoventaArticulos(archivoV);
+                }
             break;
+            case 'd':
+
             case 'f':
                 listadoEmpleadosComision();
             break;
@@ -418,6 +427,43 @@ void menuReporte() {
     }while(opcion != 'h' && opcion != 'H');
 }
 
+void listadoventaArticulos(FILE *archivoV) {
+    int articuloId;
+    int mes,dia,numeroArticulo,cantidad,empleado,ano;
+    float precio,total=0;
+    FILE *archivoArt=fopen("articulos.dat","rb+");
+    if(archivoArt==NULL) {
+        printf("Error al abrir el archivo de articulos");
+    }
+
+    do {
+        printf("Ingrese el id del articulo que desea buscar");
+        scanf("%d",&articuloId);
+    }while (!validarArticulo(archivoArt,articuloId));
+
+    while (fscanf(archivoV,"%d %d %f %d %d %d %d",&numeroArticulo,&cantidad,&precio,&empleado,&dia,&mes,&ano) == 7) {
+        if(numeroArticulo==articuloId) {
+            total+=precio;
+        }
+    }
+    if(total!=0) {
+        printf("En total se ha vendido $%f\n",total);
+    }else {
+        printf("No hay ventas registradas para ese articulo\n");
+    }
+
+}
+bool validarArticulo(FILE *archivof,int id) {
+    struct Articulo articulo;
+    fseek(archivof, sizeof(struct Articulo) * (id - 1), SEEK_SET);
+    fread(&articulo, sizeof(struct Articulo), 1, archivof);
+
+    if (articulo.claveArticulo == 0) {
+        printf("La clave del producto no existe\n");
+        return false;
+    }
+    return true;
+}
 void ventaFecha() {
     FILE *archivoV=fopen("ventas.txt","r+");
     int mes,dia,mes2,dia2,numeroArticulo,cantidad,empleado,ano;
@@ -437,8 +483,7 @@ void ventaFecha() {
         scanf("%d",&dia);
     }while(dia>31|| dia<0);
 
-    while(!feof(archivoV)) {
-        fscanf(archivoV,"%d %d %f %d %d %d %d",&numeroArticulo,&cantidad,&precio,&empleado,&dia2,&mes2,&ano);
+    while (fscanf(archivoV,"%d %d %f %d %d %d %d",&numeroArticulo,&cantidad,&precio,&empleado,&dia2,&mes2,&ano) == 7) {
         if(dia2==dia || mes==mes2) {
             total+=precio;
         }
@@ -672,17 +717,14 @@ void menuControl() {
 
     printf("\n%15s %15s %15s %15s\n", "ID Compra", "Numero Insumo", "Descripcion", "Proveedor");
 
-    while (!feof(archivoCompras)) {
-        if (fscanf(archivoCompras, "%d %d |%[^|]| %d %d %d\n", &idCompra, &numeroInsumo, descripcion, &cantidad, &numeroProvedor, &cero) != 6) {
-            break;  // Salir si no se puede leer la línea correctamente
-        }
-        if(numeroProvedor==provedorId) {
+    while (fscanf(archivoCompras, "%d %d |%[^|]| %d %d %d\n", &idCompra, &numeroInsumo, descripcion, &cantidad, &numeroProvedor, &cero) == 6) {
+        if (numeroProvedor == provedorId) {
             if (ultimo != -1 && idCompra != ultimo) {
                 printf("Total: %.2f\n", total);
                 total = 0;
             }
 
-            total += obtenerPrecio(numeroInsumo, numeroProvedor, insumoArch)*cantidad;
+            total += obtenerPrecio(numeroInsumo, numeroProvedor, insumoArch) * cantidad;
 
             if (numeroProvedor == provedorId && cero == 0) {
                 printf("%15d %15d %15s %15d\n", idCompra, numeroInsumo, descripcion, numeroProvedor);
@@ -692,7 +734,6 @@ void menuControl() {
             vistos[i] = idCompra;
             i++;
         }
-
     }
 
     if (ultimo != -1) {
@@ -716,11 +757,7 @@ void menuControl() {
 
         rewind(archivoCompras);
 
-        while (!feof(archivoCompras)) {
-            if (fscanf(archivoCompras, "%d %d |%[^|]| %d %d %d\n", &idCompra, &numeroInsumo, descripcion, &cantidad, &numeroProvedor, &cero) != 6) {
-                break;
-            }
-
+        while (fscanf(archivoCompras, "%d %d |%[^|]| %d %d %d\n", &idCompra, &numeroInsumo, descripcion, &cantidad, &numeroProvedor, &cero) == 6) {
             if (numeroCompra == idCompra) {
                 cero = 1;
             }

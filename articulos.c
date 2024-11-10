@@ -532,7 +532,7 @@ void empleadoMenu()
         {
             printf("Año de nacimiento: ");
             scanf("%d", &datos.anos);
-            if (datos.anos < 1950 || datos.year > anos)
+            if (datos.anos < 1950)
                 printf("Dato inválido\n");
         }
         while (datos.anos < 1950 || datos.anos > 2006);
@@ -758,12 +758,12 @@ void  mercados_main()
 		do
 		{
 			printf("Ingresa año de nacimiento\n");
-			scanf("%d",&datos.anos);
+			scanf("%d",&datos.anio);
 
-			if (datos.anos < 1950 || datos.anos > 2006)
+			if (datos.anio < 1950 || datos.anio > 2006)
 				printf("Ingresa un año entre 1950 y 2006\n");
 
-		} while (datos.anos < 1950 || datos.anos > 2006);
+		} while (datos.anio < 1950 || datos.anio > 2006);
 
 
 		// Mes
@@ -794,13 +794,13 @@ void  mercados_main()
 				
 			else if (datos.mes == 2)
 			{
-				if (datos.año%4 == 0 && datos.dia > 29)
+				if (datos.anio%4 == 0 && datos.dia > 29)
 				{
 					printf("Fecha inválida\n");
 					valido = false;
 				}
 					
-				else if(datos.año%4 != 0 && datos.dia > 28)
+				else if(datos.anio%4 != 0 && datos.dia > 28)
 				{
 					printf("Fecha inválida");
 					valido = false;
@@ -920,9 +920,9 @@ void writeOutput5()
 
 	while (fread(&mercado, sizeof(struct Mercado), 1, fptr))
 	{
-		if (mercado.clave != 0 || mercado.año != 0)
+		if (mercado.clave != 0 || mercado.anio != 0)
 		{
-			fprintf(archivo,"%d :: %s %d\n",mercado.clave,mercado.nombre,mercado.año);
+			fprintf(archivo,"%d :: %s %d\n",mercado.clave,mercado.nombre,mercado.anio);
 			
 		}
 	}
@@ -1379,12 +1379,12 @@ void lecturaProvedor(struct Provedor* fProvedor)
 		do
 		{
 			printf("Ingresa año de nacimiento\n");
-			scanf("%d",&fProvedor->año);
+			scanf("%d",&fProvedor->anio);
 
-			if (fProvedor->año < 1950 || fProvedor->año > 2006)
+			if (fProvedor->anio < 1950 || fProvedor->anio > 2006)
 				printf("Ingresa un año entre 1950 y 2006\n");
 
-		} while (fProvedor->año < 1950 || fProvedor->año > 2006);
+		} while (fProvedor->anio < 1950 || fProvedor->anio > 2006);
 
 
 		// Mes
@@ -1413,13 +1413,13 @@ void lecturaProvedor(struct Provedor* fProvedor)
 				
 			else if (fProvedor->mes == 2)
 			{
-				if (fProvedor->año%4 == 0 && fProvedor->dia > 29)
+				if (fProvedor->anio%4 == 0 && fProvedor->dia > 29)
 				{
 					printf("Fecha inválida\n");
 					valido = false;
 				}
 					
-				else if(fProvedor->año%4 != 0 && fProvedor->dia > 28)
+				else if(fProvedor->anio%4 != 0 && fProvedor->dia > 28)
 				{
 					printf("Fecha inválida");
 					valido = false;

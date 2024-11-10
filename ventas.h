@@ -52,5 +52,6 @@ int existeNumero(int arreglo[], int tam, int numero);
 
 void ventaFecha();
 
-
+void listadoventaArticulos(FILE *archivoV);
+bool validarArticulo(FILE *,int);
 #endif // VENTAS_H
