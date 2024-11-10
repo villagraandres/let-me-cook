@@ -54,4 +54,5 @@ void ventaFecha();
 
 void listadoventaArticulos(FILE *archivoV);
 bool validarArticulo(FILE *,int);
+void listadoInsumos(FILE *);
 #endif // VENTAS_H

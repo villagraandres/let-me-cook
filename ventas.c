@@ -417,6 +417,17 @@ void menuReporte() {
                 }
             break;
             case 'd':
+                FILE *archivoI = fopen("insumos.dat", "rb+");
+                if (archivoI == NULL) {
+                    printf("No existe ningun insumo registrado\n");
+                } else {
+                    listadoInsumos(archivoI);
+                }
+                break;
+
+            case 'e':
+
+                break;
 
             case 'f':
                 listadoEmpleadosComision();
@@ -425,6 +436,39 @@ void menuReporte() {
         }
 
     }while(opcion != 'h' && opcion != 'H');
+}
+
+void listadoInsumos(FILE *archivoInsumos) {
+    FILE *archivoCompras = fopen("compras.txt", "r");
+    if (archivoCompras == NULL) {
+        printf("No hay ninguna compra registrada\n");
+        return;
+    }
+
+    struct Insumo insumo;
+    int idCompra, numeroInsumo, cantidad, numeroProvedor, cero;
+    bool yaOrdenado;
+
+    printf("\nInsumos a solicitar:\n");
+
+    rewind(archivoInsumos);
+    while (fread(&insumo, sizeof(struct Insumo), 1, archivoInsumos)) {
+        if (insumo.inventario < insumo.puntoReorden) {
+            yaOrdenado = false;
+            rewind(archivoCompras);
+            while (fscanf(archivoCompras, "%d %d |%[^|]| %d %d %d\n", &idCompra, &numeroInsumo, insumo.descripcion, &cantidad, &numeroProvedor, &cero) == 6) {
+                if (numeroInsumo == insumo.claveInsumo) {
+                    yaOrdenado = true;
+                    break;
+                }
+            }
+            if (!yaOrdenado) {
+                printf("Insumo ID: %d, Descripcion: %s, Inventario: %d, Punto de Reorden: %d\n", insumo.claveInsumo, insumo.descripcion, insumo.inventario, insumo.puntoReorden);
+            }
+        }
+    }
+
+    fclose(archivoCompras);
 }
 
 void listadoventaArticulos(FILE *archivoV) {
