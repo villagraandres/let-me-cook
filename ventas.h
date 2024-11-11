@@ -56,4 +56,6 @@ void listadoventaArticulos(FILE *archivoV);
 bool validarArticulo(FILE *,int);
 void listadoInsumos(FILE *);
 void listadoSaldos(FILE *);
+void listadoPendientes(FILE *);
+
 #endif // VENTAS_H

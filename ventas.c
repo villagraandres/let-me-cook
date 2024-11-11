@@ -501,19 +501,51 @@ void menuReporte()
                 {
                     listadoSaldos(archivoC);
                 }
-
+                fclose(archivoC);
 
                 break;
 
             case 'f':
                 listadoEmpleadosComision();
             break;
+            case 'g':
+                FILE *archivoCo=fopen("compras.txt","r+");
+                if(archivoCo==NULL)
+                {
+                    printf("No existe ninguna compra registrada");
+                }
+                else
+                {
+                    listadoPendientes(archivoCo);
+                }
+                fclose(archivoCo);
+
+                break;
+
+
+
         }
 
     }
     while(opcion != 'h' && opcion != 'H');
 }
 
+void listadoPendientes(FILE *archivo) {
+    int idCompra, numeroInsumo, cantidad, numeroProvedor, cero;
+    char descripcion[100];
+    int vistos[1000];
+    printf("\n%-10s %-20s %-25s %-12s %-15s\n", "Clave", "Numero Insumo", "descripcion", "Cantidad", "Provedor");
+
+    while (fscanf(archivo, "%d %d |%[^|]| %d %d %d\n", &idCompra, &numeroInsumo, descripcion, &cantidad, &numeroProvedor, &cero) == 6)
+    {
+        if(cero==0) \
+        {
+            printf("\n%-10d %-20d %-25s %-12d %-15d\n", idCompra, numeroInsumo, descripcion, cantidad, numeroProvedor);
+
+        }
+
+    }
+}
 void listadoSaldos(FILE *archivoC)
 {
     int idCompra, numeroInsumo, cantidad, numeroProvedor, cero;
@@ -524,7 +556,8 @@ void listadoSaldos(FILE *archivoC)
 
     while (fscanf(archivoC, "%d %d |%[^|]| %d %d %d\n", &idCompra, &numeroInsumo, descripcion, &cantidad, &numeroProvedor, &cero) == 6)
     {
-        if(!existeNumero(vistos,i,numeroProvedor,0) && cero==0) {
+        if(!existeNumero(vistos,i,numeroProvedor,0) && cero==0)
+        {
             vistos[i]=numeroProvedor;
             i++;
         }
@@ -547,6 +580,7 @@ void listadoSaldos(FILE *archivoC)
     if(i==0) {
         printf("No existen registros\n");
     }
+    fclose(archivoProveedores);
 
 }
 
@@ -615,6 +649,7 @@ void listadoventaArticulos(FILE *archivoV)
         printf("En total se ha vendido $%f\n",total);
     else 
         printf("No hay ventas registradas para ese articulo\n");
+    fclose(archivoArt);
 }
 
 bool validarArticulo(FILE *archivof,int id) 
@@ -701,50 +736,61 @@ void listadoArticulos()
 
 void listadoEmpleadosComision()
 {
-    FILE *ptrVentas=fopen("ventas.txt","r");
-    FILE *ptrEmpleados=fopen("empleados.dat","rb");
+    FILE *ptrVentas = fopen("ventas.txt", "r");
+    FILE *ptrEmpleados = fopen("empleados.dat", "rb");
     struct Empleado empleado = {};
     struct Venta venta = {};
 
-    int i,dia,mes,año,ocurrencias;
+    int dia, mes, anio;
+    float totalVentas;  // Variable para acumular el total de ventas por empleado
 
-    if(ptrVentas==NULL)
+    if (ptrVentas == NULL)
         printf("No se pudo abrir el archivo ventas.txt\n");
     else if (ptrEmpleados == NULL)
         printf("No se pudo abrir el archivo empleados.dat\n");
     else
     {
-        for (i = 0; i < 10; i++)
-        {
-            rewind(ptrVentas);
-            fread(&empleado,sizeof(struct Empleado),1,ptrEmpleados);
+        rewind(ptrEmpleados);
 
+        while (fread(&empleado, sizeof(struct Empleado), 1, ptrEmpleados))
+        {
             if (empleado.numero_empleado > 0)
             {
-                printf("%s%d\n",empleado.nombre,empleado.numero_empleado);
-                ocurrencias = 0;
-                while(fscanf(ptrVentas,"%d %d %f %d %d %d %d",&venta.numeroArticulo,&venta.cantidad,&venta.precio,&venta.empleado,&dia,&mes,&año) != EOF)
+                printf("Empleado: %s, Numero: %d\n", empleado.nombre, empleado.numero_empleado);
+
+                totalVentas = 0.0;
+
+                rewind(ptrVentas);
+                while (fscanf(ptrVentas, "%d %d %f %d %d %d %d", &venta.numeroArticulo, &venta.cantidad, &venta.precio, &venta.empleado, &dia, &mes, &anio) != EOF)
                 {
-                    //printf("pepe\n");
                     if (venta.empleado == empleado.numero_empleado)
-                        ocurrencias++;
+                    {
+
+                        totalVentas += venta.cantidad * venta.precio;
+                    }
                 }
 
-                if (ocurrencias>0)
-                    //printf("El número de ventas del empleado %d fueron de %d\n",empleado.numero_empleado,ocurrencias);
-                    printf("La comisión correspondiente el empleado : %s es de %.2f pesos argentinos\n",empleado.nombre,empleado.comision * ocurrencias);
+
+                if (totalVentas > 0)
+                {
+                    float comisionCalculada = totalVentas * empleado.comision;
+                    printf("La comision correspondiente para %s es de %.2f pesos argentinos\n", empleado.nombre, comisionCalculada);
+                }
+                else
+                {
+                    printf("No hay ventas registradas para %s\n", empleado.nombre);
+                }
             }
         }
-    fclose(ptrEmpleados);
-    fclose(ptrVentas);
+        fclose(ptrEmpleados);
+        fclose(ptrVentas);
     }
 }
 
 //MANEJO DE ARCHIVOS
 
 
-// Verifica si el archivo existe
-int existeArchivo(FILE* fptr, char* fArchivo) 
+int existeArchivo(FILE* fptr, char* fArchivo)
 {
     fptr = fopen(fArchivo, "rb");
 
