@@ -12,8 +12,6 @@ void menuArticulos()
 	char c;
 	struct Articulo articulo = {};
 
-	//Comprobar que los archivos correspondientes existan
-	inicializarRegistrosArticulos();
 
 	do
 	{
@@ -254,7 +252,7 @@ void lecturaArticulo(struct Articulo* fArticulo)
 			return;
 		}
 		else
-		{
+		{	
 			fseek(cfptr,sizeof(struct Articulo) * (fArticulo->claveArticulo - 1) ,SEEK_SET);
 			fwrite(fArticulo,sizeof(struct Articulo),1,cfptr);
 		}
@@ -262,10 +260,9 @@ void lecturaArticulo(struct Articulo* fArticulo)
 	}
 }
 
-void inicializarRegistrosArticulos()
+void inicializarRegistrosArticulos(char* nombreArchivo)
 {
 	// Comprobar si el registro corespondiente exista sino crearlo
-	char nombreArchivo[] = "articulos.dat";
 	FILE* cfptr;
 	struct Articulo articulo = {};	
 
@@ -360,9 +357,6 @@ void preguntarProvedor(struct Articulo* fArticulo,struct Insumo* fInsumo)
 
 //EMPLEADOS
 
-
-void inicializar_registrosEmpleado();
-
 bool validarCorreoE(const char* correo)
 {
     const char* at = strchr(correo, '@');
@@ -377,7 +371,6 @@ bool validarCorreoE(const char* correo)
 
 void empleadoMenu()
 {
-    inicializar_registrosEmpleado();
     struct Empleado datos = {};
     FILE *archivo;
     bool registros = true;
@@ -479,9 +472,8 @@ void empleadoMenu()
     fclose(archivo);
 }
 
-void inicializar_registrosEmpleado()
+void inicializarRegistrosEmpleados(char* nombreArchivo)
 {
-    char nombreArchivo[] = "empleados.dat";
     FILE* cfptr;
     struct Empleado empleadoInfo = {};
 
@@ -496,11 +488,10 @@ void inicializar_registrosEmpleado()
 }
 
 
-void inicializar_registros();
+
 
 void  mercados_main()
-{
-    inicializar_registros();
+{	
     struct Mercado datos = {};
     FILE *archivo;
     bool registros = true;
@@ -675,9 +666,8 @@ void  mercados_main()
     fclose(archivo);
 }
 
-void inicializar_registros()
+void inicializarRegistrosMercados(char *nombreArchivo)
 {
-    char nombreArchivo[] = "mercado.dat";
     FILE* cfptr;
     struct Mercado mercadoInfo = {0};
 
@@ -703,7 +693,6 @@ void menuInsumos()
 	struct Insumo insumo = {};
 
 	//Comprobar que los archivos correspondientes existan
-	inicializarRegistrosInsumos();
 
 	do
 	{
@@ -744,10 +733,9 @@ void menuInsumos()
 }
 
 
-void inicializarRegistrosInsumos()
+void inicializarRegistrosInsumos(char* nombreArchivo)
 {
 	// Comprobar si el registro corespondiente exista sino crearlo
-	char nombreArchivo[] = "insumos.dat";
 	FILE* cfptr;
 	struct Insumo insumo = {};	
 
@@ -972,8 +960,6 @@ void menuProvedor()
     char c;
     struct Provedor provedor = {};
 
-    //Comprobar que los archivos correspondientes existan
-    inicializarRegistrosProvedor();
 
     do
     {
@@ -1013,10 +999,8 @@ void menuProvedor()
 }
 
 
-void inicializarRegistrosProvedor()
+void inicializarRegistrosProvedor(char* nombreArchivo)
 {
-    // Comprobar si el registro corespondiente exista sino crearlo
-	char nombreArchivo[] = "provedor.dat";
 	FILE* cfptr;
 	struct Provedor provedor = {};	
 
@@ -1026,6 +1010,7 @@ void inicializarRegistrosProvedor()
 }
 
 
+
 void lecturaProvedor(struct Provedor* fProvedor)
 {
 	char c;
@@ -1033,7 +1018,7 @@ void lecturaProvedor(struct Provedor* fProvedor)
 	bool actualizarDatos,valido;
 
 	// Funciona solo para pasarlo a claveExiste y guardar la info en el
-	struct Provedor provedor;
+	struct Provedor provedor = {};
 
     // Numero del provedor
 	do
@@ -1537,14 +1522,14 @@ void EscribirLogProvedor()
 
 	struct Provedor provedor = {};
 
-	fprintf(archivo,"%-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s\n",
+	fprintf(archivo,"%-20s %-20s %-20s %-40s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s\n",
 	"Clave","Nombre","Rfc","Correo",
 	"descuento","Año","Mes","Dia","Calle","Numero","Colonia","Municipio","Estado");
 
 	while (fread(&provedor, sizeof(struct Provedor), 1, fptr) == 1)
 	{
 		if (provedor.claveProvedor != 0)
-			fprintf(archivo,"%-20d %-20s %-20s %-20s %-20.2f %-20d %-20d %-20d %-20s %-20s %-20s %-20s %-20s\n",
+			fprintf(archivo,"%-20d %-20s %-20s %-40s %-20.2f %-20d %-20d %-20d %-20s %-20s %-20s %-20s %-20s\n",
 			provedor.claveProvedor,provedor.nombre,provedor.rfc,provedor.correo,provedor.descuento,
 			provedor.anio,provedor.mes,provedor.dia,provedor.calle,provedor.numero,provedor.colonia,
 			provedor.municipio,provedor.estado);
@@ -1574,14 +1559,14 @@ void EscribirLogInsumo()
 
 	struct Insumo insumo= {};
 
-	fprintf(archivo,"%-20s %-20s %-20s %-20s\n",
+	fprintf(archivo,"%-20s %-100s %-20s %-20s\n",
 	"Clave","Descipcion","Punto Reorden" ,"Inventario");
 
 	while (fread(&insumo, sizeof(struct Insumo), 1, fptr) == 1)
 	{
 		if (insumo.claveInsumo != 0)
 		{
-			fprintf(archivo,"%-20d%-20s%-20d%-20d\n",insumo.claveInsumo,insumo.descripcion,insumo.puntoReorden,insumo.inventario);
+			fprintf(archivo,"%-20d%-100s%-20d%-20d\n",insumo.claveInsumo,insumo.descripcion,insumo.puntoReorden,insumo.inventario);
 			fprintf(archivo,"%-20s %-20s\n","Provedore Clave","Precio");
 			for ( int i = 0; i < 10; i++)
 			{	

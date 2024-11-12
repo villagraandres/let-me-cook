@@ -22,9 +22,17 @@ struct Articulo
     int inventario;
 };
 
+
+void inicializarRegistrosArticulos(char*);
+void inicializarRegistrosInsumos(char *);
+void inicializarRegistrosMercados(char*);
+void inicializarRegistrosEmpleados(char*);
+void inicializarRegistrosProvedor(char*);
+
+
 void menuArticulos();
 void lecturaArticulo();
-void inicializarRegistrosArticulos();
+
 int claveExiste(int, FILE*, char*);
 void preguntarProvedor(struct Articulo*, struct Insumo*); // Use the declared struct Insumo here
 
@@ -92,7 +100,7 @@ struct Insumo
 void menuInsumos();
 
 
-void inicializarRegistrosInsumos();
+
 
 void lecturaInsumo(struct Insumo*);
 
@@ -124,7 +132,6 @@ struct Provedor
 void menuProvedor();
 
 
-void inicializarRegistrosProvedor();
 
 void lecturaProvedor(struct Provedor*);
 
@@ -140,7 +147,9 @@ int claveProvedorExiste(int , FILE* ,char* );
 
 
 
+// Llenar de forma Automatica Registros
 
+void llenarProvedor();
 
 
 
