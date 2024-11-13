@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include "articulos.h"
 #include <time.h>
+#include <stdlib.h>
 
 
 void menuArticulos()
@@ -1687,15 +1688,23 @@ float obtenerPrecioArticulo(int claveArticulo, FILE *archivo)
     return articulo.precio;
 }
 
-void generarFactura(struct Venta ventas[], int numVentas, float total, int empleadoId) 
+void generarFactura(struct Venta ventas[], int numVentas, float total, int empleadoId)
 {
-    printf("\nFactura:\n");
-    printf("Empleado ID: %d\n", empleadoId);
-    for (int i = 0; i < numVentas; i++) 
-    {
-        printf("Artículo %d: %d unidades\n", ventas[i].numeroArticulo, ventas[i].cantidad);
-    }
-    printf("Total: %.2f\n", total);
+	printf("\n====================================\n");
+	printf("               FACTURA              \n");
+	printf("====================================\n");
+	printf("Empleado ID: %d\n\n", empleadoId);
+	printf("Artículo       Cantidad\n");
+	printf("------------------------------------\n");
+
+	for (int i = 0; i < numVentas; i++)
+	{
+		printf("%-15d %d unidades\n", ventas[i].numeroArticulo, ventas[i].cantidad);
+	}
+
+	printf("------------------------------------\n");
+	printf("Total a pagar: $%.2f\n", total);
+	printf("====================================\n\n");
 }
 
 
@@ -2007,7 +2016,7 @@ void listadoPendientes(FILE *archivo) {
 
     while (fscanf(archivo, "%d %d |%[^|]| %d %d %d\n", &idCompra, &numeroInsumo, descripcion, &cantidad, &numeroProvedor, &cero) == 6)
     {
-        if(cero==0) \
+        if(cero==0)
         {
             printf("\n%-10d %-20d %-25s %-12d %-15d\n", idCompra, numeroInsumo, descripcion, cantidad, numeroProvedor);
 
@@ -2065,6 +2074,7 @@ void listadoInsumos(FILE *archivoInsumos)
     struct Insumo insumo;
     int idCompra, numeroInsumo, cantidad, numeroProvedor, cero;
     bool yaOrdenado;
+	char descripcion[100];
 
     printf("\nInsumos a solicitar:\n");
 
@@ -2075,7 +2085,7 @@ void listadoInsumos(FILE *archivoInsumos)
         {
             yaOrdenado = false;
             rewind(archivoCompras);
-            while (fscanf(archivoCompras, "%d %d |%[^|]| %d %d %d\n", &idCompra, &numeroInsumo, insumo.descripcion, &cantidad, &numeroProvedor, &cero) == 6) {
+            while (fscanf(archivoCompras, "%d %d |%[^|]| %d %d %d\n", &idCompra, &numeroInsumo, descripcion, &cantidad, &numeroProvedor, &cero) == 6) {
                 if (numeroInsumo == insumo.claveInsumo) 
                 {
                     yaOrdenado = true;
@@ -2172,35 +2182,49 @@ void ventaFecha()
 }
 void listadoArticulos()
 {
-    FILE *archivoArt = fopen("articulos.dat", "rb");
-    if (archivoArt == NULL)
-    {
-        printf("No existe ningún artículo registrado\n");
-    } else
-    {
-        struct Articulo articuloInfo;
-        rewind(archivoArt);
+	FILE *archivoArt = fopen("articulos.dat", "rb");
+	if (archivoArt == NULL)
+	{
+		printf("No existe ningún artículo registrado\n");
+	}
+	else
+	{
+		struct Articulo articuloInfo;
+		char *descripciones[100];  // Arreglo de apuntadores para descripciones
+		int i = 0;
 
-        
-        printf("\n%-15s %-20s %-15s %-15s %-10s\n",
-               "Clave", "Descripcion", "Costo", "Precio", "Inventario");
-        printf("-------------------------------------------------------------------------------\n");
+		printf("\n%-15s %-20s %-15s %-15s %-10s\n",
+			   "Clave", "Descripcion", "Costo", "Precio", "Inventario");
+		printf("-------------------------------------------------------------------------------\n");
 
-        
-        while (fread(&articuloInfo, sizeof(struct Articulo), 1, archivoArt))
-        {
-            if (articuloInfo.claveArticulo != 0)
-                {
-                printf("%-15d %-20s %-15.2f %-15.2f %-10d\n",
-                       articuloInfo.claveArticulo,
-                       articuloInfo.descripcion,
-                       articuloInfo.costo,
-                       articuloInfo.precio,
-                       articuloInfo.inventario);
-            }
-        }
-        fclose(archivoArt);  
-    }
+		// Leer y almacenar descripciones
+		while (fread(&articuloInfo, sizeof(struct Articulo), 1, archivoArt) && i < 100)
+		{
+			if (articuloInfo.claveArticulo != 0)
+			{
+				// Almacenar la descripción en el arreglo de apuntadores
+				descripciones[i] = (char *)malloc(strlen(articuloInfo.descripcion) + 1);
+				strcpy(descripciones[i], articuloInfo.descripcion);
+
+				printf("%-15d %-20s %-15.2f %-15.2f %-10d\n",
+					   articuloInfo.claveArticulo,
+					   descripciones[i],
+					   articuloInfo.costo,
+					   articuloInfo.precio,
+					   articuloInfo.inventario);
+
+				i++;
+			}
+		}
+
+		// Liberar la memoria asignada
+		for (int j = 0; j < i; j++)
+		{
+			free(descripciones[j]);
+		}
+
+		fclose(archivoArt);
+	}
 }
 
 void listadoEmpleadosComision()
