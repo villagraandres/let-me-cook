@@ -90,13 +90,6 @@ int main()
     }
     while(opcion != 10);
 
-    // Escribir logs
-    EscribirLogProvedor();
-    EscribirLogInsumo();
-    EscribirLogArticulo();
-    EscribirLogMercado();
-
-
 
     return 0;
 }
