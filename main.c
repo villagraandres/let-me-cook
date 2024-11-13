@@ -1,7 +1,11 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "articulos.h"
-
+//
+//NOMBRES:
+//Andres Nehuel Villagra Rodriguez
+//Arturo Miranda Orellana
+//Alberto Vazquez Aguilar
 
 int main()
 {

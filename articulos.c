@@ -1945,59 +1945,64 @@ void menuReporte()
             case 'b':
                 ventaFecha();
             break;
-            case 'c':
-                FILE *archivoV=fopen("ventas.txt","r+");
-                if(archivoV==NULL) 
-                {
-                    printf("No existe ninguna venta registrada");
-                }
-                else 
-                {
-                    listadoventaArticulos(archivoV);
-                }
+            case 'c': {
+	            FILE *archivoV=fopen("ventas.txt","r+");
+            	if(archivoV==NULL)
+            	{
+            		printf("No existe ninguna venta registrada");
+            	}
+            	else
+            	{
+            		listadoventaArticulos(archivoV);
+            	}
+            }
             break;
             
             case 'd':
-                FILE *archivoI = fopen("insumos.dat", "rb+");
-                if (archivoI == NULL) 
-                {
-                    printf("No existe ningun insumo registrado\n");
-                } 
-                else 
-                {
-                    listadoInsumos(archivoI);
-                }
+
+            {
+            	FILE *archivoI = fopen("insumos.dat", "rb+");
+            	if (archivoI == NULL)
+            	{
+            		printf("No existe ningun insumo registrado\n");
+            	}
+            	else
+            	{
+            		listadoInsumos(archivoI);
+            	}
+            }
                 break;
 
             case 'e':
-                FILE *archivoC=fopen("compras.txt","r+");
-                if(archivoC==NULL)
-                {
-                    printf("No existe ninguna compra registrada");
-                }
-                else
-                {
-                    listadoSaldos(archivoC);
-                }
-                fclose(archivoC);
-
+            {
+	            FILE *archivoC=fopen("compras.txt","r+");
+            	if(archivoC==NULL)
+            	{
+            		printf("No existe ninguna compra registrada");
+            	}
+            	else
+            	{
+            		listadoSaldos(archivoC);
+            	}
+            	fclose(archivoC);
+            }
                 break;
 
             case 'f':
                 listadoEmpleadosComision();
             break;
-            case 'g':
-                FILE *archivoCo=fopen("compras.txt","r+");
-                if(archivoCo==NULL)
-                {
-                    printf("No existe ninguna compra registrada");
-                }
-                else
-                {
-                    listadoPendientes(archivoCo);
-                }
-                fclose(archivoCo);
-
+            case 'g': {
+	            FILE *archivoCo=fopen("compras.txt","r+");
+            	if(archivoCo==NULL)
+            	{
+            		printf("No existe ninguna compra registrada");
+            	}
+            	else
+            	{
+            		listadoPendientes(archivoCo);
+            	}
+            	fclose(archivoCo);
+            }
                 break;
 
 
