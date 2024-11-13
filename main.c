@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "articulos.h"
-#include "ventas.h"
 
 
 int main()
