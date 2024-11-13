@@ -10,40 +10,39 @@ void obtenerFecha(struct tm *fecha);
 
 void menuVenta() 
 {
-    FILE *archivoMercados, *archivoArticulos, *archivoEmpleados,*archivoVentas;
+    FILE *archivoMercados, *archivoArticulos, *archivoEmpleados, *archivoVentas;
     struct Venta ventas[100];
     struct Mercado datosMercado;
     int numVentas = 0;
-    float precioTotal = 0,precioArt;
+    float precioTotal = 0, precioArt;
     char respuesta;
     struct tm fecha;
     
     obtenerFecha(&fecha);
 
-    archivoVentas=fopen("ventas.txt","a");
-    if(archivoVentas==NULL)
+    archivoVentas = fopen("ventas.txt", "a");
+    if (archivoVentas == NULL)
     {
-        archivoVentas=fopen("ventas.txt","w");
+        printf("Error al abrir el archivo de ventas\n");
+        return;
     }
 
     archivoMercados = fopen("mercado.dat", "rb+"); 
     if (archivoMercados == NULL) 
     {
         printf("No existe ningun mercado registrado\n");
+        fclose(archivoVentas);
         return;
     }
-
-
-
 
     archivoArticulos = fopen("articulos.dat", "rb+");
     if (archivoArticulos == NULL) 
     {
         printf("No existe ningún artículo registrado\n");
         fclose(archivoMercados);
+        fclose(archivoVentas);
         return;
     }
-
 
     archivoEmpleados = fopen("empleados.dat", "rb+");
     if (archivoEmpleados == NULL) 
@@ -51,9 +50,9 @@ void menuVenta()
         printf("No hay ningún empleado registrado\n");
         fclose(archivoMercados);
         fclose(archivoArticulos);
+        fclose(archivoVentas);
         return;
     }
-
 
     printf("\nControl de Ventas\n");
     printArchivoMercados(archivoMercados);
@@ -98,15 +97,15 @@ void menuVenta()
 
     for (int i = 0; i < numVentas; i++) 
     {
-        fseek(archivoMercados,sizeof(struct Mercado)*(ventas[i].numeroMercado-1),SEEK_SET);
-        fread(&datosMercado,sizeof(struct Mercado),1,archivoMercados);
-        precioArt=( obtenerPrecioArticulo(ventas[i].numeroArticulo, archivoArticulos) * ventas[i].cantidad)*datosMercado.descuento;
-        precioTotal +=precioArt;
-        fprintf(archivoVentas,"%d %d %f %d %d %d %d\n",ventas[i].numeroArticulo,ventas[i].cantidad,precioArt,ventas[i].empleado,fecha.tm_mday, fecha.tm_mon + 1, fecha.tm_year + 1900);
+        fseek(archivoMercados, sizeof(struct Mercado) * (ventas[i].numeroMercado - 1), SEEK_SET);
+        fread(&datosMercado, sizeof(struct Mercado), 1, archivoMercados);
+        precioArt = (obtenerPrecioArticulo(ventas[i].numeroArticulo, archivoArticulos) * ventas[i].cantidad) * datosMercado.descuento;
+        precioTotal += precioArt;
+        fprintf(archivoVentas, "%d %d %f %d %d %d %d\n", ventas[i].numeroArticulo, ventas[i].cantidad, precioArt, ventas[i].empleado, fecha.tm_mday, fecha.tm_mon + 1, fecha.tm_year + 1900);
+        fflush(archivoVentas); // Ensure data is written to the file
     }
 
     printf("El precio total de la venta es: %.2f\n", precioTotal);
-
 
     printf("¿Requiere factura? (S/N): ");
     scanf(" %c", &respuesta);
@@ -118,6 +117,7 @@ void menuVenta()
     fclose(archivoArticulos);
     fclose(archivoMercados);
     fclose(archivoEmpleados);
+    fclose(archivoVentas);
 }
 
 bool validarEmpleado(FILE *archivoEmpleado, int empleadoId) 
@@ -245,7 +245,10 @@ void printArchivoMercados(FILE *archivoMercados)
     printf("\nContenido de archivoMercados:\n");
     while (fread(&mercadoInfo, sizeof(struct Mercado), 1, archivoMercados)) 
     {
-        printf("Clave: %d\n", mercadoInfo.clave);
+        if(mercadoInfo.clave!=0) {
+            printf("Clave: %d\n", mercadoInfo.clave);
+
+        }
     }
     rewind(archivoMercados);
 }
@@ -267,15 +270,19 @@ void printArchivoArticulos(FILE *archivoArticulos)
 // Function to print the contents of archivoEmpleados
 void printArchivoEmpleados(FILE *archivoEmpleados) 
 {
-    struct Empleado empleadoInfo;
-    rewind(archivoEmpleados);
-    printf("\nContenido de archivoEmpleados:\n");
-    while (fread(&empleadoInfo, sizeof(struct Empleado), 1, archivoEmpleados)) 
-    {
-        if(empleadoInfo.numero_empleado!=0) 
-            printf("Número de Empleado: %d\n", empleadoInfo.numero_empleado);
+    FILE *archivo = fopen("empleados.dat", "rb");
+    if (archivo == NULL) {
+        printf("Error al abrir el archivo\n");
+        return;
     }
-    rewind(archivoEmpleados);
+
+    struct Empleado empleado;
+    while (fread(&empleado, sizeof(struct Empleado), 1, archivo) == 1) {
+        if (empleado.numero_empleado != 0) {
+            printf("Número de Empleado: %d\n", empleado.numero_empleado);
+        }
+    }
+    fclose(archivo);
 }
 
 
@@ -447,16 +454,16 @@ void menuReporte()
         do 
         {
             printf("Reportes\n");
-            printf("a) Listado de artículos\n");
+            printf("a) Listado de articulos\n");
             printf("b) Total de venta por fecha\n");
-            printf("c) Total de venta por artículo\n");
+            printf("c) Total de venta por articulo\n");
             printf("d) Listado de insumos a solicitar\n");
             printf("e) Saldos por pagar\n");
-            printf("f) Cálculo de comisiones\n");
-            printf("g) Compras pendientes de recepción\n");
+            printf("f) Calculo de comisiones\n");
+            printf("g) Compras pendientes de recepcion\n");
             printf("h) Salir\n\n");
             scanf(" %c",&opcion);
-            printf("Opción seleccionada: %c\n", opcion);
+            printf("Opcion seleccionada: %c\n", opcion);
         }
         while (opcion<'a' || opcion>'h');
 
@@ -467,6 +474,7 @@ void menuReporte()
             break;
             case 'b':
                 ventaFecha();
+            break;
             case 'c':
                 FILE *archivoV=fopen("ventas.txt","r+");
                 if(archivoV==NULL) 
@@ -803,13 +811,12 @@ int existeArchivo(FILE* fptr, char* fArchivo)
     }
 }
 
-// Crea el archivo con estructuras iniciales
-int crearArchivo(FILE* fptr, char* fArchivo, void* estructura, int cantidadEstructuras, int tamanoEstructura) 
+int crearArchivo(FILE* fptr, char* fArchivo, void* estructura, int cantidadEstructuras, int tamanoEstructura)
 {
     fptr = fopen(fArchivo, "wb");
 
     if (fptr == NULL) 
-        return 1;  // Error al abrir el archivo para escritura
+        return 1;
 
     for (int i = 0; i < cantidadEstructuras; ++i) 
     {

@@ -13,6 +13,16 @@ int main()
     inicializarRegistrosMercados("mercado.dat");
     inicializarRegistrosEmpleados("empleados.dat");
     inicializarRegistrosProvedor("provedor.dat");
+    printf(" ____  _                           _     _               \n");
+    printf("| __ )(_) ___ _ ____   _____ _ __ (_) __| | ___     __ _ \n");
+    printf("|  _ \\| |/ _ \\ '_ \\ \\ / / _ \\ '_ \\| |/ _` |/ _ \\   / _` |\n");
+    printf("| |_) | |  __/ | | \\ V /  __/ | | | | (_| | (_) | | (_| |\n");
+    printf("|____/|_|\\___|_| |_|\\_/ \\___|_| |_|_|\\__,_|\\___/   \\__,_|\n");
+    printf(" / ___|_ __ __ _ _ __  (_) __ _   ___                    \n");
+    printf("| |  _| '__/ _` | '_ \\ | |/ _` | / __|                   \n");
+    printf("| |_| | | | (_| | | | || | (_| || (__                    \n");
+    printf(" \\____|_|  \\__,_|_| |_|/ |\\__,_(_)___|                  \n");
+    printf("                     |__/                                \n\n");
 
     printf("#### Bienvenido al sistema más moderno del mundo mundial ####\n");
     do
