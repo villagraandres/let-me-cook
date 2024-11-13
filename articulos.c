@@ -395,9 +395,6 @@ void empleadoMenu()
             datos.nombre[strlen(datos.nombre) - 1] = '\0';
             cont1 = 0;
 
-
-			printf("%s %ld",datos.nombre,strlen(datos.nombre));
-
             if (strlen(datos.nombre) < 10)
             {
                 printf("Longitud inválida, asegúrese de que sean más de 10 caracteres\n");
@@ -931,38 +928,40 @@ void menuProvedor()
 
 
     do
-    {
-	printf("Desea agregar un provedor S/N)");
-	scanf(" %c",&c);
+    {   
+        clear_input_buffer();
+        printf("Desea agregar un provedor S/N)");
+        scanf(" %c",&c);
 
-	if (c=='S' || c=='s')
-		continuar = true;
-	else if(c=='N' || c == 'n')
-		continuar = false;
-	else
-		printf("Ingrese una opción válida");
+        if (c=='S' || c=='s')
+            continuar = true;
+        else if(c=='N' || c == 'n')
+            continuar = false;
+        else
+            printf("Ingrese una opción válida");
 
 	}
 	while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
 
     while(continuar)
     {
-	lecturaProvedor(&provedor);
+        clear_input_buffer();
+	    lecturaProvedor(&provedor);
 
-	do
-	{
-		printf("Desea agregar otro provedor S/N)");
-		scanf(" %c",&c);
+        do
+        {
+            printf("Desea agregar otro provedor S/N)");
+            scanf(" %c",&c);
 
-		if (c=='S' || c=='s')
-			continuar = true;
-		else if(c=='N' || c == 'n')
-			continuar = false;
-		else
-			printf("Ingrese una opción válida");
+            if (c=='S' || c=='s')
+                continuar = true;
+            else if(c=='N' || c == 'n')
+                continuar = false;
+            else
+                printf("Ingrese una opción válida");
 
-		}
-		while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
+            }
+            while(c!='S' && c!= 's' && c!= 'N' && c!= 'n');
 	}
 
 }
@@ -1004,10 +1003,10 @@ void lecturaProvedor(struct Provedor* fProvedor)
 		actualizarDatos = true;
 
 	if(actualizarDatos == true)
-    	{
-        	validarNombre(fProvedor->nombre);
+    {
+        validarNombre(fProvedor->nombre);
 
-        	validarCorreo(fProvedor->correo);
+        validarCorreo(fProvedor->correo);
 
 		
 		do
@@ -1024,12 +1023,11 @@ void lecturaProvedor(struct Provedor* fProvedor)
 		fProvedor->descuento/=100;
 		
 		while ((c = getchar()) != '\n' && c != EOF);
-			validarRFC(fProvedor->rfc);
+		
+        validarRFC(fProvedor->rfc);
 
 
 		validarFecha(&fProvedor->anio,&fProvedor->mes,&fProvedor->dia);
-		
-
 		
 		validarDireccion(fProvedor->calle,fProvedor->numero,fProvedor->colonia,fProvedor->municipio,fProvedor->estado);
 		
@@ -1235,8 +1233,7 @@ void validarCorreo(char* correo)
 			if (correo[i] != '.' || (i-arrobaPos)<2 || i+1==strlen(correo))
 				valido = false;
 		}
-	} 
-	while (!valido);
+	}while (!valido);
 }
 
 
@@ -1278,8 +1275,7 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 			valido = false;
 		}
 			
-	}
-	while (!valido);
+	}while (!valido);
 
 	
 	while ((c = getchar()) != '\n' && c != EOF);
@@ -1308,11 +1304,9 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 				valido = false;
 			}	
 		}
-	}
-	while (!valido);
+	}while (!valido);
 
-	while ((c = getchar()) != '\n' && c != EOF);
-	
+    clear_input_buffer();
 	do
 	{	
 		valido = true;
@@ -1343,8 +1337,7 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 			printf("Nombre de colonia inválida\n");
 			valido = false;
 		}
-	}
-	while (!valido);
+	}while (!valido);
 	
 	while ((c = getchar()) != '\n' && c != EOF);
 	
@@ -1375,8 +1368,7 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 			printf("Nombre de municipio inválida\n");
 			valido = false;
 		}
-	}
-	while (!valido);
+	}while (!valido);
 
 	while ((c = getchar()) != '\n' && c != EOF);
 	
@@ -1385,16 +1377,15 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 		valido = true;
 		nEspacios = 0;
 		printf("Ingresa el nombre del estado\n");
-		fgets(estado, sizeof(estado), stdin);
+		fgets(estado, 100, stdin);
 		estado[strlen(estado)-1] = '\0';
-		
 		
 		
 		for (i = 0; i < strlen(estado) && valido; i++)
 		{
 			if (estado[i] == ' ')
 				nEspacios++;
-			if ((estado[i] < 'A' || estado[i] > 'Z') && (estado[i] < 'a' || estado[i] > 'z'))
+			else if ((estado[i] < 'A' || estado[i] > 'Z') && (estado[i] < 'a' || estado[i] > 'z'))
 			{
 				printf("Error, nombre inválido\n");
 				valido = false;
@@ -1406,8 +1397,9 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 			printf("Nombre de estado inválida\n");
 			valido = false;
 		}
-	}
-	while (!valido);
+	}while (!valido);
+
+    clear_input_buffer();
 }
 
 
