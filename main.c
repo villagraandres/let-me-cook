@@ -13,6 +13,7 @@ int main()
     inicializarRegistrosMercados("mercado.dat");
     inicializarRegistrosEmpleados("empleados.dat");
     inicializarRegistrosProvedor("provedor.dat");
+    
     printf(" ____  _                           _     _               \n");
     printf("| __ )(_) ___ _ ____   _____ _ __ (_) __| | ___     __ _ \n");
     printf("|  _ \\| |/ _ \\ '_ \\ \\ / / _ \\ '_ \\| |/ _` |/ _ \\   / _` |\n");

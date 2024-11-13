@@ -102,7 +102,7 @@ void menuVenta()
         precioArt = (obtenerPrecioArticulo(ventas[i].numeroArticulo, archivoArticulos) * ventas[i].cantidad) * datosMercado.descuento;
         precioTotal += precioArt;
         fprintf(archivoVentas, "%d %d %f %d %d %d %d\n", ventas[i].numeroArticulo, ventas[i].cantidad, precioArt, ventas[i].empleado, fecha.tm_mday, fecha.tm_mon + 1, fecha.tm_year + 1900);
-        fflush(archivoVentas); // Ensure data is written to the file
+        fflush(archivoVentas); 
     }
 
     printf("El precio total de la venta es: %.2f\n", precioTotal);
@@ -173,7 +173,7 @@ bool validarCantidad(int claveArticulo, int *cantidad, FILE *archivo)
     articulo.inventario -= *cantidad;
     fseek(archivo, sizeof(struct Articulo) * (claveArticulo - 1), SEEK_SET);
     fwrite(&articulo, sizeof(struct Articulo), 1, archivo);
-    fflush(archivo); // Ensure data is written to the file
+    fflush(archivo); 
 
     return true;
 }
@@ -237,7 +237,7 @@ void generarFactura(struct Venta ventas[], int numVentas, float total, int emple
     printf("Total: %.2f\n", total);
 }
 
-// Function to print the contents of archivoMercados
+
 void printArchivoMercados(FILE *archivoMercados) 
 {
     struct Mercado mercadoInfo;
@@ -253,7 +253,7 @@ void printArchivoMercados(FILE *archivoMercados)
     rewind(archivoMercados);
 }
 
-// Function to print the contents of archivoArticulos
+
 void printArchivoArticulos(FILE *archivoArticulos) 
 {
     struct Articulo articuloInfo;
@@ -267,7 +267,7 @@ void printArchivoArticulos(FILE *archivoArticulos)
     rewind(archivoArticulos);
 }
 
-// Function to print the contents of archivoEmpleados
+
 void printArchivoEmpleados(FILE *archivoEmpleados) 
 {
     FILE *archivo = fopen("empleados.dat", "rb");
@@ -296,7 +296,7 @@ void obtenerFecha(struct tm *fecha)
 
 
 
-//SECCION COMPRAS
+
 
 void menuCompra() 
 {
@@ -431,20 +431,20 @@ bool validarExistenciaPI(FILE *archivoPtr, int modo, int id, int idProvedor)
 int obtenerUltimoID(FILE *archivoCompras) 
 {
     int ultimoID = 0, tempID;
-    char buffer[256];  // Buffer para almacenar la línea completa
-    rewind(archivoCompras);  // Volver al inicio del archivo
+    char buffer[256];  
+    rewind(archivoCompras);  
 
-    // Leer línea por línea
+    
     while (fgets(buffer, sizeof(buffer), archivoCompras) != NULL) 
     {
-        // Analizar solo el primer valor en la línea (el idCompra)
+        
         if (sscanf(buffer, "%d", &tempID) == 1) 
             ultimoID = tempID;
     }
     return ultimoID;
 }
 
-//REPORTES
+
 void menuReporte() 
 {
     char opcion;
@@ -720,12 +720,12 @@ void listadoArticulos()
         struct Articulo articuloInfo;
         rewind(archivoArt);
 
-        // Imprimir encabezado con formato fijo
+        
         printf("\n%-15s %-20s %-15s %-15s %-10s\n",
                "Clave", "Descripcion", "Costo", "Precio", "Inventario");
         printf("-------------------------------------------------------------------------------\n");
 
-        // Iterar a través de los artículos e imprimir cada uno con el mismo formato
+        
         while (fread(&articuloInfo, sizeof(struct Articulo), 1, archivoArt))
         {
             if (articuloInfo.claveArticulo != 0)
@@ -738,7 +738,7 @@ void listadoArticulos()
                        articuloInfo.inventario);
             }
         }
-        fclose(archivoArt);  // Cerrar archivo después de la lectura
+        fclose(archivoArt);  
     }
 }
 
@@ -750,7 +750,7 @@ void listadoEmpleadosComision()
     struct Venta venta = {};
 
     int dia, mes, anio;
-    float totalVentas;  // Variable para acumular el total de ventas por empleado
+    float totalVentas;  
 
     if (ptrVentas == NULL)
         printf("No se pudo abrir el archivo ventas.txt\n");
@@ -795,7 +795,7 @@ void listadoEmpleadosComision()
     }
 }
 
-//MANEJO DE ARCHIVOS
+
 
 
 int existeArchivo(FILE* fptr, char* fArchivo)
@@ -803,11 +803,11 @@ int existeArchivo(FILE* fptr, char* fArchivo)
     fptr = fopen(fArchivo, "rb");
 
     if (fptr == NULL) 
-        return 1;  // El archivo no existe
+        return 1;  
     else 
     {
         fclose(fptr);
-        return 0;  // El archivo existe
+        return 0;  
     }
 }
 
@@ -826,7 +826,7 @@ int crearArchivo(FILE* fptr, char* fArchivo, void* estructura, int cantidadEstru
     return 0;
 }
 
-//Regresa 0 si es una cadena valida
+
 void clear_input_buffer() 
 {
     int c;
@@ -841,10 +841,10 @@ void validarCadena(char* cadena)
     
     while ((c = getchar()) != '\n' && c != EOF);
 
-    //Tener en cuenta que la ultima letra no tiene /n al utilizar gets
+    
     do
     {
-        //Leer cadena
+        
         printf("Descripcion:\n");
         fflush(stdin);
 
@@ -856,18 +856,18 @@ void validarCadena(char* cadena)
 
         while(i < strlen(cadena) && valido)
         {
-            //Eliminar el uso de esas funciones e implementar por mi cuenta las funciones
+            
             if(!isspace(cadena[i]) && !isalnum(cadena[i]))
                 valido = false;
 
             i++;
         }
 
-        //printf("%d %ld\n",valido,strlen(cadena));
+        
 
     }
     while(!valido || strlen(cadena) < 9);
-    //printf("fin\n");
+    
 }
 
 void validarNombre(char* nombre)
@@ -877,10 +877,10 @@ void validarNombre(char* nombre)
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
     
-    //Tener en cuenta que la ultima letra no tiene /n al utilizar gets
+    
     do
     {   
-        //Leer cadena
+        
         printf("Nombre:\n");
         fflush(stdin);
 
@@ -888,27 +888,27 @@ void validarNombre(char* nombre)
         nombre[strlen(nombre)-1] = '\0';
 
 
-        //printf("%ld _%s_",strlen(nombre),nombre);
+        
 
         i = 0;
         valido = true;
 
         while(i < strlen(nombre) && valido)
         {
-            //Eliminar el uso de esas funciones e implementar por mi cuenta las funciones
+            
             if(!isalpha(nombre[i]) && !isspace(nombre[i]))
                 valido = false;
                 
 
             i++;
         }
-        //printf("%d %ld\n",valido,strlen(cadena));
+        
     }
     while(!valido || strlen(nombre) < 9);
 }
 
 
-//SECCION CONTROL DE INVENTARIOS
+
 
 void menuControl() 
 {
@@ -926,11 +926,11 @@ void menuControl()
         return;
     }
 
-    archivoCompras = fopen("compras.txt", "r+");  // Abrir en modo lectura y escritura
+    archivoCompras = fopen("compras.txt", "r+");  
     if (archivoCompras == NULL) 
     {
         printf("No hay ninguna compra registrada\n");
-        fclose(archivoProv);  // Cerrar archivo abierto
+        fclose(archivoProv);  
         return;
     }
 
@@ -938,8 +938,8 @@ void menuControl()
     if (insumoArch == NULL) 
     {
         printf("No hay ningun archivo de insumos\n");
-        fclose(archivoProv);  // Cerrar archivo abierto
-        fclose(archivoCompras);  // Cerrar archivo abierto
+        fclose(archivoProv);  
+        fclose(archivoCompras);  
         return;
     }
 
@@ -989,7 +989,7 @@ void menuControl()
 
     if (recibida == 1) 
     {
-        FILE *archivoTemp = fopen("compras_temp.txt", "w+");  // Archivo temporal para guardar cambios
+        FILE *archivoTemp = fopen("compras_temp.txt", "w+");  
         if (archivoTemp == NULL) 
         {
             printf("No se pudo crear el archivo temporal\n");
@@ -1015,7 +1015,7 @@ void menuControl()
         fclose(archivoCompras);
         fclose(archivoTemp);
 
-        remove("compras.txt");  // Eliminar el archivo original
+        remove("compras.txt");  
         rename("compras_temp.txt", "compras.txt");
 
         printf("La orden ha sido marcada como recibida.\n");

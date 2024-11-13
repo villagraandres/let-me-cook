@@ -56,13 +56,13 @@ void lecturaArticulo(struct Articulo* fArticulo)
 	int clave;
 	char c;
 
-	// Funciona solo para pasarlo a claveExiste y guardar la info en el
+	
 	struct Articulo articulo = {};
 	struct Mercado mercado = {};
 	struct Insumo insumo = {};
 	
 
-	// Clave del articulo
+	
 	do
 	{
 		printf("Clave del articulo:\n");
@@ -85,15 +85,15 @@ void lecturaArticulo(struct Articulo* fArticulo)
 		validarCadena(fArticulo->descripcion);
 
 
-		//Temporada de siembra
+		
 		char c;
 		while ((c = getchar()) != '\n' && c != EOF); 
-		//fflush(stdin);
+		
 		printf("\nIngresa la temporada de siembra: ");
 		fgets(fArticulo->temporadaSiembra,20,stdin);
 		fArticulo->temporadaSiembra[strlen(fArticulo->temporadaSiembra) -1 ]= '\0';
 
-		// Temporada de cosecha
+		
 		while ((c = getchar()) != '\n' && c != EOF); 
 		printf("\n Ingresa la temporada de cosecha: ");
 		fflush(stdin);
@@ -183,7 +183,7 @@ void lecturaArticulo(struct Articulo* fArticulo)
 						else
 						{
 							fArticulo->insumosRequeridos[i] = clave;
-							//Preguntarle a que provedor desea comprarle
+							
 							preguntarProvedor(fArticulo,&insumo);
 							i++;
 							printf("Clave %d registrada con éxito\n",insumo.claveInsumo);
@@ -272,12 +272,12 @@ int claveExiste(int clave, FILE* fptr,char* fArchivo)
 
 	else
 	{
-		// Buscar clave
+		
 		fseek(fptr,sizeof(struct Articulo) * (clave - 1) ,SEEK_SET);		
 		fread(&articulo,sizeof(struct Articulo),1,fptr);
 
 
-		// Si está vacio no hay nada que actuaizar
+		
 		if (articulo.claveArticulo == 0)
 			return 0;
 
@@ -505,10 +505,10 @@ void  mercados_main()
         }
         while (datos.clave <= 0);
 		
-		// Validar nombre
+		
 	validarNombre(datos.nombre);
 
-		// Validar RFC
+		
 	validarRFC(datos.RFC);
 	
         validarCorreo(datos.correo_electronico);
@@ -758,7 +758,7 @@ void lecturaInsumo(struct Insumo* fInsumo)
 	{
 
 		validarCadena(fInsumo->descripcion);
-		printf("[DEBUG MESSAJE Descripcion value] : %s\n",fInsumo->descripcion);
+		
 
 		do
 		{
@@ -808,7 +808,7 @@ void lecturaInsumo(struct Insumo* fInsumo)
 					fseek(cfptr,(clave - 1) * sizeof(struct Provedor),SEEK_SET);
 					fread(&provedor,sizeof(struct Provedor),1,cfptr);
 
-					// Comprobar que no esté vacío
+					
 					if(provedor.claveProvedor == 0)
 						printf("[ERROR MESSAGE] - Clave %d no registrada\n ",clave);
 					else
@@ -883,13 +883,13 @@ int claveInsumoExiste(int clave, FILE* fptr,char* fArchivo)
 	else
 	{
 
-		// Buscar clave
+		
 		fseek(fptr,sizeof(struct Insumo) * (clave - 1) ,SEEK_SET);		
 		fread(&insumo,sizeof(struct Insumo),1,fptr);
 
-		printf("[DEBUG MESSAJE] Search clave : %d\n",insumo.claveInsumo);
+		
 
-		// Si está vacio no hay nada que actuaizar
+		
 		if (insumo.claveInsumo == 0)
 			return 0;
 
@@ -974,7 +974,7 @@ void inicializarRegistrosProvedor(char* nombreArchivo)
 	struct Provedor provedor = {};	
 
 	if (existeArchivo(cfptr,nombreArchivo))
-        // Si regresa false salir del programa
+        
 		crearArchivo(cfptr,nombreArchivo,&provedor,100,sizeof(struct Provedor));
 }
 
@@ -1009,7 +1009,7 @@ void lecturaProvedor(struct Provedor* fProvedor)
 
         	validarCorreo(fProvedor->correo);
 
-		// Descuento
+		
 		do
 		{
 			printf("Ingresa el porcentaje de descuento\n");
@@ -1022,7 +1022,7 @@ void lecturaProvedor(struct Provedor* fProvedor)
 		while(fProvedor->descuento < 0 || fProvedor->descuento > 100);
 
 		fProvedor->descuento/=100;
-		// RFC
+		
 		while ((c = getchar()) != '\n' && c != EOF);
 			validarRFC(fProvedor->rfc);
 
@@ -1030,10 +1030,10 @@ void lecturaProvedor(struct Provedor* fProvedor)
 		validarFecha(&fProvedor->anio,&fProvedor->mes,&fProvedor->dia);
 		
 
-		// Validar dirección
+		
 		validarDireccion(fProvedor->calle,fProvedor->numero,fProvedor->colonia,fProvedor->municipio,fProvedor->estado);
 		
-		// Escribir estructura en el archivo
+		
 		cfptr = fopen("provedor.dat","r+b");
 		if (cfptr == NULL)
 		{
@@ -1045,7 +1045,7 @@ void lecturaProvedor(struct Provedor* fProvedor)
 		{
 			fseek(cfptr,sizeof(struct Provedor) * (fProvedor->claveProvedor - 1) ,SEEK_SET);		
 			fwrite(fProvedor,sizeof(struct Provedor),1,cfptr);
-			printf("[DEBUG MESSAGE] : Escritura concretada\n");
+			
 		}
 		fclose(cfptr);
     }
@@ -1057,7 +1057,7 @@ void validarFecha(int* ano, int* mes ,int* dia)
 {	
 	bool valido;
 
-	// Año de nacimiento
+	
 	do
 	{
 		printf("Ingresa año de nacimiento\n");
@@ -1070,8 +1070,8 @@ void validarFecha(int* ano, int* mes ,int* dia)
 	while (*ano < 1950 || *ano > 2006);
 
 
-	// Mes de nacimiento
-	// Mes
+	
+	
 	do
 	{
 		printf("Ingresa número del mes de nacimiento\n");
@@ -1084,7 +1084,7 @@ void validarFecha(int* ano, int* mes ,int* dia)
 	while (*mes < 1 || *mes > 12);
 
 
-	// Nacimiento
+	
 	do
 	{
 		printf("Ingresa el día del mes\n");
@@ -1112,7 +1112,7 @@ void validarFecha(int* ano, int* mes ,int* dia)
 				
 			else
 			{
-				printf("[DEBUG MESSAGE] : Fecha registrada");
+				
 				valido = true;
 			}
 
@@ -1127,7 +1127,7 @@ void validarFecha(int* ano, int* mes ,int* dia)
 				
 			else
 			{
-				printf("[DEBUG MESSAGE] : Fecha registrada");
+				
 				valido = true;
 			}	
 				
@@ -1143,7 +1143,7 @@ void validarFecha(int* ano, int* mes ,int* dia)
 				
 			else
 			{
-				printf("[DEBUG MESSAGE] : Fecha registrada");
+				
 				valido = true;
 			}
 				
@@ -1171,7 +1171,7 @@ int claveProvedorExiste(int clave, FILE* fptr,char* fArchivo)
 		fseek(fptr,sizeof(struct Provedor) * (clave - 1) ,SEEK_SET);
 		fread(&provedor,sizeof(struct Provedor),1,fptr);
 
-		printf("[DEBUG MESSAJE] Search clave : %d\n",provedor.claveProvedor);
+		
 
 		if (provedor.claveProvedor == 0)
 			return 0;
@@ -1208,7 +1208,7 @@ void validarCorreo(char* correo)
 {
     	bool valido;
 	int i,c,arrobaPos;
-    //while ((c = getchar()) != '\n' && c != EOF);
+    
 	do
 	{
 		printf("Ingresa tu correo electronico:\n");
@@ -1218,20 +1218,20 @@ void validarCorreo(char* correo)
 		i = 0;
 		valido = true;
 
-		// Buscar hasta el primer arroba
+		
 		while(i<strlen(correo) && i!='@' && isalnum(correo[i]))i++;
 		
 		if (correo[i] != '@' || i<1)
 			valido = false;
 
-		// Buscar los caracteres entre el arroba y el punto, Validar que el punto no sea el fin de la cadena
+		
 		if (valido)
 		{	
 			arrobaPos = i;
 			i++;
 			while(i<strlen(correo) && i!='.' && isalnum(correo[i]))i++;
 
-			//printf("%d %d \n",arrobaPos,i);
+			
 			if (correo[i] != '.' || (i-arrobaPos)<2 || i+1==strlen(correo))
 				valido = false;
 		}
@@ -1246,7 +1246,7 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 	int i,nEspacios;
 	char c;
 
-	// Calle
+	
 	while ((c = getchar()) != '\n' && c != EOF);
 
 	do
@@ -1258,8 +1258,8 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 		fgets(calle,sizeof(calle),stdin);
 		calle[strlen(calle)-1] = '\0';
 		
-		//fflush(stdin);
-		//gets(datos.calle);
+		
+		
 		for (i = 0; i < strlen(calle) && valido; i++)
 		{	
 			if (calle[i] == ' ')
@@ -1271,7 +1271,7 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 			}
 		}
 
-		// Checar que no sea una cadena Vacia
+		
 		if (strlen(calle) == nEspacios)
 		{
 			printf("Nombre de calle inválida\n");
@@ -1281,17 +1281,17 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 	}
 	while (!valido);
 
-	// Número
+	
 	while ((c = getchar()) != '\n' && c != EOF);
 	do
 	{	
 		printf("Ingresa el número de tú casa\n");
-		//fflush(stdin);
+		
 		fgets(numero,sizeof(numero),stdin);
 		valido = true;
 
-		//printf("%s\n",fProvedor->numero);
-		//printf("%ld\n",strlen(fProvedor->numero));
+		
+		
 		numero[strlen(numero) - 1] = '\0';
 		if(strlen(numero) == 0)
 		{
@@ -1304,7 +1304,7 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 			if (numero[i] < '0' || numero[i] > '9')
 			{
 				printf("Número de casa incorrecto\n");
-				//printf("\n%s\n",&fProvedor->numero[i]);
+				
 				valido = false;
 			}	
 		}
@@ -1312,7 +1312,7 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 	while (!valido);
 
 	while ((c = getchar()) != '\n' && c != EOF);
-	// Colonia
+	
 	do
 	{	
 		valido = true;
@@ -1321,8 +1321,8 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 		fgets(colonia,sizeof(colonia),stdin);
 		colonia[strlen(colonia)-1] = '\0';
 		
-		//fflush(stdin);
-		//gets(datos.calle);
+		
+		
 		for (i = 0; i < strlen(colonia) && valido; i++)
 		{	
 
@@ -1337,7 +1337,7 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 			}
 		}
 
-		// Checar que no sea una cadena Vacia
+		
 		if (strlen(colonia) == nEspacios)
 		{
 			printf("Nombre de colonia inválida\n");
@@ -1347,7 +1347,7 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 	while (!valido);
 	
 	while ((c = getchar()) != '\n' && c != EOF);
-	// Municipio
+	
 	do
 	{	
 		valido = true;
@@ -1356,8 +1356,8 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 		fgets(municipio, sizeof(municipio), stdin);
 		municipio[strlen(municipio)-1] = '\0';
 		
-		//fflush(stdin);
-		//gets(datos.calle);
+		
+		
 		for (i = 0; i < strlen(municipio) && valido; i++)
 		{	
 			if (municipio[i] == ' ')
@@ -1369,7 +1369,7 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 			}
 		}
 
-		// Checar que no sea una cadena Vacia
+		
 		if (strlen(municipio) == nEspacios)
 		{
 			printf("Nombre de municipio inválida\n");
@@ -1379,7 +1379,7 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 	while (!valido);
 
 	while ((c = getchar()) != '\n' && c != EOF);
-	// Estado
+	
 	do
 	{	
 		valido = true;
@@ -1388,8 +1388,8 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 		fgets(estado, sizeof(estado), stdin);
 		estado[strlen(estado)-1] = '\0';
 		
-		//fflush(stdin);
-		//gets(datos.calle);
+		
+		
 		for (i = 0; i < strlen(estado) && valido; i++)
 		{
 			if (estado[i] == ' ')
@@ -1400,7 +1400,7 @@ void validarDireccion(char* calle,char* numero, char* colonia,char* municipio, c
 				valido = false;
 			}
 		}
-		// Checar que no sea una cadena Vacia
+		
 		if (strlen(estado) == nEspacios)
 		{
 			printf("Nombre de estado inválida\n");
@@ -1434,7 +1434,7 @@ void validarRFC(char* rfc)
 			
 		else
 		{
-			// Primeras 4 letras 
+			
 			for ( i = 0; i < 4 && valido; i++)
 			{
 				if (rfc[i] < 'A' || rfc[i] > 'Z')
@@ -1445,7 +1445,7 @@ void validarRFC(char* rfc)
 					
 			}
 
-			// 6 números siguientes
+			
 			for ( i = 4; i < 10 && valido; i++)
 			{
 				if (rfc[i] < '0' || rfc[i] > '9')
@@ -1455,7 +1455,7 @@ void validarRFC(char* rfc)
 				}
 			}
 
-			// 3 caracteres aleatorios
+			
 			for (i = 10; i < 13 && valido; i++)
 			{
 				if (!isalnum(rfc[i]))
@@ -1469,157 +1469,6 @@ void validarRFC(char* rfc)
 	}
 	while (!valido);
 	
-	printf("[DEBUGG MESSAGE] - RFC valido\n");	
+	
 	printf("[RFC VALUE] : %s\n",rfc);
-}
-
-
-
-// Imprime datos del provedor
-void EscribirLogProvedor()
-{
-	
-	FILE* fptr = fopen("provedor.dat","rb");
-	FILE *archivo = fopen("Logs/Provedor", "w");
-
-	struct Provedor provedor = {};
-
-	fprintf(archivo,"%-20s %-20s %-20s %-40s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s %-20s\n",
-	"Clave","Nombre","Rfc","Correo",
-	"descuento","Año","Mes","Dia","Calle","Numero","Colonia","Municipio","Estado");
-
-	while (fread(&provedor, sizeof(struct Provedor), 1, fptr) == 1)
-	{
-		if (provedor.claveProvedor != 0)
-			fprintf(archivo,"%-20d %-20s %-20s %-40s %-20.2f %-20d %-20d %-20d %-20s %-20s %-20s %-20s %-20s\n",
-			provedor.claveProvedor,provedor.nombre,provedor.rfc,provedor.correo,provedor.descuento,
-			provedor.anio,provedor.mes,provedor.dia,provedor.calle,provedor.numero,provedor.colonia,
-			provedor.municipio,provedor.estado);
-	}
-
-	fclose(fptr);
-	fclose(archivo);
-}
-
-void EscribirLogInsumo()
-{
-	FILE* fptr = fopen("insumos.dat","rb");
-	if (fptr == NULL) 
-	{
-		printf("[ERROR] - No se pudo abrir el archivo insumos.dat\n");
-		return;
-	}
-
-	FILE *archivo = fopen("Logs/Insumo", "w");
-	if (archivo == NULL) 
-	{
-		printf("[ERROR] - No se pudo abrir el archivo Logs/Insumo\n");
-		fclose(fptr);
-		return;
-	}
-
-	struct Insumo insumo= {};
-
-	fprintf(archivo,"%-20s %-100s %-20s %-20s\n",
-	"Clave","Descipcion","Punto Reorden" ,"Inventario");
-
-	while (fread(&insumo, sizeof(struct Insumo), 1, fptr) == 1)
-	{
-		if (insumo.claveInsumo != 0)
-		{
-			fprintf(archivo,"%-20d%-100s%-20d%-20d\n",insumo.claveInsumo,insumo.descripcion,insumo.puntoReorden,insumo.inventario);
-			fprintf(archivo,"%-20s %-20s\n","Provedore Clave","Precio");
-			for ( int i = 0; i < 10; i++)
-			{	
-
-				if (insumo.provedores[i] != 0)
-					fprintf(archivo,"%-20d %-20.2f\n",insumo.provedores[i],insumo.precios[i]);
-			}
-
-			fprintf(archivo,"\n\n");
-		}
-	}
-	fclose(fptr);
-	fclose(archivo);
-}
-
-
-// Imprimir datos de Articulos
-
-void EscribirLogArticulo()
-{
-
-	FILE* fptr = fopen("articulos.dat","rb");
-	FILE *archivo = fopen("Logs/Articulo", "w");
-
-	struct Articulo articulo = {};
-
-	fprintf(archivo,"%-20s %-20s %-20s %-20s %-20s %-20s %-20s\n",
-	"Clave","Nombre","Temporada Siembra","Temporada Cosecha","Costo","Precio","Inventario");
-
-	while (fread(&articulo, sizeof(struct Articulo), 1, fptr) == 1)
-	{
-		if (articulo.claveArticulo != 0)
-		{	
-			fprintf(archivo,"%-20d %-20s %-20s %-20s %-20.2f %-20.2f %-20d\n",
-			articulo.claveArticulo,articulo.descripcion,articulo.temporadaSiembra,articulo.temporadaCosecha,
-			articulo.costo,articulo.precio,articulo.inventario);
-			
-			fprintf(archivo,"%-20s\n","Clave Mercados");
-			for ( int i = 0; i < 10; i++)
-			{	
-				if (articulo.claveMercados[i] != 0)
-					fprintf(archivo,"%-20d\n",articulo.claveMercados[i]);
-			}
-
-			fprintf(archivo,"%-20s\n","Clave Insumos");
-			for ( int i = 0; i < 10; i++)
-			{	
-				if (articulo.insumosRequeridos[i] != 0)
-					fprintf(archivo,"%-20d\n",articulo.insumosRequeridos[i]);
-			}
-			fprintf(archivo,"\n\n");
-		}
-	}
-	
-	fclose(fptr);
-	fclose(archivo);
-};
-
-void EscribirLogMercado()
-{
-	FILE* fptr = fopen("mercado.dat","rb");
-	if (fptr == NULL) 
-	{
-		printf("[ERROR] - No se pudo abrir el archivo mercado.dat\n");
-		return;
-	}
-
-	FILE *archivo = fopen("Logs/Mercado", "w");
-	if (archivo == NULL) 
-	{
-		printf("[ERROR] - No se pudo abrir el archivo Logs/Insumo\n");
-		fclose(fptr);
-		return;
-	}
-
-	struct Mercado mercado= {};
-
-	fprintf(archivo,"%-20s %-20s %-20s %-20s %-20s %-20s  %-20s %-20s %-20s %-20s %-20s %-20s %-20s \n"
-	,"Clave","Nombre","Rfc","Correo","Descuento","Año","Mes","Dia","Calle","Numero","Colonia","Municipio"
-	, "Estado");
-
-	while (fread(&mercado, sizeof(struct Mercado), 1, fptr))
-	{
-		if (mercado.clave != 0 || mercado.anio != 0)
-		{
-			fprintf(archivo,"%-20d %-20s %-20s %-20s %-20.2f %-20d  %-20d %-20d %-20s %-20s %-20s %-20s %-20s \n\n"
-			,mercado.clave,mercado.nombre,mercado.RFC,mercado.correo_electronico,
-			mercado.descuento,mercado.anio,mercado.mes,mercado.dia,
-			mercado.calle,mercado.numero,mercado.colonia,mercado.municipio,mercado.estado
-			);
-		}
-	}
-	fclose(fptr);
-	fclose(archivo);
 }

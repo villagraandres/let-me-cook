@@ -4,7 +4,7 @@
 
 
 struct Articulo;
-struct Insumo; // Declare struct Insumo here
+struct Insumo; 
 
 struct Articulo
 {
@@ -34,16 +34,7 @@ void menuArticulos();
 void lecturaArticulo();
 
 int claveExiste(int, FILE*, char*);
-void preguntarProvedor(struct Articulo*, struct Insumo*); // Use the declared struct Insumo here
-
-
-void EscribirLogProvedor();
-
-void EscribirLogInsumo();
-
-void EscribirLogArticulo();
-
-void EscribirLogMercado();
+void preguntarProvedor(struct Articulo*, struct Insumo*); 
 
 
 struct Empleado{
@@ -82,7 +73,7 @@ struct Mercado{
 void mercados_main();
 
 
-// Insumos
+
 struct Insumo
 {
 	
@@ -107,7 +98,7 @@ void lecturaInsumo(struct Insumo*);
 int claveInsumoExiste(int , FILE* ,char*);
 
 
-// Provedor
+
 
 struct Provedor
 {
@@ -147,10 +138,4 @@ int claveProvedorExiste(int , FILE* ,char* );
 
 
 
-// Llenar de forma Automatica Registros
-
-void llenarProvedor();
-
-
-
-#endif // 
+#endif 
