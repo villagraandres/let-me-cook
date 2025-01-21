@@ -13,6 +13,8 @@ struct Articulo
     
     char temporadaSiembra[20];
     char temporadaCosecha[20];
+
+    char ddd[20];
     
     int claveMercados[10];
     int insumosRequeridos[10];  
